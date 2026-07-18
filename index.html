@@ -1,0 +1,4269 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Adullam Soul Connect</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ═══════════ DARK MODE (default) ═══════════ */
+:root {
+  --gold: #C9982A;
+  --gold-light: #E8B84B;
+  --gold-dark: #9B7319;
+  --gold-pale: #F5E6C0;
+  --gold-glow: rgba(201,152,42,0.3);
+  --bg-dark: #0D0D0F;
+  --bg-card: #141418;
+  --bg-panel: #1A1A20;
+  --bg-border: #2A2A35;
+  --text-primary: #F0EDE8;
+  --text-secondary: #A09890;
+  --text-muted: #5C5850;
+  --success: #4CAF82;
+  --warning: #E8913A;
+  --danger: #E85A4F;
+  --info: #4A90D9;
+  --radius: 16px;
+  --radius-sm: 8px;
+  --shadow: 0 8px 32px rgba(0,0,0,0.6);
+  --shadow-gold: 0 4px 24px rgba(201,152,42,0.2);
+  --auth-left-bg: linear-gradient(135deg,#0D0B08 0%,#1A1508 50%,#0D0B08 100%);
+  --welcome-banner-bg: linear-gradient(135deg,#1A1508,#0D0B08);
+  --admin-banner-bg: linear-gradient(135deg,#12091A,#0D0D0F);
+  --modal-overlay-bg: rgba(0,0,0,0.75);
+  --table-hover: rgba(201,152,42,0.04);
+  --toggle-track: #2A2A35;
+  --toggle-thumb: #5C5850;
+}
+
+/* ═══════════ LIGHT MODE ═══════════ */
+html.light {
+  --gold: #9B7319;
+  --gold-light: #C9982A;
+  --gold-dark: #7A5A10;
+  --gold-pale: #FDF3DC;
+  --gold-glow: rgba(155,115,25,0.2);
+  --bg-dark: #F4F2EE;
+  --bg-card: #FFFFFF;
+  --bg-panel: #EDE9E2;
+  --bg-border: #D8D2C6;
+  --text-primary: #1A1714;
+  --text-secondary: #5A5248;
+  --text-muted: #9A9088;
+  --success: #2E8A5A;
+  --warning: #C4721A;
+  --danger: #C0362A;
+  --info: #2568B8;
+  --shadow: 0 8px 32px rgba(0,0,0,0.12);
+  --shadow-gold: 0 4px 24px rgba(155,115,25,0.18);
+  --auth-left-bg: linear-gradient(135deg,#2C1F04 0%,#4A3208 50%,#2C1F04 100%);
+  --welcome-banner-bg: linear-gradient(135deg,#FDF3DC,#F9EAC4);
+  --admin-banner-bg: linear-gradient(135deg,#EDE6F5,#F4F2EE);
+  --modal-overlay-bg: rgba(0,0,0,0.45);
+  --table-hover: rgba(155,115,25,0.04);
+  --toggle-track: #D8D2C6;
+  --toggle-thumb: #9A9088;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background: var(--bg-dark);
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
+  transition: background 0.4s ease, color 0.4s ease;
+}
+
+*, *::before, *::after {
+  transition: background-color 0.35s ease, border-color 0.35s ease, color 0.35s ease, box-shadow 0.35s ease;
+}
+
+/* ═══════════════════════════════
+   ANIMATIONS
+═══════════════════════════════ */
+@keyframes fadeIn { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+@keyframes shimmer { 0%{background-position:-200% 0} 100%{background-position:200% 0} }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
+@keyframes spin { to{transform:rotate(360deg)} }
+@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+@keyframes glow { 0%,100%{box-shadow:0 0 20px var(--gold-glow)} 50%{box-shadow:0 0 40px rgba(201,152,42,0.5)} }
+
+.animate-in { animation: fadeIn 0.5s ease forwards; }
+
+/* ═══════════════════════════════
+   PAGE SYSTEM
+═══════════════════════════════ */
+.page { display:none; min-height:100vh; }
+.page.active { display:flex; animation: fadeIn 0.4s ease; }
+
+/* ═══════════════════════════════
+   AUTH PAGES (Login / Register)
+═══════════════════════════════ */
+.auth-page {
+  flex-direction: row;
+  min-height: 100vh;
+}
+
+.auth-left {
+  width: 45%;
+  background: var(--auth-left-bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 50px;
+  position: relative;
+  overflow: hidden;
+}
+
+.auth-left::before {
+  content: '';
+  position: absolute;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(201,152,42,0.15) 0%, transparent 70%);
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.auth-left::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23C9982A' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+.brand-section { position:relative; z-index:2; text-align:center; }
+
+.logo-wrapper {
+  width: 100px; height: 100px;
+  background: linear-gradient(135deg, var(--gold-dark), var(--gold), var(--gold-light));
+  border-radius: 24px;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 24px;
+  box-shadow: var(--shadow-gold);
+  animation: float 4s ease-in-out infinite;
+}
+
+/* Adullam arch logo SVG inline */
+.logo-wrapper svg { width:60px; height:60px; }
+
+.brand-name {
+  font-family: 'Cinzel', serif;
+  font-size: 26px;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--gold-light), var(--gold), var(--gold-dark));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+}
+
+.brand-sub {
+  font-size: 13px;
+  color: var(--text-muted);
+  letter-spacing: 4px;
+  text-transform: uppercase;
+}
+
+.auth-tagline {
+  margin-top: 48px;
+  color: var(--text-secondary);
+  font-size: 15px;
+  line-height: 1.8;
+  text-align: center;
+  max-width: 300px;
+}
+
+.auth-tagline strong {
+  color: var(--gold-light);
+  display: block;
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  font-family: 'Cinzel', serif;
+}
+
+.auth-ornament {
+  position: absolute;
+  bottom: 40px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.auth-ornament span {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--gold);
+  opacity: 0.4;
+}
+.auth-ornament span:nth-child(2) { width:30px; border-radius:3px; }
+
+.auth-right {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  background: var(--bg-dark);
+}
+
+.auth-form-container {
+  width: 100%;
+  max-width: 440px;
+}
+
+.auth-form-title {
+  font-family: 'Cinzel', serif;
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.auth-form-title span { color: var(--gold); }
+
+.auth-form-sub {
+  color: var(--text-muted);
+  font-size: 14px;
+  margin-bottom: 40px;
+}
+
+.form-group { margin-bottom: 20px; }
+
+.form-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+}
+
+.form-input {
+  width: 100%;
+  background: var(--bg-card);
+  border: 1px solid var(--bg-border);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  color: var(--text-primary);
+  font-size: 15px;
+  font-family: 'Outfit', sans-serif;
+  transition: all 0.3s;
+  outline: none;
+}
+
+.form-input:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px var(--gold-glow);
+}
+
+.form-input::placeholder { color: var(--text-muted); }
+
+.input-wrapper {
+  position: relative;
+}
+
+.input-icon {
+  position: absolute;
+  left: 14px; top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  font-size: 16px;
+}
+
+.input-wrapper .form-input { padding-left: 44px; }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 24px;
+  border-radius: var(--radius-sm);
+  font-family: 'Outfit', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all 0.3s;
+  text-decoration: none;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--gold-dark), var(--gold), var(--gold-light));
+  color: #000;
+  width: 100%;
+  animation: glow 3s ease-in-out infinite;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(201,152,42,0.4);
+}
+
+.btn-outline {
+  background: transparent;
+  border: 1px solid var(--bg-border);
+  color: var(--text-secondary);
+}
+
+.btn-outline:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+.btn-danger {
+  background: rgba(232,90,79,0.15);
+  border: 1px solid var(--danger);
+  color: var(--danger);
+}
+
+.btn-sm { padding: 8px 16px; font-size: 13px; }
+
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 28px 0;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--bg-border);
+}
+
+.auth-switch {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 14px;
+  margin-top: 24px;
+}
+
+.auth-switch a {
+  color: var(--gold);
+  text-decoration: none;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.auth-switch a:hover { text-decoration: underline; }
+
+.toast {
+  position: fixed;
+  top: 24px; right: 24px;
+  background: var(--bg-card);
+  border: 1px solid var(--bg-border);
+  border-radius: var(--radius-sm);
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  z-index: 9999;
+  animation: fadeIn 0.3s ease;
+  box-shadow: var(--shadow);
+  max-width: 360px;
+}
+
+.toast.success { border-color: var(--success); }
+.toast.error { border-color: var(--danger); }
+.toast-icon { font-size: 20px; }
+.toast-msg { font-size: 14px; color: var(--text-primary); }
+
+/* ═══════════════════════════════
+   DASHBOARD LAYOUT
+═══════════════════════════════ */
+.dashboard-page {
+  flex-direction: row;
+  min-height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 260px;
+  min-height: 100vh;
+  background: var(--bg-card);
+  border-right: 1px solid var(--bg-border);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  z-index: 100;
+  transition: transform 0.3s;
+}
+
+.sidebar-brand {
+  padding: 28px 24px;
+  border-bottom: 1px solid var(--bg-border);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.sidebar-logo {
+  width: 44px; height: 44px;
+  background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.sidebar-logo svg { width: 26px; height: 26px; }
+
+.sidebar-brand-text { overflow: hidden; }
+
+.sidebar-brand-name {
+  font-family: 'Cinzel', serif;
+  font-size: 13px;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--gold-light), var(--gold));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  white-space: nowrap;
+}
+
+.sidebar-brand-role {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.sidebar-nav {
+  flex: 1;
+  padding: 16px 12px;
+  overflow-y: auto;
+}
+
+.nav-section-label {
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding: 12px 12px 8px;
+  font-weight: 600;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 2px;
+}
+
+.nav-item:hover { background: rgba(201,152,42,0.08); color: var(--text-primary); }
+
+.nav-item.active {
+  background: linear-gradient(135deg, rgba(201,152,42,0.2), rgba(201,152,42,0.08));
+  color: var(--gold);
+  border-left: 3px solid var(--gold);
+}
+
+.nav-item .nav-icon { font-size: 18px; width: 20px; text-align: center; }
+
+.nav-badge {
+  margin-left: auto;
+  background: var(--gold);
+  color: #000;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 10px;
+}
+
+.sidebar-footer {
+  padding: 16px 12px;
+  border-top: 1px solid var(--bg-border);
+}
+
+.sidebar-user {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: var(--bg-panel);
+  margin-bottom: 8px;
+}
+
+.avatar {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 14px;
+  color: #000;
+  flex-shrink: 0;
+}
+
+.avatar-lg {
+  width: 52px; height: 52px;
+  font-size: 20px;
+}
+
+.user-info { flex: 1; min-width: 0; }
+
+.user-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.user-role {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 1px;
+}
+
+/* Main content */
+.main-content {
+  flex: 1;
+  margin-left: 260px;
+  min-height: 100vh;
+  background: var(--bg-dark);
+}
+
+.top-bar {
+  height: 64px;
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--bg-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 28px;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.top-bar-title {
+  font-family: 'Cinzel', serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.top-bar-actions { display: flex; align-items: center; gap: 12px; }
+
+.icon-btn {
+  width: 38px; height: 38px;
+  border-radius: 10px;
+  background: var(--bg-panel);
+  border: 1px solid var(--bg-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: var(--text-secondary);
+  font-size: 16px;
+}
+
+.icon-btn:hover { border-color: var(--gold); color: var(--gold); }
+
+.notif-dot {
+  position: relative;
+}
+
+.notif-dot::after {
+  content: '';
+  position: absolute;
+  top: 6px; right: 6px;
+  width: 7px; height: 7px;
+  background: var(--gold);
+  border-radius: 50%;
+  border: 2px solid var(--bg-card);
+}
+
+.page-content {
+  padding: 28px;
+}
+
+/* Cards */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--bg-border);
+  border-radius: var(--radius);
+  padding: 24px;
+  transition: all 0.3s;
+}
+
+.card:hover { border-color: rgba(201,152,42,0.3); }
+
+.card-title {
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+}
+
+/* Stats Grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  background: var(--bg-card);
+  border: 1px solid var(--bg-border);
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s;
+}
+
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--gold-dark), var(--gold));
+}
+
+.stat-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-gold); }
+
+.stat-label {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.stat-value {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text-primary);
+  font-family: 'Cinzel', serif;
+}
+
+.stat-change {
+  font-size: 12px;
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.stat-change.up { color: var(--success); }
+.stat-change.down { color: var(--danger); }
+
+.stat-icon {
+  position: absolute;
+  top: 20px; right: 20px;
+  font-size: 28px;
+  opacity: 0.15;
+}
+
+/* Table */
+.table-container {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+th {
+  padding: 12px 16px;
+  text-align: left;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--bg-border);
+}
+
+td {
+  padding: 14px 16px;
+  border-bottom: 1px solid rgba(42,42,53,0.5);
+  color: var(--text-secondary);
+  vertical-align: middle;
+}
+
+tr:hover td { background: rgba(201,152,42,0.04); color: var(--text-primary); }
+
+/* Status badges */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.badge-gold { background: rgba(201,152,42,0.15); color: var(--gold); border: 1px solid rgba(201,152,42,0.3); }
+.badge-success { background: rgba(76,175,130,0.15); color: var(--success); border: 1px solid rgba(76,175,130,0.3); }
+.badge-danger { background: rgba(232,90,79,0.15); color: var(--danger); border: 1px solid rgba(232,90,79,0.3); }
+.badge-info { background: rgba(74,144,217,0.15); color: var(--info); border: 1px solid rgba(74,144,217,0.3); }
+.badge-warning { background: rgba(232,145,58,0.15); color: var(--warning); border: 1px solid rgba(232,145,58,0.3); }
+
+/* Progress bar */
+.progress { background: var(--bg-panel); border-radius: 10px; height: 6px; overflow: hidden; }
+.progress-fill {
+  height: 100%;
+  border-radius: 10px;
+  background: linear-gradient(90deg, var(--gold-dark), var(--gold-light));
+  transition: width 0.8s ease;
+}
+
+/* Grid layouts */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+
+/* Tabs */
+.tabs { display: flex; gap: 4px; margin-bottom: 24px; background: var(--bg-panel); padding: 4px; border-radius: 10px; }
+
+.tab {
+  flex: 1;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-muted);
+  text-align: center;
+  transition: all 0.2s;
+  border: none;
+  background: transparent;
+  font-family: 'Outfit', sans-serif;
+}
+
+.tab.active {
+  background: var(--bg-card);
+  color: var(--gold);
+  box-shadow: var(--shadow);
+}
+
+.tab-content { display: none; }
+.tab-content.active { display: block; animation: fadeIn 0.3s ease; }
+
+/* Modal */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.75);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-overlay.active { display: flex; animation: fadeIn 0.2s ease; }
+
+.modal {
+  background: var(--bg-card);
+  border: 1px solid var(--bg-border);
+  border-radius: var(--radius);
+  padding: 32px;
+  width: 90%;
+  max-width: 480px;
+  position: relative;
+  animation: fadeIn 0.3s ease;
+}
+
+.modal-title {
+  font-family: 'Cinzel', serif;
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.modal-sub { color: var(--text-muted); font-size: 13px; margin-bottom: 24px; }
+
+.modal-close {
+  position: absolute;
+  top: 20px; right: 20px;
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  background: var(--bg-panel);
+  border: 1px solid var(--bg-border);
+  color: var(--text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+}
+
+.modal-close:hover { color: var(--text-primary); border-color: var(--text-muted); }
+
+/* Donut chart */
+.donut-container { position: relative; width: 140px; height: 140px; margin: 0 auto 20px; }
+.donut-container svg { transform: rotate(-90deg); }
+.donut-center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.donut-center span:first-child { font-size: 24px; font-weight: 700; font-family: 'Cinzel', serif; }
+.donut-center span:last-child { font-size: 11px; color: var(--text-muted); }
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+}
+
+.legend-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+/* Search */
+.search-input {
+  background: var(--bg-panel);
+  border: 1px solid var(--bg-border);
+  border-radius: 8px;
+  padding: 10px 14px 10px 38px;
+  color: var(--text-primary);
+  font-size: 14px;
+  font-family: 'Outfit', sans-serif;
+  outline: none;
+  transition: all 0.2s;
+  min-width: 220px;
+}
+
+.search-input:focus { border-color: var(--gold); }
+.search-wrapper { position: relative; }
+.search-wrapper::before { content: '🔍'; position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 14px; }
+
+/* Activity item */
+.activity-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(42,42,53,0.5);
+}
+
+.activity-item:last-child { border-bottom: none; }
+
+.activity-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--gold);
+  margin-top: 5px;
+  flex-shrink: 0;
+}
+
+.activity-text { flex: 1; font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+.activity-text strong { color: var(--text-primary); }
+.activity-time { font-size: 11px; color: var(--text-muted); white-space: nowrap; }
+
+/* Status colors for nav */
+.status-baru { color: #E8913A; }
+.status-didekati { color: var(--info); }
+.status-nongki { color: var(--gold); }
+.status-nyaman { color: var(--success); }
+.status-grup { color: #A855F7; }
+.status-belum { color: var(--danger); }
+
+/* Responsive helpers */
+.flex { display: flex; }
+.flex-col { flex-direction: column; }
+.items-center { align-items: center; }
+.justify-between { justify-content: space-between; }
+.gap-2 { gap: 8px; }
+.gap-3 { gap: 12px; }
+.gap-4 { gap: 16px; }
+.mt-1 { margin-top: 4px; }
+.mt-2 { margin-top: 8px; }
+.mt-4 { margin-top: 16px; }
+.mb-4 { margin-bottom: 16px; }
+.mb-6 { margin-bottom: 24px; }
+.w-full { width: 100%; }
+.text-muted { color: var(--text-muted); }
+.text-gold { color: var(--gold); }
+.text-sm { font-size: 13px; }
+.font-semibold { font-weight: 600; }
+
+/* Welcome banner */
+.welcome-banner {
+  background: linear-gradient(135deg, #1A1508, #0D0B08);
+  border: 1px solid rgba(201,152,42,0.3);
+  border-radius: var(--radius);
+  padding: 28px 32px;
+  margin-bottom: 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.welcome-banner::before {
+  content: '';
+  position: absolute;
+  right: -20px; top: -20px;
+  width: 200px; height: 200px;
+  background: radial-gradient(circle, rgba(201,152,42,0.12) 0%, transparent 70%);
+}
+
+.welcome-title {
+  font-family: 'Cinzel', serif;
+  font-size: 22px;
+  font-weight: 600;
+  background: linear-gradient(135deg, var(--gold-light), var(--gold));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 6px;
+}
+
+.welcome-sub { color: var(--text-muted); font-size: 14px; }
+
+/* Empty state */
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text-muted);
+}
+
+.empty-state .icon { font-size: 48px; margin-bottom: 16px; opacity: 0.5; }
+.empty-state p { font-size: 14px; }
+
+/* section view management */
+.section { display: none; }
+.section.active { display: block; animation: fadeIn 0.3s ease; }
+
+/* ═══════════════════════════════
+   JEMAAT BIASA DASHBOARD
+═══════════════════════════════ */
+
+/* ═══════════════════════════════
+   BERANDA REDESIGN
+═══════════════════════════════ */
+
+/* ── Hero ── */
+.beranda-hero {
+  position: relative;
+  background: linear-gradient(140deg, #0E0B02 0%, #1E1608 45%, #0D0C0A 100%);
+  border: 1px solid rgba(201,152,42,0.22);
+  border-radius: 20px;
+  padding: 36px 32px 32px;
+  overflow: hidden;
+  margin-bottom: 0;
+  min-height: 240px;
+  display: flex;
+  align-items: center;
+}
+
+.beranda-hero-bg {
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23C9982A' fill-opacity='0.025'%3E%3Ccircle cx='20' cy='20' r='1'/%3E%3C/g%3E%3C/svg%3E");
+  pointer-events: none;
+}
+
+.beranda-hero-glow {
+  position: absolute;
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(201,152,42,0.1) 0%, transparent 60%);
+  top: -180px; right: -120px;
+  pointer-events: none;
+}
+
+/* Staircase arch decoration */
+.beranda-arch-wrap {
+  position: absolute;
+  right: -10px;
+  bottom: -10px;
+  width: 180px;
+  height: 150px;
+  opacity: 0.9;
+  pointer-events: none;
+}
+
+.beranda-arch-svg { width: 100%; height: 100%; }
+
+.beranda-hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 480px;
+}
+
+.beranda-hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 14px;
+  background: rgba(201,152,42,0.1);
+  border: 1px solid rgba(201,152,42,0.2);
+  padding: 4px 12px;
+  border-radius: 20px;
+}
+
+.beranda-hero-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--gold);
+  animation: pulse 2s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+.beranda-hero-title {
+  font-family: 'Cinzel', serif;
+  font-size: 28px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #fff 0%, var(--gold-light) 55%, var(--gold) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 10px;
+  line-height: 1.25;
+}
+
+.beranda-hero-sub {
+  font-size: 14px;
+  color: rgba(255,255,255,0.5);
+  line-height: 1.65;
+  margin-bottom: 6px;
+}
+
+.beranda-hero-meta {
+  font-size: 12px;
+  color: rgba(201,152,42,0.6);
+  font-weight: 500;
+  margin-bottom: 24px;
+  letter-spacing: 0.3px;
+}
+
+.beranda-hero-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.beranda-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 22px;
+  background: linear-gradient(135deg, var(--gold-dark), var(--gold), var(--gold-light));
+  color: #000;
+  font-family: 'Outfit', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  border: none;
+  border-radius: 40px;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 4px 20px rgba(201,152,42,0.35);
+}
+
+.beranda-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(201,152,42,0.5);
+}
+
+.beranda-btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 20px;
+  background: rgba(255,255,255,0.06);
+  color: rgba(255,255,255,0.75);
+  font-family: 'Outfit', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 40px;
+  cursor: pointer;
+  transition: all 0.3s;
+  backdrop-filter: blur(4px);
+}
+
+.beranda-btn-ghost:hover {
+  border-color: rgba(201,152,42,0.4);
+  color: var(--gold-light);
+  background: rgba(201,152,42,0.08);
+}
+
+/* ── Jadwal strip ── */
+.beranda-jadwal-strip {
+  margin: 16px 0;
+  overflow: hidden;
+}
+
+.jadwal-scroll-inner {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding: 4px 2px;
+}
+.jadwal-scroll-inner::-webkit-scrollbar { display: none; }
+
+.jadwal-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 16px;
+  background: var(--bg-card);
+  border: 1px solid rgba(201,152,42,0.2);
+  border-radius: 40px;
+  font-size: 12px;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  flex-shrink: 0;
+  font-weight: 500;
+  transition: all 0.25s;
+  cursor: default;
+}
+
+.jadwal-pill:first-child {
+  border-color: rgba(201,152,42,0.4);
+  background: rgba(201,152,42,0.07);
+  color: var(--gold-light);
+  font-weight: 600;
+}
+
+.jadwal-pill:hover {
+  border-color: rgba(201,152,42,0.35);
+  color: var(--gold-light);
+}
+
+/* ── Verse ── */
+.beranda-verse {
+  background: linear-gradient(135deg, rgba(201,152,42,0.07) 0%, rgba(201,152,42,0.02) 100%);
+  border: 1px solid rgba(201,152,42,0.2);
+  border-left: 4px solid var(--gold);
+  border-radius: 16px;
+  padding: 22px 24px;
+  margin: 20px 0;
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+}
+
+.beranda-verse-icon {
+  font-size: 28px;
+  color: var(--gold);
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  line-height: 1;
+  flex-shrink: 0;
+  margin-top: 2px;
+  opacity: 0.7;
+}
+
+.beranda-verse-label {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 8px;
+}
+
+.beranda-verse-text {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.75;
+  font-style: italic;
+  margin-bottom: 8px;
+}
+
+.beranda-verse-ref {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--gold-light);
+  font-family: 'Cinzel', serif;
+}
+
+/* ── Section headers ── */
+.beranda-section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 24px 0 14px;
+}
+
+.beranda-section-title {
+  font-family: 'Cinzel', serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.beranda-see-all {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--gold);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: 'Outfit', sans-serif;
+  letter-spacing: 0.3px;
+  transition: opacity 0.2s;
+}
+.beranda-see-all:hover { opacity: 0.7; }
+
+/* ── News preview grid ── */
+.beranda-news-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 14px;
+}
+
+.beranda-news-card {
+  background: var(--bg-card);
+  border: 1px solid var(--bg-border);
+  border-radius: 16px;
+  padding: 18px;
+  cursor: pointer;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+
+.beranda-news-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--gold-dark), var(--gold-light));
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.beranda-news-card:hover {
+  border-color: rgba(201,152,42,0.35);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 28px rgba(0,0,0,0.3), 0 0 0 1px rgba(201,152,42,0.12);
+}
+
+.beranda-news-card:hover::before { opacity: 1; }
+
+.beranda-news-card-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.beranda-news-card-title {
+  font-family: 'Cinzel', serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.45;
+  margin-bottom: 8px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.beranda-news-card-excerpt {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.6;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.beranda-news-card-meta {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 10px;
+}
+
+/* ── Jadwal list items ── */
+.jadwal-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 13px 18px;
+  transition: background 0.2s;
+  border-radius: 12px;
+  margin: 2px 8px;
+}
+
+.jadwal-item:hover { background: rgba(201,152,42,0.05); }
+
+.jadwal-icon-box {
+  width: 40px; height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.jadwal-item-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.jadwal-item-time {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+/* Light mode beranda */
+html.light .beranda-hero {
+  background: linear-gradient(140deg, #2C1F04 0%, #4A3208 45%, #2C1F04 100%);
+}
+html.light .beranda-btn-ghost {
+  border-color: rgba(255,255,255,0.2);
+  color: rgba(255,255,255,0.8);
+}
+html.light .beranda-verse {
+  background: linear-gradient(135deg, rgba(155,115,25,0.08), rgba(155,115,25,0.02));
+}
+html.light .jadwal-pill { color: var(--text-secondary); }
+html.light .jadwal-pill:first-child { color: var(--gold-dark); }
+
+/* Responsive beranda */
+@media (max-width: 768px) {
+  .beranda-hero { padding: 24px 20px 24px; min-height: 200px; }
+  .beranda-hero-title { font-size: 22px; }
+  .beranda-arch-wrap { width: 120px; height: 100px; right: -5px; bottom: -5px; }
+  .beranda-news-grid { grid-template-columns: 1fr; }
+  .beranda-verse { flex-direction: column; gap: 10px; padding: 18px; }
+}
+
+@media (max-width: 400px) {
+  .beranda-hero-title { font-size: 18px; }
+  .beranda-btn-primary, .beranda-btn-ghost { padding: 9px 16px; font-size: 12px; }
+}
+
+/* ── Old classes kept for compat ── */
+.jemaat-hero { display: none; }
+.verse-card { display: none; }
+.news-preview-grid { display: none; }
+.jadwal-list { display: none; }
+
+
+
+/* Jadwal ibadah banner */
+.jadwal-strip {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  scrollbar-width: none;
+}
+.jadwal-strip::-webkit-scrollbar { display: none; }
+
+.jadwal-chip {
+  flex-shrink: 0;
+  background: rgba(201,152,42,0.1);
+  border: 1px solid rgba(201,152,42,0.25);
+  border-radius: 40px;
+  padding: 8px 16px;
+  font-size: 12px;
+  color: var(--gold-light);
+  font-weight: 500;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Feed area */
+.feed-area {
+  padding: 24px 28px;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.feed-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.feed-title {
+  font-family: 'Cinzel', serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.feed-count {
+  background: var(--gold);
+  color: #000;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 20px;
+}
+
+/* Berita card */
+.berita-card {
+  background: var(--bg-card);
+  border: 1px solid var(--bg-border);
+  border-radius: 20px;
+  overflow: hidden;
+  margin-bottom: 20px;
+  transition: all 0.35s cubic-bezier(0.4,0,0.2,1);
+  animation: fadeIn 0.45s ease;
+  position: relative;
+}
+
+.berita-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+  box-shadow: 0 0 0 0 var(--gold-glow);
+  transition: box-shadow 0.35s ease;
+  pointer-events: none;
+}
+
+.berita-card:hover {
+  border-color: rgba(201,152,42,0.45);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.35), 0 0 0 1px rgba(201,152,42,0.15);
+}
+
+.berita-header {
+  padding: 20px 22px 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 13px;
+}
+
+.berita-avatar {
+  width: 42px; height: 42px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--gold-dark), var(--gold), var(--gold-light));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  font-weight: 800;
+  color: #000;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(201,152,42,0.3);
+  font-family: 'Cinzel', serif;
+}
+
+.berita-meta { flex: 1; min-width: 0; }
+
+.berita-author {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: 0.2px;
+}
+
+.berita-role {
+  font-size: 11px;
+  color: var(--gold);
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+.berita-time {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 1px;
+}
+
+.berita-category-tag {
+  flex-shrink: 0;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 4px 11px;
+  border-radius: 20px;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  align-self: flex-start;
+}
+
+.tag-ibadah    { background: rgba(201,152,42,0.12); color: var(--gold-light); border: 1px solid rgba(201,152,42,0.35); }
+.tag-pengumuman{ background: rgba(74,144,217,0.12);  color: #74b5ff;           border: 1px solid rgba(74,144,217,0.35); }
+.tag-renungan  { background: rgba(76,175,130,0.12);  color: #6ddba8;           border: 1px solid rgba(76,175,130,0.35); }
+.tag-acara     { background: rgba(168,85,247,0.12);  color: #c084fc;           border: 1px solid rgba(168,85,247,0.35); }
+.tag-doa       { background: rgba(232,145,58,0.12);  color: #fdba74;           border: 1px solid rgba(232,145,58,0.35); }
+
+.berita-body {
+  padding: 16px 22px 20px;
+}
+
+.berita-judul {
+  font-family: 'Cinzel', serif;
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 10px;
+  line-height: 1.45;
+  letter-spacing: 0.2px;
+}
+
+.berita-isi {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+}
+
+.berita-isi.collapsed {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.berita-read-more {
+  background: none;
+  border: none;
+  color: var(--gold);
+  font-size: 12px;
+  font-weight: 700;
+  font-family: 'Outfit', sans-serif;
+  cursor: pointer;
+  padding: 8px 0 0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  transition: opacity 0.2s;
+}
+.berita-read-more:hover { opacity: 0.75; }
+
+.berita-footer {
+  padding: 12px 22px;
+  border-top: 1px solid var(--bg-border);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.berita-action-btn {
+  background: none;
+  border: none;
+  font-size: 13px;
+  color: var(--text-muted);
+  font-family: 'Outfit', sans-serif;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  transition: all 0.2s;
+  font-weight: 500;
+}
+
+.berita-action-btn:hover { background: rgba(201,152,42,0.1); color: var(--gold); }
+.berita-action-btn.liked { color: #f87171; }
+.berita-action-btn.liked:hover { background: rgba(248,113,113,0.1); color: #f87171; }
+
+.berita-pinned {
+  border-color: rgba(201,152,42,0.5);
+  background: linear-gradient(175deg, rgba(201,152,42,0.06) 0%, var(--bg-card) 100px);
+}
+
+.pinned-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 22px;
+  font-size: 10px;
+  font-weight: 800;
+  color: var(--gold);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  border-bottom: 1px solid rgba(201,152,42,0.15);
+  background: rgba(201,152,42,0.06);
+}
+
+/* ── BERITA PAGE HERO ── */
+.berita-page-hero {
+  background: linear-gradient(135deg, #100D02 0%, #1C1505 60%, #0D0D0F 100%);
+  border: 1px solid rgba(201,152,42,0.2);
+  border-radius: 20px;
+  padding: 32px 28px;
+  margin-bottom: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.berita-hero-glow {
+  position: absolute;
+  width: 350px; height: 350px;
+  background: radial-gradient(circle, rgba(201,152,42,0.12) 0%, transparent 65%);
+  top: -80px; right: -80px;
+  pointer-events: none;
+}
+
+.berita-hero-inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.berita-hero-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 10px;
+}
+
+.berita-hero-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--gold);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.berita-hero-title {
+  font-family: 'Cinzel', serif;
+  font-size: 26px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #fff 0%, var(--gold-light) 60%, var(--gold) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0 0 8px;
+  line-height: 1.2;
+}
+
+.berita-hero-sub {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.6;
+  max-width: 360px;
+  margin: 0;
+}
+
+/* Search inside hero */
+.berita-hero-search { flex-shrink: 0; }
+
+.berita-search-wrapper {
+  position: relative;
+  width: 260px;
+}
+
+.berita-search-icon {
+  position: absolute;
+  left: 14px; top: 50%;
+  transform: translateY(-50%);
+  font-size: 18px;
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+.berita-search-input {
+  width: 100%;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(201,152,42,0.25);
+  border-radius: 12px;
+  padding: 12px 16px 12px 42px;
+  color: var(--text-primary);
+  font-size: 14px;
+  font-family: 'Outfit', sans-serif;
+  outline: none;
+  transition: all 0.3s;
+  backdrop-filter: blur(8px);
+}
+
+.berita-search-input::placeholder { color: var(--text-muted); }
+.berita-search-input:focus {
+  border-color: var(--gold);
+  background: rgba(201,152,42,0.05);
+  box-shadow: 0 0 0 3px rgba(201,152,42,0.12);
+}
+
+/* ── FILTER BAR ── */
+.berita-filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 24px;
+  padding: 0 2px;
+}
+
+.berita-filter-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.berita-filter-scroll {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding-bottom: 2px;
+}
+.berita-filter-scroll::-webkit-scrollbar { display: none; }
+
+/* Golden filter buttons */
+.bfilter {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 18px;
+  border-radius: 40px;
+  border: 1px solid var(--bg-border);
+  background: var(--bg-card);
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 600;
+  font-family: 'Outfit', sans-serif;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: all 0.25s cubic-bezier(0.4,0,0.2,1);
+  position: relative;
+  overflow: hidden;
+}
+
+.bfilter::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(201,152,42,0.15), rgba(232,184,75,0.08));
+  opacity: 0;
+  transition: opacity 0.25s;
+  border-radius: 40px;
+}
+
+.bfilter:hover {
+  border-color: rgba(201,152,42,0.5);
+  color: var(--gold-light);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(201,152,42,0.15);
+}
+
+.bfilter:hover::before { opacity: 1; }
+
+.bfilter.active {
+  background: linear-gradient(135deg, var(--gold-dark), var(--gold), var(--gold-light));
+  border-color: transparent;
+  color: #000;
+  font-weight: 700;
+  box-shadow: 0 4px 20px rgba(201,152,42,0.4), 0 2px 8px rgba(0,0,0,0.3);
+  transform: translateY(-1px);
+}
+
+.bfilter.active::before { opacity: 0; }
+
+.bfilter-icon {
+  font-size: 14px;
+  line-height: 1;
+  transition: transform 0.25s;
+}
+
+.bfilter:hover .bfilter-icon { transform: scale(1.15); }
+.bfilter.active .bfilter-icon { transform: scale(1.1); }
+
+/* Feed wrapper */
+.berita-feed-wrap {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+/* Light mode overrides */
+html.light .berita-page-hero {
+  background: linear-gradient(135deg, #2C1F04, #4A3208, #2C1F04);
+}
+
+html.light .berita-search-input {
+  background: rgba(0,0,0,0.15);
+  color: #fff;
+}
+html.light .berita-search-input::placeholder { color: rgba(255,255,255,0.5); }
+html.light .berita-hero-sub { color: rgba(255,255,255,0.55); }
+
+html.light .bfilter {
+  background: #fff;
+  border-color: #D8D2C6;
+  color: #5A5248;
+}
+
+html.light .bfilter:hover {
+  border-color: var(--gold-dark);
+  color: var(--gold-dark);
+  background: rgba(155,115,25,0.06);
+  box-shadow: 0 4px 16px rgba(155,115,25,0.15);
+}
+
+html.light .bfilter:hover::before {
+  background: linear-gradient(135deg, rgba(155,115,25,0.1), rgba(155,115,25,0.04));
+}
+
+html.light .bfilter.active {
+  background: linear-gradient(135deg, #7A5A10, #9B7319, #C9982A);
+  border-color: transparent;
+  color: #fff;
+  font-weight: 700;
+  box-shadow: 0 4px 20px rgba(155,115,25,0.45), 0 2px 8px rgba(0,0,0,0.15);
+  text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+}
+
+html.light .bfilter.active .bfilter-icon {
+  filter: brightness(1.2);
+}
+
+html.light .berita-filter-label {
+  color: #9A9088;
+}
+
+html.light .berita-filter-bar {
+  background: transparent;
+}
+
+/* ─── RESPONSIVE BERITA ─── */
+@media (max-width: 768px) {
+  .berita-hero-inner { flex-direction: column; align-items: flex-start; gap: 16px; }
+  .berita-hero-search { width: 100%; }
+  .berita-search-wrapper { width: 100%; }
+  .berita-hero-title { font-size: 20px; }
+  .berita-filter-bar { flex-direction: column; align-items: flex-start; gap: 10px; }
+  .berita-filter-scroll { width: 100%; }
+  .bfilter { padding: 8px 14px; font-size: 12px; }
+  .berita-page-hero { padding: 22px 18px; }
+  .berita-feed-wrap { max-width: 100%; }
+  .berita-judul { font-size: 15px; }
+}
+
+
+
+/* Skeleton loader */
+.skeleton {
+  background: linear-gradient(90deg, var(--bg-panel) 25%, var(--bg-border) 50%, var(--bg-panel) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 6px;
+}
+
+/* Jemaat sidebar */
+#page-jemaat .sidebar { background: var(--bg-card); }
+
+/* Empty feed */
+.feed-empty {
+  text-align: center;
+  padding: 80px 20px;
+}
+
+.feed-empty-icon {
+  font-size: 56px;
+  margin-bottom: 16px;
+  display: block;
+  opacity: 0.3;
+}
+
+.feed-empty-text {
+  color: var(--text-muted);
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+/* Divider label */
+.feed-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 24px 0 20px;
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.feed-divider::before, .feed-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--bg-border);
+}
+
+/* ═══════════════════════════════
+   THEME TOGGLE
+═══════════════════════════════ */
+.theme-toggle-btn {
+  font-size: 18px !important;
+  position: relative;
+  overflow: hidden;
+}
+
+.theme-toggle-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--gold-glow);
+  border-radius: 10px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.theme-toggle-btn:hover::after { opacity: 1; }
+
+/* Floating theme toggle for auth pages */
+.floating-theme-toggle {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: var(--bg-card);
+  border: 1px solid var(--bg-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 20px;
+  box-shadow: var(--shadow);
+  transition: all 0.3s;
+}
+
+.floating-theme-toggle:hover {
+  border-color: var(--gold);
+  transform: scale(1.1);
+  box-shadow: var(--shadow-gold);
+}
+
+/* Light mode overrides for auth-left text */
+html.light .auth-tagline { color: rgba(255,255,255,0.7); }
+html.light .brand-sub { color: rgba(255,255,255,0.5); }
+html.light .auth-ornament span { background: var(--gold-light); }
+
+/* Light mode welcome banner text */
+html.light .welcome-title {
+  background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Light mode stat card top bar */
+html.light .stat-card::before {
+  background: linear-gradient(90deg, var(--gold-dark), var(--gold));
+}
+
+/* Light mode table rows */
+html.light tr:hover td { background: var(--table-hover); }
+
+/* Light mode sidebar */
+html.light .sidebar { box-shadow: 2px 0 20px rgba(0,0,0,0.08); }
+
+/* Light mode top bar */
+html.light .top-bar { box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+
+/* Light mode modal overlay */
+html.light .modal-overlay { background: var(--modal-overlay-bg); }
+
+/* Light mode toast */
+html.light .toast { box-shadow: 0 4px 20px rgba(0,0,0,0.12); }
+
+/* Light mode nav active */
+html.light .nav-item.active {
+  background: linear-gradient(135deg, rgba(155,115,25,0.12), rgba(155,115,25,0.05));
+}
+
+/* Smooth icon transition */
+.theme-toggle-btn span,
+.floating-theme-toggle { transition: transform 0.4s ease; }
+
+/* ═══════════════════════════════
+   HAMBURGER + SIDEBAR OVERLAY
+═══════════════════════════════ */
+.hamburger-btn {
+  display: none;
+  font-size: 20px;
+  width: 40px; height: 40px;
+  flex-shrink: 0;
+}
+
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  z-index: 99;
+  backdrop-filter: blur(2px);
+}
+
+.sidebar-overlay.active { display: block; }
+
+/* ═══════════════════════════════
+   RESPONSIVE — TABLET (≤ 1024px)
+═══════════════════════════════ */
+@media (max-width: 1024px) {
+  /* Auth pages */
+  .auth-left { width: 38%; padding: 40px 30px; }
+  .auth-tagline strong { font-size: 18px; }
+
+  /* Dashboard grids */
+  .grid-2 { grid-template-columns: 1fr; }
+  .grid-3 { grid-template-columns: 1fr 1fr; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+
+  /* Sidebar narrower */
+  .sidebar { width: 220px; }
+  .main-content { margin-left: 220px; }
+
+  .page-content { padding: 20px; }
+}
+
+/* ═══════════════════════════════
+   RESPONSIVE — MOBILE (≤ 768px)
+═══════════════════════════════ */
+@media (max-width: 768px) {
+
+  /* ── Auth ── */
+  .auth-page { flex-direction: column; }
+
+  .auth-left {
+    width: 100%;
+    padding: 40px 24px 32px;
+    min-height: unset;
+  }
+
+  .auth-left::before { width: 260px; height: 260px; }
+
+  .logo-wrapper { width: 72px; height: 72px; border-radius: 18px; margin-bottom: 16px; }
+  .logo-wrapper svg { width: 42px; height: 42px; }
+  .brand-name { font-size: 20px; }
+  .auth-tagline { margin-top: 20px; font-size: 13px; }
+  .auth-tagline strong { font-size: 17px; margin-bottom: 8px; }
+  .auth-ornament { display: none; }
+
+  .auth-right { padding: 28px 20px 40px; }
+  .auth-form-title { font-size: 22px; }
+  .auth-form-sub { margin-bottom: 24px; }
+
+  /* ── Dashboard layout ── */
+  .dashboard-page { flex-direction: column; }
+
+  /* Sidebar becomes a slide-in drawer */
+  .sidebar {
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
+    width: 260px;
+    z-index: 200;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+  }
+
+  .sidebar.open { transform: translateX(0); box-shadow: 8px 0 40px rgba(0,0,0,0.5); }
+
+  .main-content { margin-left: 0; width: 100%; }
+
+  .hamburger-btn { display: flex; }
+
+  /* ── Top bar ── */
+  .top-bar { padding: 0 16px; }
+  .top-bar-title { font-size: 15px; }
+
+  /* ── Page content ── */
+  .page-content { padding: 16px; }
+
+  /* ── Grids → single column ── */
+  .grid-2, .grid-3 { grid-template-columns: 1fr; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+
+  /* ── Cards ── */
+  .card { padding: 16px; border-radius: 12px; }
+  .stat-card { padding: 16px; }
+  .stat-value { font-size: 26px; }
+
+  /* ── Tables → scrollable ── */
+  .table-container { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  table { min-width: 560px; }
+
+  /* ── Welcome banner ── */
+  .welcome-banner { padding: 20px; }
+  .welcome-title { font-size: 18px; }
+
+  /* ── Modal ── */
+  .modal { padding: 24px 20px; margin: 0 12px; }
+  .modal-title { font-size: 18px; }
+
+  /* ── Berita cards ── */
+  .berita-header { flex-wrap: wrap; gap: 8px; }
+  .berita-category-tag { margin-top: 4px; }
+  .berita-judul { font-size: 15px; }
+  .berita-footer { flex-wrap: wrap; gap: 8px; }
+
+  /* ── Search ── */
+  .search-input { min-width: unset; width: 100%; }
+  .search-wrapper { width: 100%; }
+
+  /* ── Jemaat hero ── */
+  .jemaat-hero { padding: 20px 16px 16px; }
+  .jemaat-hero-arch { display: none; }
+  .jemaat-greeting { font-size: 17px; }
+
+  /* ── Sidebar brand compact ── */
+  .sidebar-brand { padding: 20px 16px; }
+
+  /* ── Auth form ── */
+  .form-input { padding: 12px 14px; font-size: 14px; }
+  .input-wrapper .form-input { padding-left: 40px; }
+  .btn { padding: 12px 20px; font-size: 14px; }
+
+  /* ── Follow-up cards ── */
+  #u-sec-followup .grid-2 { grid-template-columns: 1fr; }
+
+  /* ── Top bar actions ── */
+  .top-bar-actions { gap: 8px; }
+
+  /* ── Verse card ── */
+  .verse-card { padding: 20px; }
+  .verse-text { font-size: 14px; }
+
+  /* ── Filter chips ── */
+  .berita-filter { gap: 6px; }
+  .filter-chip { padding: 6px 12px; font-size: 12px; }
+
+  /* ── Toast ── */
+  .toast { right: 12px; left: 12px; max-width: unset; }
+}
+
+/* ═══════════════════════════════
+   RESPONSIVE — SMALL MOBILE (≤ 400px)
+═══════════════════════════════ */
+@media (max-width: 400px) {
+  .stats-grid { grid-template-columns: 1fr; }
+  .brand-name { font-size: 17px; letter-spacing: 1px; }
+  .auth-form-title { font-size: 20px; }
+  .page-content { padding: 12px; }
+  .card { padding: 14px; }
+  .top-bar-title { font-size: 14px; }
+  .berita-footer .berita-action-btn:last-child { display: none; }
+}
+
+/* ═══════════════════════════════
+   LIGHT MODE RESPONSIVE HELPERS
+═══════════════════════════════ */
+html.light .sidebar-overlay { background: rgba(0,0,0,0.3); }
+
+select.form-input { appearance: none; cursor: pointer; }
+select option { background: var(--bg-card); color: var(--text-primary); }
+
+</style>
+</head>
+<body>
+
+<!-- Floating theme toggle (visible on auth pages) -->
+<button class="floating-theme-toggle" id="floating-theme-toggle" onclick="toggleTheme()" title="Toggle Dark/Light Mode">🌙</button>
+
+<!-- ══════════════════════════════════════
+     LOGIN PAGE
+══════════════════════════════════════ -->
+<div id="page-login" class="page auth-page active">
+  <div class="auth-left">
+    <div class="brand-section">
+      <div class="logo-wrapper">
+        <!-- Adullam Arch Logo -->
+        <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Left arch - shortest -->
+          <path d="M12 44V34C12 28.5 15.5 25 20 25C24.5 25 28 28.5 28 34V44" stroke="white" stroke-width="3.5" stroke-linecap="round"/>
+          <!-- Middle arch - medium -->
+          <path d="M26 44V26C26 20.5 29.5 17 34 17C38.5 17 42 20.5 42 26V44" stroke="white" stroke-width="3.5" stroke-linecap="round"/>
+          <!-- Right arch - tallest -->
+          <path d="M40 44V16C40 10.5 43.5 7 48 7C52.5 7 56 10.5 56 16V44" stroke="white" stroke-width="3.5" stroke-linecap="round"/>
+          <!-- Base line -->
+          <line x1="8" y1="46" x2="58" y2="46" stroke="white" stroke-width="3" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="brand-name">ADULLAM</div>
+      <div class="brand-sub">Soul Connect</div>
+
+      <div class="auth-tagline">
+        <strong>"Tidak ada jiwa yang terlewat."</strong>
+        Platform manajemen jemaat gereja yang modern, terukur, dan berdampak nyata bagi setiap jiwa.
+      </div>
+    </div>
+    <div class="auth-ornament">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+
+  <div class="auth-right">
+    <div class="auth-form-container">
+      <div class="auth-form-title">Selamat <span>Datang</span> 👋</div>
+      <div class="auth-form-sub">Masuk ke akun Adullam Soul Connect Anda</div>
+
+      <div class="form-group">
+        <label class="form-label">Nomor Telepon</label>
+        <div class="input-wrapper">
+          <span class="input-icon">📱</span>
+          <input type="tel" id="login-phone" class="form-input" placeholder="08xx xxxx xxxx">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <div class="input-wrapper">
+          <span class="input-icon">🔒</span>
+          <input type="password" id="login-pass" class="form-input" placeholder="Masukkan password">
+        </div>
+      </div>
+
+      <button class="btn btn-primary mt-4" onclick="doLogin()" style="margin-top:8px">
+        ✦ Masuk Sekarang
+      </button>
+
+      <div class="auth-divider">atau</div>
+
+      <div class="auth-switch">
+        Belum punya akun? <a onclick="showPage('page-register')">Daftar di sini</a>
+      </div>
+
+      <div class="auth-switch" style="margin-top:12px; font-size:12px; color: var(--text-muted)">
+        Demo — Jemaat: <strong>08222222222</strong> / pass: <strong>jemaat123</strong> &nbsp;|&nbsp;
+        Tim: <strong>08111111111</strong> / pass: <strong>user123</strong> &nbsp;|&nbsp;
+        Admin: <strong>08000000000</strong> / pass: <strong>admin123</strong>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     REGISTER PAGE
+══════════════════════════════════════ -->
+<div id="page-register" class="page auth-page">
+  <div class="auth-left">
+    <div class="brand-section">
+      <div class="logo-wrapper">
+        <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Left arch - shortest -->
+          <path d="M12 44V34C12 28.5 15.5 25 20 25C24.5 25 28 28.5 28 34V44" stroke="white" stroke-width="3.5" stroke-linecap="round"/>
+          <!-- Middle arch - medium -->
+          <path d="M26 44V26C26 20.5 29.5 17 34 17C38.5 17 42 20.5 42 26V44" stroke="white" stroke-width="3.5" stroke-linecap="round"/>
+          <!-- Right arch - tallest -->
+          <path d="M40 44V16C40 10.5 43.5 7 48 7C52.5 7 56 10.5 56 16V44" stroke="white" stroke-width="3.5" stroke-linecap="round"/>
+          <!-- Base line -->
+          <line x1="8" y1="46" x2="58" y2="46" stroke="white" stroke-width="3" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="brand-name">ADULLAM</div>
+      <div class="brand-sub">Soul Connect</div>
+      <div class="auth-tagline">
+        <strong>Bergabunglah hari ini.</strong>
+        Daftarkan diri Anda sebagai bagian dari tim pelayanan yang berdampak.
+      </div>
+    </div>
+    <div class="auth-ornament">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+
+  <div class="auth-right">
+    <div class="auth-form-container">
+      <div class="auth-form-title">Buat <span>Akun</span> Baru</div>
+      <div class="auth-form-sub">Isi data Anda untuk mendaftar</div>
+
+      <div class="form-group">
+        <label class="form-label">Nama Lengkap</label>
+        <div class="input-wrapper">
+          <span class="input-icon">👤</span>
+          <input type="text" id="reg-name" class="form-input" placeholder="Nama lengkap Anda">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Nomor Telepon</label>
+        <div class="input-wrapper">
+          <span class="input-icon">📱</span>
+          <input type="tel" id="reg-phone" class="form-input" placeholder="08xx xxxx xxxx">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <div class="input-wrapper">
+          <span class="input-icon">🔒</span>
+          <input type="password" id="reg-pass" class="form-input" placeholder="Buat password">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Konfirmasi Password</label>
+        <div class="input-wrapper">
+          <span class="input-icon">🔒</span>
+          <input type="password" id="reg-pass2" class="form-input" placeholder="Ulangi password">
+        </div>
+      </div>
+
+      <button class="btn btn-primary" onclick="doRegister()" style="margin-top:8px">
+        ✦ Daftar Sekarang
+      </button>
+
+      <div class="auth-switch" style="margin-top:24px">
+        Sudah punya akun? <a onclick="showPage('page-login')">Masuk di sini</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     USER DASHBOARD
+══════════════════════════════════════ -->
+<div id="page-user" class="page dashboard-page">
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="sidebar-brand">
+      <div class="sidebar-logo">
+        <svg viewBox="0 0 60 60" fill="none">
+          <!-- Left arch - shortest -->
+          <path d="M12 44V34C12 28.5 15.5 25 20 25C24.5 25 28 28.5 28 34V44" stroke="white" stroke-width="3.5" stroke-linecap="round"/>
+          <!-- Middle arch - medium -->
+          <path d="M26 44V26C26 20.5 29.5 17 34 17C38.5 17 42 20.5 42 26V44" stroke="white" stroke-width="3.5" stroke-linecap="round"/>
+          <!-- Right arch - tallest -->
+          <path d="M40 44V16C40 10.5 43.5 7 48 7C52.5 7 56 10.5 56 16V44" stroke="white" stroke-width="3.5" stroke-linecap="round"/>
+          <!-- Base line -->
+          <line x1="8" y1="46" x2="58" y2="46" stroke="white" stroke-width="3" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="sidebar-brand-text">
+        <div class="sidebar-brand-name">ADULLAM</div>
+        <div class="sidebar-brand-role">Soul Connect</div>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Menu Utama</div>
+      <div class="nav-item active" onclick="userNav('overview', this)">
+        <span class="nav-icon">🏠</span> Dashboard
+      </div>
+      <div class="nav-item" onclick="userNav('jemaat', this)">
+        <span class="nav-icon">👥</span> Jemaat Saya
+        <span class="nav-badge" id="u-jemaat-badge">5</span>
+      </div>
+      <div class="nav-item" onclick="userNav('aktivitas', this)">
+        <span class="nav-icon">📋</span> Log Aktivitas
+      </div>
+      <div class="nav-item" onclick="userNav('followup', this)">
+        <span class="nav-icon">🔔</span> Follow Up
+        <span class="nav-badge">3</span>
+      </div>
+
+      <div class="nav-section-label" style="margin-top:8px">Tambah</div>
+      <div class="nav-item" onclick="openModal('modal-add-jemaat')">
+        <span class="nav-icon">➕</span> Input Jemaat Baru
+      </div>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="avatar" id="u-avatar-sidebar">A</div>
+        <div class="user-info">
+          <div class="user-name" id="u-name-sidebar">User</div>
+          <div class="user-role">Tim Caring</div>
+        </div>
+      </div>
+      <button class="btn btn-outline w-full btn-sm" onclick="doLogout()">⬅ Logout</button>
+    </div>
+  </div>
+
+  <!-- Mobile sidebar overlay -->
+  <div class="sidebar-overlay" onclick="closeMobileSidebar()"></div>
+
+  <!-- Main -->
+  <div class="main-content">
+    <div class="top-bar">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <button class="icon-btn hamburger-btn" onclick="openMobileSidebar()">☰</button>
+        <div class="top-bar-title" id="u-topbar-title">Dashboard</div>
+      </div>
+      <div class="top-bar-actions">
+        <button class="icon-btn theme-toggle-btn" onclick="toggleTheme()" title="Toggle Mode" id="u-theme-btn">🌙</button>
+        <div class="icon-btn notif-dot">🔔</div>
+        <div class="avatar" id="u-avatar-top" style="cursor:pointer">A</div>
+      </div>
+    </div>
+
+    <div class="page-content">
+
+      <!-- OVERVIEW -->
+      <div id="u-sec-overview" class="section active">
+        <div class="welcome-banner" style="background:var(--welcome-banner-bg);">
+          <div style="position:relative; z-index:1;">
+            <div class="welcome-title" id="u-welcome-title">Shalom, User! 👋</div>
+            <div class="welcome-sub">Minggu ini Anda memiliki 3 jemaat yang perlu di-follow up.</div>
+          </div>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-label">Jemaat Ditangani</div>
+            <div class="stat-value" id="u-stat-total">—</div>
+            <div class="stat-change up">Total jemaat kamu</div>
+            <div class="stat-icon">👥</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Sudah Nyaman</div>
+            <div class="stat-value" id="u-stat-nyaman">—</div>
+            <div class="stat-change up">Nyaman + Grup WA</div>
+            <div class="stat-icon">❤️</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Perlu Follow Up</div>
+            <div class="stat-value" id="u-stat-followup">—</div>
+            <div class="stat-change down">Belum kontak 3+ hari</div>
+            <div class="stat-icon">🔔</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Log Aktivitas</div>
+            <div class="stat-value">—</div>
+            <div class="stat-change up">Minggu ini</div>
+            <div class="stat-icon">📋</div>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-title">🔔 Perlu Follow Up Segera</div>
+            <div class="activity-item">
+              <div class="activity-dot" style="background:var(--danger)"></div>
+              <div class="activity-text"><strong>Andi Saputra</strong> — Belum di-follow up 5 hari. Terakhir datang 15 Mei.</div>
+              <div class="activity-time" style="color:var(--danger)">5 hari</div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-dot" style="background:var(--warning)"></div>
+              <div class="activity-text"><strong>Sari Dewi</strong> — Belum nongki 4 hari. Status: Didekati.</div>
+              <div class="activity-time" style="color:var(--warning)">4 hari</div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-dot" style="background:var(--warning)"></div>
+              <div class="activity-text"><strong>Michael Tan</strong> — Belum masuk komunitas 6 hari.</div>
+              <div class="activity-time" style="color:var(--warning)">6 hari</div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title">📊 Status Progress Jemaat</div>
+            <div class="donut-container">
+              <svg width="140" height="140" viewBox="0 0 140 140">
+                <circle cx="70" cy="70" r="55" fill="none" stroke="#2A2A35" stroke-width="18"/>
+                <circle cx="70" cy="70" r="55" fill="none" stroke="#E8913A" stroke-width="18" stroke-dasharray="69 276" stroke-dashoffset="0"/>
+                <circle cx="70" cy="70" r="55" fill="none" stroke="#4A90D9" stroke-width="18" stroke-dasharray="55 276" stroke-dashoffset="-69"/>
+                <circle cx="70" cy="70" r="55" fill="none" stroke="#C9982A" stroke-width="18" stroke-dasharray="58 276" stroke-dashoffset="-124"/>
+                <circle cx="70" cy="70" r="55" fill="none" stroke="#4CAF82" stroke-width="18" stroke-dasharray="50 276" stroke-dashoffset="-182"/>
+                <circle cx="70" cy="70" r="55" fill="none" stroke="#E85A4F" stroke-width="18" stroke-dasharray="44 276" stroke-dashoffset="-232"/>
+              </svg>
+              <div class="donut-center">
+                <span>5</span>
+                <span>Jemaat</span>
+              </div>
+            </div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:4px;">
+              <div class="legend-item"><div class="legend-dot" style="background:#E8913A"></div>Baru Datang (1)</div>
+              <div class="legend-item"><div class="legend-dot" style="background:#4A90D9"></div>Didekati (1)</div>
+              <div class="legend-item"><div class="legend-dot" style="background:#C9982A"></div>Nongki (1)</div>
+              <div class="legend-item"><div class="legend-dot" style="background:#4CAF82"></div>Mulai Nyaman (1)</div>
+              <div class="legend-item"><div class="legend-dot" style="background:#E85A4F"></div>Belum Connect (1)</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card mt-4">
+          <div class="card-title">📋 Aktivitas Terbaru</div>
+          <div class="activity-item">
+            <div class="activity-dot"></div>
+            <div class="activity-text">Chat WhatsApp dengan <strong>Andi Saputra</strong> — Perkenalan awal, respons positif ✅</div>
+            <div class="activity-time">Hari ini</div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-dot"></div>
+            <div class="activity-text">Duduk dekat <strong>Sari Dewi</strong> saat ibadah, mengobrol sebelum pulang.</div>
+            <div class="activity-time">Kemarin</div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-dot"></div>
+            <div class="activity-text">Invite <strong>Michael Tan</strong> ke Grup WA komunitas.</div>
+            <div class="activity-time">3 hari lalu</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- JEMAAT SAYA -->
+      <div id="u-sec-jemaat" class="section">
+        <div class="flex justify-between items-center mb-6">
+          <h2 style="font-family:'Cinzel',serif; font-size:20px;">Jemaat Saya</h2>
+          <button class="btn btn-primary btn-sm" onclick="openModal('modal-add-jemaat')">➕ Tambah Jemaat</button>
+        </div>
+        <div class="card">
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Nama</th>
+                  <th>Telepon</th>
+                  <th>Tgl Hadir</th>
+                  <th>Status</th>
+                  <th>Terakhir Contact</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="user-jemaat-table">
+                <tr>
+                  <td><div style="font-weight:600; color:var(--text-primary)">Andi Saputra</div></td>
+                  <td>0812 3456 7890</td>
+                  <td>15 Mei 2025</td>
+                  <td><span class="badge badge-warning">Baru Datang</span></td>
+                  <td style="color:var(--danger)">5 hari lalu</td>
+                  <td><button class="btn btn-outline btn-sm" onclick="openModal('modal-log')">+ Log</button></td>
+                </tr>
+                <tr>
+                  <td><div style="font-weight:600; color:var(--text-primary)">Sari Dewi</div></td>
+                  <td>0813 9876 5432</td>
+                  <td>12 Mei 2025</td>
+                  <td><span class="badge badge-info">Didekati</span></td>
+                  <td style="color:var(--warning)">4 hari lalu</td>
+                  <td><button class="btn btn-outline btn-sm" onclick="openModal('modal-log')">+ Log</button></td>
+                </tr>
+                <tr>
+                  <td><div style="font-weight:600; color:var(--text-primary)">Michael Tan</div></td>
+                  <td>0811 2233 4455</td>
+                  <td>8 Mei 2025</td>
+                  <td><span class="badge badge-gold">Nongki</span></td>
+                  <td style="color:var(--warning)">6 hari lalu</td>
+                  <td><button class="btn btn-outline btn-sm" onclick="openModal('modal-log')">+ Log</button></td>
+                </tr>
+                <tr>
+                  <td><div style="font-weight:600; color:var(--text-primary)">Budi Santoso</div></td>
+                  <td>0819 1122 3344</td>
+                  <td>1 Mei 2025</td>
+                  <td><span class="badge badge-success">Mulai Nyaman</span></td>
+                  <td>Kemarin</td>
+                  <td><button class="btn btn-outline btn-sm" onclick="openModal('modal-log')">+ Log</button></td>
+                </tr>
+                <tr>
+                  <td><div style="font-weight:600; color:var(--text-primary)">Dewi Lestari</div></td>
+                  <td>0815 5544 3322</td>
+                  <td>28 Apr 2025</td>
+                  <td><span class="badge badge-danger">Belum Connect</span></td>
+                  <td style="color:var(--danger)">8 hari lalu</td>
+                  <td><button class="btn btn-outline btn-sm" onclick="openModal('modal-log')">+ Log</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- LOG AKTIVITAS -->
+      <div id="u-sec-aktivitas" class="section">
+        <div class="flex justify-between items-center mb-6">
+          <h2 style="font-family:'Cinzel',serif; font-size:20px;">Log Aktivitas</h2>
+          <button class="btn btn-primary btn-sm" onclick="openModal('modal-log')">+ Tambah Log</button>
+        </div>
+        <div class="card">
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr><th>Waktu</th><th>Jemaat</th><th>Jenis</th><th>Catatan</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Hari ini 19:30</td><td>Andi Saputra</td><td><span class="badge badge-info">WhatsApp</span></td><td>Perkenalan awal, ucapan terima kasih sudah datang.</td></tr>
+                <tr><td>Kemarin 12:00</td><td>Sari Dewi</td><td><span class="badge badge-gold">Tatap Muka</span></td><td>Duduk dekat saat ibadah, ngobrol santai.</td></tr>
+                <tr><td>3 hari lalu</td><td>Michael Tan</td><td><span class="badge badge-success">Grup WA</span></td><td>Invite ke grup komunitas, diterima.</td></tr>
+                <tr><td>5 hari lalu</td><td>Budi Santoso</td><td><span class="badge badge-warning">Telepon</span></td><td>Follow up, tanya kabar, respons positif.</td></tr>
+                <tr><td>1 minggu lalu</td><td>Dewi Lestari</td><td><span class="badge badge-danger">WhatsApp</span></td><td>Pesan terkirim, belum dibalas.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- FOLLOW UP -->
+      <div id="u-sec-followup" class="section">
+        <h2 style="font-family:'Cinzel',serif; font-size:20px; margin-bottom:24px;">🔔 Reminder Follow Up</h2>
+        <div class="grid-2">
+          <div class="card" style="border-color:var(--danger);">
+            <div class="flex justify-between items-center mb-4">
+              <div style="font-weight:600; color:var(--text-primary)">Andi Saputra</div>
+              <span class="badge badge-danger">5 hari</span>
+            </div>
+            <div class="text-sm text-muted" style="margin-bottom:16px;">Belum dihubungi 5 hari. Status: Baru Datang.</div>
+            <div class="progress mb-4"><div class="progress-fill" style="width:80%; background:linear-gradient(90deg,var(--danger),#ff8a80)"></div></div>
+            <button class="btn btn-primary btn-sm w-full" onclick="openModal('modal-log')">Hubungi Sekarang</button>
+          </div>
+          <div class="card" style="border-color:var(--warning);">
+            <div class="flex justify-between items-center mb-4">
+              <div style="font-weight:600; color:var(--text-primary)">Sari Dewi</div>
+              <span class="badge badge-warning">4 hari</span>
+            </div>
+            <div class="text-sm text-muted" style="margin-bottom:16px;">Belum nongki 4 hari. Status: Didekati.</div>
+            <div class="progress mb-4"><div class="progress-fill" style="width:65%; background:linear-gradient(90deg,var(--warning),#ffcc80)"></div></div>
+            <button class="btn btn-primary btn-sm w-full" onclick="openModal('modal-log')">Hubungi Sekarang</button>
+          </div>
+          <div class="card" style="border-color:var(--warning);">
+            <div class="flex justify-between items-center mb-4">
+              <div style="font-weight:600; color:var(--text-primary)">Michael Tan</div>
+              <span class="badge badge-warning">6 hari</span>
+            </div>
+            <div class="text-sm text-muted" style="margin-bottom:16px;">Belum masuk komunitas. Status: Nongki.</div>
+            <div class="progress mb-4"><div class="progress-fill" style="width:90%; background:linear-gradient(90deg,var(--warning),var(--danger))"></div></div>
+            <button class="btn btn-primary btn-sm w-full" onclick="openModal('modal-log')">Hubungi Sekarang</button>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /page-content -->
+  </div><!-- /main-content -->
+</div>
+
+<!-- ══════════════════════════════════════
+     JEMAAT MEMBER DASHBOARD
+══════════════════════════════════════ -->
+<div id="page-jemaat" class="page dashboard-page">
+
+  <!-- Sidebar Jemaat -->
+  <div class="sidebar jemaat-sidebar">
+    <div class="sidebar-brand">
+      <div class="sidebar-logo">
+        <svg viewBox="0 0 60 60" fill="none">
+          <!-- Left arch - shortest -->
+          <path d="M12 44V34C12 28.5 15.5 25 20 25C24.5 25 28 28.5 28 34V44" stroke="white" stroke-width="3.5" stroke-linecap="round"/>
+          <!-- Middle arch - medium -->
+          <path d="M26 44V26C26 20.5 29.5 17 34 17C38.5 17 42 20.5 42 26V44" stroke="white" stroke-width="3.5" stroke-linecap="round"/>
+          <!-- Right arch - tallest -->
+          <path d="M40 44V16C40 10.5 43.5 7 48 7C52.5 7 56 10.5 56 16V44" stroke="white" stroke-width="3.5" stroke-linecap="round"/>
+          <!-- Base line -->
+          <line x1="8" y1="46" x2="58" y2="46" stroke="white" stroke-width="3" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="sidebar-brand-text">
+        <div class="sidebar-brand-name">ADULLAM</div>
+        <div class="sidebar-brand-role">Soul Connect</div>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Menu</div>
+      <div class="nav-item active" onclick="jemaatNav('beranda', this)">
+        <span class="nav-icon">🏠</span> Beranda
+      </div>
+      <div class="nav-item" onclick="jemaatNav('berita', this)">
+        <span class="nav-icon">📰</span> Berita Ibadah
+        <span class="nav-badge" id="j-notif-badge">3</span>
+      </div>
+      <div class="nav-item" onclick="jemaatNav('jadwal', this)">
+        <span class="nav-icon">📅</span> Jadwal Ibadah
+      </div>
+      <div class="nav-item" onclick="jemaatNav('profil', this)">
+        <span class="nav-icon">👤</span> Profil Saya
+      </div>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="avatar" id="j-avatar-sidebar">J</div>
+        <div class="user-info">
+          <div class="user-name" id="j-name-sidebar">Jemaat</div>
+          <div class="user-role">Anggota Jemaat</div>
+        </div>
+      </div>
+      <button class="btn btn-outline w-full btn-sm" onclick="doLogout()">⬅ Logout</button>
+    </div>
+  </div>
+
+  <!-- Mobile sidebar overlay -->
+  <div class="sidebar-overlay" onclick="closeMobileSidebar()"></div>
+
+  <!-- Main content jemaat -->
+  <div class="main-content">
+    <div class="top-bar">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <button class="icon-btn hamburger-btn" onclick="openMobileSidebar()">☰</button>
+        <div class="top-bar-title" id="j-topbar-title">Beranda</div>
+      </div>
+      <div class="top-bar-actions">
+        <button class="icon-btn theme-toggle-btn" onclick="toggleTheme()" id="j-theme-btn" title="Toggle Mode">🌙</button>
+        <div class="icon-btn notif-dot" id="j-notif-icon">🔔</div>
+        <div class="avatar" id="j-avatar-top">J</div>
+      </div>
+    </div>
+
+    <div class="page-content">
+
+      <!-- BERANDA -->
+      <div id="j-sec-beranda" class="section active">
+
+        <!-- ── HERO GREETING ── -->
+        <div class="beranda-hero">
+          <div class="beranda-hero-bg"></div>
+          <div class="beranda-hero-glow"></div>
+
+          <!-- Staircase arch decoration -->
+          <div class="beranda-arch-wrap">
+            <svg viewBox="0 0 140 120" fill="none" xmlns="http://www.w3.org/2000/svg" class="beranda-arch-svg">
+              <!-- Left arch - shortest -->
+              <path d="M18 110V72C18 57 25 50 34 50C43 50 50 57 50 72V110"
+                stroke="rgba(201,152,42,0.18)" stroke-width="7" stroke-linecap="round"/>
+              <!-- Middle arch - medium -->
+              <path d="M46 110V58C46 43 53 36 62 36C71 36 78 43 78 58V110"
+                stroke="rgba(201,152,42,0.32)" stroke-width="7" stroke-linecap="round"/>
+              <!-- Right arch - tallest -->
+              <path d="M74 110V42C74 27 81 20 90 20C99 20 106 27 106 42V110"
+                stroke="rgba(201,152,42,0.55)" stroke-width="7" stroke-linecap="round"/>
+              <!-- Base line -->
+              <line x1="10" y1="112" x2="116" y2="112"
+                stroke="rgba(201,152,42,0.3)" stroke-width="3.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+
+          <div class="beranda-hero-content">
+            <div class="beranda-hero-eyebrow">
+              <span class="beranda-hero-dot"></span>
+              Adullam Ministry · Soul Connect
+            </div>
+            <div class="beranda-hero-title" id="j-welcome-title">Shalom, Jemaat! 🙏</div>
+            <div class="beranda-hero-sub">Tuhan memberkati setiap langkah perjalanan imanmu. Selamat beribadah!</div>
+            <div class="beranda-hero-meta" id="j-date-display"></div>
+
+            <div class="beranda-hero-actions">
+              <button class="beranda-btn-primary" onclick="jemaatNav('berita', document.querySelector('#page-jemaat .nav-item:nth-child(2)'))">
+                📰 Lihat Berita
+              </button>
+              <button class="beranda-btn-ghost" onclick="jemaatNav('jadwal', document.querySelector('#page-jemaat .nav-item:nth-child(3)'))">
+                📅 Jadwal Ibadah
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── JADWAL STRIP ── -->
+        <div class="beranda-jadwal-strip">
+          <div class="jadwal-scroll-inner">
+            <div class="jadwal-pill"><span>⛪</span> Ibadah Raya — Minggu 09.00 WIB</div>
+            <div class="jadwal-pill"><span>🎶</span> Praise & Worship — Sabtu 18.00 WIB</div>
+            <div class="jadwal-pill"><span>📖</span> Sel Group — Rabu 19.00 WIB</div>
+            <div class="jadwal-pill"><span>🙏</span> Doa Bersama — Jumat 18.30 WIB</div>
+          </div>
+        </div>
+
+        <!-- ── AYAT MINGGU INI ── -->
+        <div class="beranda-verse">
+          <div class="beranda-verse-icon">✦</div>
+          <div class="beranda-verse-body">
+            <div class="beranda-verse-label">Ayat Minggu Ini</div>
+            <div class="beranda-verse-text">"Karena begitu besar kasih Allah akan dunia ini, sehingga Ia telah mengaruniakan Anak-Nya yang tunggal, supaya setiap orang yang percaya kepada-Nya tidak binasa, melainkan beroleh hidup yang kekal."</div>
+            <div class="beranda-verse-ref">— Yohanes 3:16</div>
+          </div>
+        </div>
+
+        <!-- ── BERITA TERBARU PREVIEW ── -->
+        <div class="beranda-section-head">
+          <div class="beranda-section-title">📰 Berita Terbaru</div>
+          <button class="beranda-see-all" onclick="jemaatNav('berita', document.querySelector('#page-jemaat .nav-item:nth-child(2)'))">
+            Lihat semua →
+          </button>
+        </div>
+        <div class="beranda-news-grid" id="j-news-preview"></div>
+
+        <!-- ── JADWAL IBADAH ── -->
+        <div class="beranda-section-head" style="margin-top:32px;">
+          <div class="beranda-section-title">📅 Ibadah Berikutnya</div>
+          <button class="beranda-see-all" onclick="jemaatNav('jadwal', document.querySelector('#page-jemaat .nav-item:nth-child(3)'))">
+            Lihat semua →
+          </button>
+        </div>
+        <div class="card" style="padding:8px 0 4px; border-radius:16px;">
+          <div id="j-jadwal-preview"></div>
+        </div>
+
+        <div style="height:32px;"></div>
+
+      </div>
+
+      <!-- BERITA IBADAH -->
+      <div id="j-sec-berita" class="section">
+
+        <!-- Page Hero Header -->
+        <div class="berita-page-hero">
+          <div class="berita-hero-glow"></div>
+          <div class="berita-hero-inner">
+            <div class="berita-hero-left">
+              <div class="berita-hero-eyebrow">
+                <span class="berita-hero-dot"></span>
+                Adullam Ministry
+              </div>
+              <h1 class="berita-hero-title">Berita &amp; Pengumuman</h1>
+              <p class="berita-hero-sub">Informasi terkini, renungan, dan jadwal dari gereja Adullam untuk jemaat terkasih.</p>
+            </div>
+            <div class="berita-hero-search">
+              <div class="berita-search-wrapper">
+                <span class="berita-search-icon">⌕</span>
+                <input type="text" class="berita-search-input" placeholder="Cari berita, renungan..." id="j-search" oninput="filterBerita()">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Filter Bar -->
+        <div class="berita-filter-bar">
+          <div class="berita-filter-label">Filter:</div>
+          <div class="berita-filter-scroll" id="j-filter">
+            <button class="bfilter active" onclick="setFilter('semua', this)">
+              <span class="bfilter-icon">✦</span> Semua
+            </button>
+            <button class="bfilter" onclick="setFilter('ibadah', this)">
+              <span class="bfilter-icon">⛪</span> Ibadah
+            </button>
+            <button class="bfilter" onclick="setFilter('umum', this)">
+              <span class="bfilter-icon">📢</span> Pengumuman
+            </button>
+            <button class="bfilter" onclick="setFilter('renungan', this)">
+              <span class="bfilter-icon">📖</span> Renungan
+            </button>
+            <button class="bfilter" onclick="setFilter('event', this)">
+              <span class="bfilter-icon">🎉</span> Acara
+            </button>
+            <button class="bfilter" onclick="setFilter('doa', this)">
+              <span class="bfilter-icon">🙏</span> Doa
+            </button>
+          </div>
+        </div>
+
+        <!-- Berita List -->
+        <div class="berita-feed-wrap">
+          <div id="j-berita-list" class="berita-list"></div>
+        </div>
+
+      </div>
+
+      <!-- JADWAL -->
+      <div id="j-sec-jadwal" class="section">
+        <div style="font-family:'Cinzel',serif; font-size:20px; font-weight:600; margin-bottom:24px;">Jadwal Ibadah</div>
+        <div class="jadwal-full" id="j-jadwal-full"></div>
+      </div>
+
+      <!-- PROFIL -->
+      <div id="j-sec-profil" class="section">
+        <div style="font-family:'Cinzel',serif; font-size:20px; font-weight:600; margin-bottom:24px;">Profil Saya</div>
+        <div class="grid-2">
+          <div class="card">
+            <div style="text-align:center; padding:20px 0 28px;">
+              <div class="avatar avatar-lg" id="j-avatar-profil" style="margin:0 auto 16px; width:72px; height:72px; font-size:28px;">J</div>
+              <div style="font-size:18px; font-weight:700;" id="j-name-profil">Jemaat</div>
+              <div style="font-size:13px; color:var(--text-muted); margin-top:4px;">Anggota Jemaat · Adullam Ministry</div>
+              <div class="badge badge-gold" style="margin-top:12px;">✦ Jemaat Aktif</div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Nama Lengkap</label>
+              <input type="text" class="form-input" id="j-profil-name" placeholder="Nama lengkap">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Nomor Telepon</label>
+              <input type="tel" class="form-input" id="j-profil-phone" placeholder="08xx xxxx xxxx" readonly style="opacity:0.6;">
+            </div>
+            <button class="btn btn-primary btn-sm" onclick="showToast('Profil berhasil disimpan! ✅','success')">Simpan Perubahan</button>
+          </div>
+          <div class="card">
+            <div class="card-title">🔒 Keamanan Akun</div>
+            <div class="form-group">
+              <label class="form-label">Password Lama</label>
+              <input type="password" class="form-input" placeholder="Password lama">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Password Baru</label>
+              <input type="password" class="form-input" placeholder="Password baru">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Konfirmasi Password</label>
+              <input type="password" class="form-input" placeholder="Ulangi password baru">
+            </div>
+            <button class="btn btn-outline btn-sm" onclick="showToast('Password berhasil diubah!','success')">Ganti Password</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Baca Berita -->
+<div id="modal-baca-berita" class="modal-overlay">
+  <div class="modal" style="max-width:600px;">
+    <button class="modal-close" onclick="closeModal('modal-baca-berita')">✕</button>
+    <div id="modal-berita-kategori" style="margin-bottom:12px;"></div>
+    <div class="modal-title" id="modal-berita-judul" style="font-size:22px; line-height:1.4;"></div>
+    <div style="display:flex; align-items:center; gap:12px; margin:12px 0 20px; font-size:13px; color:var(--text-muted);">
+      <span id="modal-berita-tanggal"></span>
+      <span>·</span>
+      <span id="modal-berita-author"></span>
+    </div>
+    <div id="modal-berita-isi" style="font-size:15px; color:var(--text-secondary); line-height:1.9;"></div>
+    <div style="margin-top:24px; padding-top:20px; border-top:1px solid var(--bg-border);">
+      <div style="font-size:12px; color:var(--text-muted); margin-bottom:8px;">BAGIKAN BERITA INI</div>
+      <div style="display:flex; gap:8px;">
+        <button class="btn btn-outline btn-sm" onclick="showToast('Link disalin! 📋','success')">📋 Salin Link</button>
+        <button class="btn btn-outline btn-sm" onclick="showToast('Dibuka di WhatsApp 💬','success')">💬 WhatsApp</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div id="page-admin" class="page dashboard-page">
+  <div class="sidebar">
+    <div class="sidebar-brand">
+      <div class="sidebar-logo">
+        <svg viewBox="0 0 60 60" fill="none">
+          <!-- Left arch - shortest -->
+          <path d="M12 44V34C12 28.5 15.5 25 20 25C24.5 25 28 28.5 28 34V44" stroke="white" stroke-width="3.5" stroke-linecap="round"/>
+          <!-- Middle arch - medium -->
+          <path d="M26 44V26C26 20.5 29.5 17 34 17C38.5 17 42 20.5 42 26V44" stroke="white" stroke-width="3.5" stroke-linecap="round"/>
+          <!-- Right arch - tallest -->
+          <path d="M40 44V16C40 10.5 43.5 7 48 7C52.5 7 56 10.5 56 16V44" stroke="white" stroke-width="3.5" stroke-linecap="round"/>
+          <!-- Base line -->
+          <line x1="8" y1="46" x2="58" y2="46" stroke="white" stroke-width="3" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="sidebar-brand-text">
+        <div class="sidebar-brand-name">ADULLAM</div>
+        <div class="sidebar-brand-role" style="color:var(--gold);">⚙ Admin Panel</div>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Admin Menu</div>
+      <div class="nav-item active" onclick="adminNav('overview', this)">
+        <span class="nav-icon">📊</span> Overview
+      </div>
+      <div class="nav-item" onclick="adminNav('jemaat', this)">
+        <span class="nav-icon">👥</span> Semua Jemaat
+        <span class="nav-badge">24</span>
+      </div>
+      <div class="nav-item" onclick="adminNav('users', this)">
+        <span class="nav-icon">🧑‍💼</span> Kelola User
+      </div>
+      <div class="nav-item" onclick="adminNav('laporan', this)">
+        <span class="nav-icon">📈</span> Laporan
+      </div>
+      <div class="nav-item" onclick="adminNav('pengaturan', this)">
+        <span class="nav-icon">⚙️</span> Pengaturan
+      </div>
+      <div class="nav-item" onclick="adminNav('berita', this)">
+        <span class="nav-icon">📰</span> Berita Ibadah
+      </div>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="avatar" style="background:linear-gradient(135deg,#7B3FE4,#A855F7)">A</div>
+        <div class="user-info">
+          <div class="user-name">Administrator</div>
+          <div class="user-role" style="color:var(--gold)">Super Admin</div>
+        </div>
+      </div>
+      <button class="btn btn-outline w-full btn-sm" onclick="doLogout()">⬅ Logout</button>
+    </div>
+  </div>
+
+  <!-- Mobile sidebar overlay -->
+  <div class="sidebar-overlay" onclick="closeMobileSidebar()"></div>
+
+  <div class="main-content">
+    <div class="top-bar">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <button class="icon-btn hamburger-btn" onclick="openMobileSidebar()">☰</button>
+        <div class="top-bar-title" id="a-topbar-title">Admin Overview</div>
+      </div>
+      <div class="top-bar-actions">
+        <button class="icon-btn theme-toggle-btn" onclick="toggleTheme()" title="Toggle Mode" id="a-theme-btn">🌙</button>
+        <div class="icon-btn notif-dot">🔔</div>
+        <div class="avatar" style="background:linear-gradient(135deg,#7B3FE4,#A855F7)">A</div>
+      </div>
+    </div>
+
+    <div class="page-content">
+
+      <!-- ADMIN OVERVIEW -->
+      <div id="a-sec-overview" class="section active">
+        <div class="welcome-banner" style="background:var(--admin-banner-bg);">
+          <div style="position:relative;z-index:1;">
+            <div class="welcome-title">Dashboard Leader ⚡</div>
+            <div class="welcome-sub">Monitor seluruh aktivitas gereja secara real-time.</div>
+          </div>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-label">Total Jemaat Baru</div>
+            <div class="stat-value" id="stat-total-jemaat">—</div>
+            <div class="stat-change up">Minggu ini</div>
+            <div class="stat-icon">🆕</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Sudah Follow Up</div>
+            <div class="stat-value" id="stat-follow-up">—</div>
+            <div class="stat-change up">Didekati + Nongki</div>
+            <div class="stat-icon">✅</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Sudah Connect</div>
+            <div class="stat-value" id="stat-connect">—</div>
+            <div class="stat-change up">Nyaman + Grup WA</div>
+            <div class="stat-icon">🔗</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Belum Ditangani</div>
+            <div class="stat-value" id="stat-belum" style="color:var(--danger)">—</div>
+            <div class="stat-change down">Perlu tindak lanjut</div>
+            <div class="stat-icon">⚠️</div>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-title">📊 Status Tracking Global</div>
+            <div style="margin-bottom:12px;">
+              <div class="flex justify-between text-sm" style="margin-bottom:6px;"><span>Baru Datang</span><span class="text-gold">24%</span></div>
+              <div class="progress"><div class="progress-fill" style="width:24%; background:linear-gradient(90deg,#E8913A,#ffb347)"></div></div>
+            </div>
+            <div style="margin-bottom:12px;">
+              <div class="flex justify-between text-sm" style="margin-bottom:6px;"><span>Sudah Didekati</span><span class="text-gold">20%</span></div>
+              <div class="progress"><div class="progress-fill" style="width:20%; background:linear-gradient(90deg,#4A90D9,#74b9ff)"></div></div>
+            </div>
+            <div style="margin-bottom:12px;">
+              <div class="flex justify-between text-sm" style="margin-bottom:6px;"><span>Sudah Nongki</span><span class="text-gold">21%</span></div>
+              <div class="progress"><div class="progress-fill" style="width:21%"></div></div>
+            </div>
+            <div style="margin-bottom:12px;">
+              <div class="flex justify-between text-sm" style="margin-bottom:6px;"><span>Mulai Nyaman</span><span class="text-gold">18%</span></div>
+              <div class="progress"><div class="progress-fill" style="width:18%; background:linear-gradient(90deg,#4CAF82,#00e676)"></div></div>
+            </div>
+            <div style="margin-bottom:12px;">
+              <div class="flex justify-between text-sm" style="margin-bottom:6px;"><span>Masuk Grup WA</span><span class="text-gold">10%</span></div>
+              <div class="progress"><div class="progress-fill" style="width:10%; background:linear-gradient(90deg,#A855F7,#d946ef)"></div></div>
+            </div>
+            <div>
+              <div class="flex justify-between text-sm" style="margin-bottom:6px;"><span>Belum Connect</span><span style="color:var(--danger)">7%</span></div>
+              <div class="progress"><div class="progress-fill" style="width:7%; background:linear-gradient(90deg,var(--danger),#ff8a80)"></div></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title">⚠️ Jemaat Terbengkalai</div>
+            <div class="activity-item">
+              <div class="activity-dot" style="background:var(--danger)"></div>
+              <div class="activity-text"><strong>Budi Santoso</strong> — Terakhir kontak 5 hari lalu. PIC: Maria S.</div>
+              <div class="activity-time" style="color:var(--danger)">5 hari</div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-dot" style="background:var(--warning)"></div>
+              <div class="activity-text"><strong>Sari Dewi</strong> — Terakhir kontak 4 hari lalu. PIC: Yusuf T.</div>
+              <div class="activity-time" style="color:var(--warning)">4 hari</div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-dot" style="background:var(--danger)"></div>
+              <div class="activity-text"><strong>Michael Tan</strong> — Terakhir kontak 6 hari lalu. PIC: Maria S.</div>
+              <div class="activity-time" style="color:var(--danger)">6 hari</div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-dot" style="background:var(--danger)"></div>
+              <div class="activity-text"><strong>Rina Kusuma</strong> — Tidak ada log selama 7 hari. Tidak ada PIC!</div>
+              <div class="activity-time" style="color:var(--danger)">7 hari</div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-dot" style="background:var(--warning)"></div>
+              <div class="activity-text"><strong>Ahmad Fauzi</strong> — Terakhir kontak 4 hari lalu. PIC: Dewi L.</div>
+              <div class="activity-time" style="color:var(--warning)">4 hari</div>
+            </div>
+            <button class="btn btn-outline btn-sm w-full mt-4">Lihat Semua</button>
+          </div>
+        </div>
+
+        <div class="card mt-4">
+          <div class="card-title">🧑‍💼 Performa Tim Caring (Minggu Ini)</div>
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr><th>Nama</th><th>Jemaat Ditangani</th><th>Follow Up Done</th><th>Sudah Nyaman</th><th>Performa</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong style="color:var(--text-primary)">Maria S.</strong></td>
+                  <td>8</td>
+                  <td>7</td>
+                  <td>3</td>
+                  <td><div class="progress" style="width:120px"><div class="progress-fill" style="width:87%"></div></div></td>
+                </tr>
+                <tr>
+                  <td><strong style="color:var(--text-primary)">Yusuf T.</strong></td>
+                  <td>6</td>
+                  <td>5</td>
+                  <td>2</td>
+                  <td><div class="progress" style="width:120px"><div class="progress-fill" style="width:70%"></div></div></td>
+                </tr>
+                <tr>
+                  <td><strong style="color:var(--text-primary)">Dewi L.</strong></td>
+                  <td>5</td>
+                  <td>3</td>
+                  <td>1</td>
+                  <td><div class="progress" style="width:120px"><div class="progress-fill" style="width:55%"></div></div></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ADMIN: SEMUA JEMAAT -->
+      <div id="a-sec-jemaat" class="section">
+        <div class="flex justify-between items-center mb-6">
+          <h2 style="font-family:'Cinzel',serif; font-size:20px;">Semua Jemaat Baru</h2>
+          <div class="flex gap-3">
+            <div class="search-wrapper">
+              <input type="text" class="search-input" placeholder="Cari jemaat..."
+                oninput="loadAdminJemaat(this.value)">
+            </div>
+            <button class="btn btn-primary btn-sm" onclick="openModal('modal-add-jemaat')">➕ Tambah</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr><th>Nama</th><th>Telepon</th><th>Tgl Hadir</th><th>Datang</th><th>PIC</th><th>Status</th><th>Aksi</th></tr>
+              </thead>
+              <tbody id="admin-jemaat-tbody">
+                <tr><td colspan="7" style="text-align:center;color:var(--text-muted);padding:40px;">
+                  ⏳ Memuat data...
+                </td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+                <tr>
+                  <td><strong style="color:var(--text-primary)">Andi Saputra</strong></td>
+                  <td>0812 3456 7890</td>
+                  <td>15 Mei</td>
+                  <td>Sendiri</td>
+                  <td>Maria S.</td>
+                  <td><span class="badge badge-warning">Baru Datang</span></td>
+                  <td><button class="btn btn-outline btn-sm">Detail</button></td>
+                </tr>
+                <tr>
+                  <td><strong style="color:var(--text-primary)">Sari Dewi</strong></td>
+                  <td>0813 9876 5432</td>
+                  <td>12 Mei</td>
+                  <td>Diajak teman</td>
+                  <td>Yusuf T.</td>
+                  <td><span class="badge badge-info">Didekati</span></td>
+                  <td><button class="btn btn-outline btn-sm">Detail</button></td>
+                </tr>
+                <tr>
+                  <td><strong style="color:var(--text-primary)">Michael Tan</strong></td>
+                  <td>0811 2233 4455</td>
+                  <td>8 Mei</td>
+                  <td>Sendiri</td>
+                  <td>Maria S.</td>
+                  <td><span class="badge badge-gold">Nongki</span></td>
+                  <td><button class="btn btn-outline btn-sm">Detail</button></td>
+                </tr>
+                <tr>
+                  <td><strong style="color:var(--text-primary)">Budi Santoso</strong></td>
+                  <td>0819 1122 3344</td>
+                  <td>1 Mei</td>
+                  <td>Media sosial</td>
+                  <td>Dewi L.</td>
+                  <td><span class="badge badge-success">Mulai Nyaman</span></td>
+                  <td><button class="btn btn-outline btn-sm">Detail</button></td>
+                </tr>
+                <tr>
+                  <td><strong style="color:var(--text-primary)">Rina Kusuma</strong></td>
+                  <td>0821 7788 9900</td>
+                  <td>28 Apr</td>
+                  <td>Sendiri</td>
+                  <td style="color:var(--danger)">Belum Ada</td>
+                  <td><span class="badge badge-danger">Belum Connect</span></td>
+                  <td><button class="btn btn-outline btn-sm">Assign</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ADMIN: KELOLA USER -->
+      <div id="a-sec-users" class="section">
+        <div class="flex justify-between items-center mb-6">
+          <h2 style="font-family:'Cinzel',serif; font-size:20px;">Kelola User</h2>
+          <button class="btn btn-primary btn-sm" onclick="openModal('modal-add-user')">➕ Tambah User</button>
+        </div>
+        <div class="card">
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr><th>Nama</th><th>Telepon</th><th>Role</th><th>Jemaat</th><th>Status</th><th>Aksi</th></tr>
+              </thead>
+              <tbody id="admin-user-table">
+                <tr>
+                  <td>
+                    <div class="flex items-center gap-3">
+                      <div class="avatar" style="width:32px;height:32px;font-size:12px">M</div>
+                      <strong style="color:var(--text-primary)">Maria S.</strong>
+                    </div>
+                  </td>
+                  <td>0813 9876 5432</td>
+                  <td><span class="badge badge-gold">Caring Team</span></td>
+                  <td>8</td>
+                  <td><span class="badge badge-success">Aktif</span></td>
+                  <td>
+                    <div class="flex gap-2">
+                      <button class="btn btn-outline btn-sm">Edit</button>
+                      <button class="btn btn-danger btn-sm">Hapus</button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="flex items-center gap-3">
+                      <div class="avatar" style="width:32px;height:32px;font-size:12px">Y</div>
+                      <strong style="color:var(--text-primary)">Yusuf T.</strong>
+                    </div>
+                  </td>
+                  <td>0812 5566 7788</td>
+                  <td><span class="badge badge-gold">Caring Team</span></td>
+                  <td>6</td>
+                  <td><span class="badge badge-success">Aktif</span></td>
+                  <td>
+                    <div class="flex gap-2">
+                      <button class="btn btn-outline btn-sm">Edit</button>
+                      <button class="btn btn-danger btn-sm">Hapus</button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="flex items-center gap-3">
+                      <div class="avatar" style="width:32px;height:32px;font-size:12px">D</div>
+                      <strong style="color:var(--text-primary)">Dewi L.</strong>
+                    </div>
+                  </td>
+                  <td>0821 3344 5566</td>
+                  <td><span class="badge badge-gold">Caring Team</span></td>
+                  <td>5</td>
+                  <td><span class="badge badge-success">Aktif</span></td>
+                  <td>
+                    <div class="flex gap-2">
+                      <button class="btn btn-outline btn-sm">Edit</button>
+                      <button class="btn btn-danger btn-sm">Hapus</button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ADMIN: LAPORAN -->
+      <div id="a-sec-laporan" class="section">
+        <h2 style="font-family:'Cinzel',serif; font-size:20px; margin-bottom:24px;">📈 Laporan Mingguan</h2>
+        <div class="grid-3">
+          <div class="stat-card">
+            <div class="stat-label">Total Jemaat Baru</div>
+            <div class="stat-value">24</div>
+            <div class="stat-change up">↑ 20% vs minggu lalu</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Conversion Rate</div>
+            <div class="stat-value">62%</div>
+            <div class="stat-change up">↑ 5% vs target</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Avg Follow-up Time</div>
+            <div class="stat-value">2.3</div>
+            <div class="stat-change up">Hari (lebih cepat)</div>
+          </div>
+        </div>
+
+        <div class="card mt-4">
+          <div class="card-title">📅 Ringkasan Mingguan</div>
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr><th>Minggu</th><th>Jemaat Baru</th><th>Follow Up</th><th>Masuk Komunitas</th><th>Belum Connect</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Minggu Ini</td><td>24</td><td>15</td><td>8</td><td style="color:var(--danger)">6</td></tr>
+                <tr><td>Minggu Lalu</td><td>20</td><td>13</td><td>7</td><td style="color:var(--danger)">5</td></tr>
+                <tr><td>2 Minggu Lalu</td><td>18</td><td>10</td><td>5</td><td style="color:var(--warning)">8</td></tr>
+                <tr><td>3 Minggu Lalu</td><td>22</td><td>17</td><td>9</td><td style="color:var(--success)">4</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ADMIN: PENGATURAN -->
+      <div id="a-sec-pengaturan" class="section">
+        <h2 style="font-family:'Cinzel',serif; font-size:20px; margin-bottom:24px;">⚙️ Pengaturan Sistem</h2>
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-title">🏛️ Info Gereja</div>
+            <div class="form-group">
+              <label class="form-label">Nama Gereja</label>
+              <input type="text" class="form-input" value="Adullam Ministry">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Kota</label>
+              <input type="text" class="form-input" value="Jakarta">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Nomor WhatsApp Gereja</label>
+              <input type="tel" class="form-input" value="0812 0000 0000">
+            </div>
+            <button class="btn btn-primary btn-sm">Simpan Perubahan</button>
+          </div>
+          <div class="card">
+            <div class="card-title">🔔 Pengaturan Notifikasi</div>
+            <div style="margin-bottom:16px;">
+              <div class="flex justify-between items-center" style="margin-bottom:10px;">
+                <span style="font-size:14px; color:var(--text-secondary)">Reminder 3 hari belum kontak</span>
+                <div style="width:44px;height:24px;background:var(--gold);border-radius:12px;cursor:pointer;position:relative;">
+                  <div style="width:18px;height:18px;background:white;border-radius:50%;position:absolute;top:3px;right:3px;transition:0.3s;"></div>
+                </div>
+              </div>
+              <div class="flex justify-between items-center" style="margin-bottom:10px;">
+                <span style="font-size:14px; color:var(--text-secondary)">Reminder 5 hari belum kontak</span>
+                <div style="width:44px;height:24px;background:var(--gold);border-radius:12px;cursor:pointer;position:relative;">
+                  <div style="width:18px;height:18px;background:white;border-radius:50%;position:absolute;top:3px;right:3px;"></div>
+                </div>
+              </div>
+              <div class="flex justify-between items-center">
+                <span style="font-size:14px; color:var(--text-secondary)">Laporan otomatis Senin pagi</span>
+                <div style="width:44px;height:24px;background:var(--bg-panel);border:1px solid var(--bg-border);border-radius:12px;cursor:pointer;position:relative;">
+                  <div style="width:18px;height:18px;background:var(--text-muted);border-radius:50%;position:absolute;top:3px;left:3px;"></div>
+                </div>
+              </div>
+            </div>
+            <div class="card-title" style="margin-top:20px;">🔑 Akun Admin</div>
+            <div class="form-group">
+              <label class="form-label">Password Baru</label>
+              <input type="password" class="form-input" placeholder="Password baru">
+            </div>
+            <button class="btn btn-outline btn-sm">Ganti Password</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ADMIN: BERITA IBADAH -->
+      <div id="a-sec-berita" class="section">
+        <div class="flex justify-between items-center mb-6">
+          <h2 style="font-family:'Cinzel',serif; font-size:20px;">📰 Berita Ibadah</h2>
+        </div>
+
+        <div class="card mb-6" style="border-color:rgba(201,152,42,0.3);">
+          <div class="card-title">✦ Buat Postingan Baru</div>
+          <div class="form-group">
+            <label class="form-label">Kategori</label>
+            <select class="form-input" id="admin-berita-kategori">
+              <option value="ibadah">⛪ Ibadah</option>
+              <option value="pengumuman">📢 Pengumuman</option>
+              <option value="renungan">📖 Renungan</option>
+              <option value="acara">🎉 Acara</option>
+              <option value="doa">🙏 Doa</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Judul Berita</label>
+            <input type="text" class="form-input" id="admin-berita-judul" placeholder="Judul berita atau pengumuman...">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Isi Berita</label>
+            <textarea class="form-input" id="admin-berita-isi" rows="5" placeholder="Tulis isi berita, renungan, atau pengumuman di sini..." style="resize:vertical; line-height:1.7;"></textarea>
+          </div>
+          <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px;">
+            <label style="display:flex; align-items:center; gap:8px; cursor:pointer; font-size:13px; color:var(--text-secondary);">
+              <input type="checkbox" id="admin-berita-pin" style="accent-color:var(--gold);"> Sematkan (Pin) berita ini
+            </label>
+          </div>
+          <div class="flex gap-3">
+            <button class="btn btn-primary btn-sm" onclick="postBerita()">📤 Publish Sekarang</button>
+            <button class="btn btn-outline btn-sm" onclick="clearPostForm()">✕ Bersihkan</button>
+          </div>
+        </div>
+
+        <div class="card-title" style="margin-bottom:16px;">📋 Riwayat Postingan</div>
+        <div id="admin-berita-list"></div>
+      </div>
+
+    </div><!-- /page-content -->
+  </div><!-- /main-content -->
+</div>
+
+<!-- Modal: Add Jemaat -->
+<div id="modal-add-jemaat" class="modal-overlay">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('modal-add-jemaat')">✕</button>
+    <div class="modal-title">✦ Input <span style="color:var(--gold)">Jemaat Baru</span></div>
+    <div class="modal-sub">Isi data jemaat baru yang hadir di ibadah</div>
+
+    <div class="form-group">
+      <label class="form-label">Nama Lengkap</label>
+      <input type="text" class="form-input" placeholder="Nama jemaat baru" id="new-name">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Nomor HP</label>
+      <input type="tel" class="form-input" placeholder="08xx xxxx xxxx" id="new-phone">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Tanggal Hadir</label>
+      <input type="date" class="form-input" id="new-date">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Datang</label>
+      <select class="form-input" id="new-datang">
+        <option>Sendiri</option>
+        <option>Diajak teman</option>
+        <option>Media sosial</option>
+        <option>Lainnya</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Catatan (opsional)</label>
+      <input type="text" class="form-input" placeholder="Kesan pertama, dll" id="new-notes">
+    </div>
+
+    <div class="flex gap-3 mt-4">
+      <button class="btn btn-primary" onclick="saveJemaat()">💾 Simpan Jemaat</button>
+      <button class="btn btn-outline" onclick="closeModal('modal-add-jemaat')">Batal</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Log Aktivitas -->
+<div id="modal-log" class="modal-overlay">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('modal-log')">✕</button>
+    <div class="modal-title">📋 Log <span style="color:var(--gold)">Aktivitas</span></div>
+    <div class="modal-sub">Catat setiap interaksi dengan jemaat</div>
+
+    <div class="form-group">
+      <label class="form-label">Jenis Kontak</label>
+      <select class="form-input" id="log-jenis">
+        <option value="WhatsApp">WhatsApp</option>
+        <option value="Telepon">Telepon</option>
+        <option value="Tatap Muka">Tatap Muka</option>
+        <option value="Grup WA">Grup WA</option>
+        <option value="Ibadah">Ibadah</option>
+        <option value="Lainnya">Lainnya</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Update Status (opsional)</label>
+      <select class="form-input" id="log-status">
+        <option value="">-- Tidak ubah status --</option>
+        <option value="Baru Datang">Baru Datang</option>
+        <option value="Sudah Didekati">Sudah Didekati</option>
+        <option value="Sudah Nongki">Sudah Nongki</option>
+        <option value="Mulai Nyaman">Mulai Nyaman</option>
+        <option value="Masuk Grup WA">Masuk Grup WA</option>
+        <option value="Belum Connect">Belum Connect</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Catatan</label>
+      <input type="text" class="form-input" id="log-catatan" placeholder="Catatan interaksi...">
+    </div>
+
+    <div class="flex gap-3 mt-4">
+      <button class="btn btn-primary" onclick="saveLog()">💾 Simpan Log</button>
+      <button class="btn btn-outline" onclick="closeModal('modal-log')">Batal</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Add User (Admin) -->
+<div id="modal-add-user" class="modal-overlay">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('modal-add-user')">✕</button>
+    <div class="modal-title">🧑‍💼 Tambah <span style="color:var(--gold)">User</span></div>
+    <div class="modal-sub">Daftarkan anggota tim caring baru</div>
+
+    <div class="form-group">
+      <label class="form-label">Nama Lengkap</label>
+      <input type="text" class="form-input" placeholder="Nama user">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Nomor Telepon</label>
+      <input type="tel" class="form-input" placeholder="08xx xxxx xxxx">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Role</label>
+      <select class="form-input">
+        <option>Caring Team</option>
+        <option>Welcome Team</option>
+        <option>Leader</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Password Awal</label>
+      <input type="password" class="form-input" placeholder="Set password">
+    </div>
+
+    <div class="flex gap-3 mt-4">
+      <button class="btn btn-primary" onclick="showToast('User berhasil ditambahkan!','success'); closeModal(\'modal-add-user\')">💾 Tambah User</button>
+      <button class="btn btn-outline" onclick="closeModal('modal-add-user')">Batal</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════════
+// ADULLAM SOUL CONNECT — Frontend v2.0 (API Connected)
+// ══════════════════════════════════════════════════════════
+
+// ── CONFIG ────────────────────────────────────────────────
+// Ganti URL ini dengan URL Railway backend kamu setelah deploy
+const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+  ? 'http://localhost:3000/api'
+  : 'https://YOUR-RAILWAY-BACKEND.up.railway.app/api'; // <-- ganti setelah deploy Railway
+
+// ── STATE ─────────────────────────────────────────────────
+let authToken = localStorage.getItem('adullam_token') || null;
+let currentUser = JSON.parse(localStorage.getItem('adullam_user') || 'null');
+
+const DB = {
+  berita: [],   // diisi dari API
+  currentUser: currentUser,
+};
+
+// ── API HELPER ─────────────────────────────────────────────
+async function api(method, path, body = null) {
+  const opts = {
+    method,
+    headers: { 'Content-Type': 'application/json' },
+  };
+  if (authToken) opts.headers['Authorization'] = 'Bearer ' + authToken;
+  if (body) opts.body = JSON.stringify(body);
+  const res = await fetch(API_BASE + path, opts);
+  const data = await res.json();
+  if (!res.ok && res.status === 401) {
+    // token expired — logout
+    authToken = null; currentUser = null;
+    localStorage.removeItem('adullam_token');
+    localStorage.removeItem('adullam_user');
+    showPage('page-login');
+    showToast('Sesi habis, silakan login ulang.', 'error');
+    throw new Error('Unauthorized');
+  }
+  return data;
+}
+
+// ── PAGE NAVIGATION ────────────────────────────────────────
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  updateFloatingToggle();
+}
+
+// ── AUTH ───────────────────────────────────────────────────
+async function doLogin() {
+  const telepon  = document.getElementById('login-phone').value.trim();
+  const password = document.getElementById('login-pass').value;
+  if (!telepon || !password) { showToast('Isi semua field terlebih dahulu.', 'error'); return; }
+
+  const btn = document.querySelector('#page-login .btn-primary');
+  const orig = btn.textContent;
+  btn.textContent = '⏳ Memproses...';
+  btn.disabled = true;
+
+  try {
+    const data = await api('POST', '/auth/login', { telepon, password });
+    if (!data.success) { showToast(data.message, 'error'); return; }
+
+    authToken   = data.token;
+    currentUser = data.user;
+    DB.currentUser = currentUser;
+    localStorage.setItem('adullam_token', authToken);
+    localStorage.setItem('adullam_user',  JSON.stringify(currentUser));
+
+    showToast(data.message || `Selamat datang, ${currentUser.nama}! 🎉`, 'success');
+    routeByRole(currentUser);
+  } catch (e) {
+    if (e.message !== 'Unauthorized') showToast('Gagal terhubung ke server. Periksa koneksi.', 'error');
+  } finally {
+    btn.textContent = orig;
+    btn.disabled = false;
+  }
+}
+
+async function doRegister() {
+  const nama     = document.getElementById('reg-name').value.trim();
+  const telepon  = document.getElementById('reg-phone').value.trim();
+  const password = document.getElementById('reg-pass').value;
+  const pass2    = document.getElementById('reg-pass2').value;
+  if (!nama||!telepon||!password||!pass2) { showToast('Isi semua field!', 'error'); return; }
+  if (password !== pass2) { showToast('Password tidak cocok!', 'error'); return; }
+
+  const btn = document.querySelector('#page-register .btn-primary');
+  btn.textContent = '⏳ Mendaftar...'; btn.disabled = true;
+  try {
+    const data = await api('POST', '/auth/register', { nama, telepon, password });
+    if (!data.success) { showToast(data.message, 'error'); return; }
+    showToast('Akun berhasil dibuat! Silakan login.', 'success');
+    ['reg-name','reg-phone','reg-pass','reg-pass2'].forEach(id => { document.getElementById(id).value = ''; });
+    setTimeout(() => showPage('page-login'), 1200);
+  } catch { showToast('Gagal mendaftar. Periksa koneksi.', 'error'); }
+  finally { btn.textContent = '✦ Daftar Sekarang'; btn.disabled = false; }
+}
+
+function doLogout() {
+  authToken = null; currentUser = null; DB.currentUser = null;
+  localStorage.removeItem('adullam_token');
+  localStorage.removeItem('adullam_user');
+  showToast('Anda telah logout.', 'success');
+  showPage('page-login');
+}
+
+function routeByRole(user) {
+  if (user.role === 'admin') {
+    showPage('page-admin');
+    loadAdminDashboard();
+  } else if (user.role === 'jemaat') {
+    setupJemaatPage(user);
+    showPage('page-jemaat');
+  } else {
+    setupUserPage(user);
+    showPage('page-user');
+  }
+}
+
+// ── SETUP PAGES ────────────────────────────────────────────
+function setupJemaatPage(user) {
+  const init = user.nama.charAt(0).toUpperCase();
+  const el = (id) => document.getElementById(id);
+  if (el('j-avatar-sidebar')) el('j-avatar-sidebar').textContent = init;
+  if (el('j-avatar-top'))     el('j-avatar-top').textContent = init;
+  if (el('j-name-sidebar'))   el('j-name-sidebar').textContent = user.nama;
+  const titleEl = el('j-welcome-title');
+  if (titleEl) titleEl.textContent = `Shalom, ${user.nama.split(' ')[0]}! 🙏`;
+  const dateEl = el('j-date-display');
+  if (dateEl) dateEl.textContent = new Date().toLocaleDateString('id-ID', {weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  loadBerita();
+}
+
+function setupUserPage(user) {
+  const init = user.nama.charAt(0).toUpperCase();
+  const el = (id) => document.getElementById(id);
+  if (el('u-avatar-sidebar')) el('u-avatar-sidebar').textContent = init;
+  if (el('u-avatar-top'))     el('u-avatar-top').textContent = init;
+  if (el('u-name-sidebar'))   el('u-name-sidebar').textContent = user.nama;
+  if (el('u-welcome-title'))  el('u-welcome-title').textContent = `Shalom, ${user.nama.split(' ')[0]}! 👋`;
+  loadUserJemaat();
+}
+
+// ── LOAD DATA FROM API ─────────────────────────────────────
+async function loadBerita(filter) {
+  try {
+    const params = filter && filter !== 'semua' ? `?kategori=${filter}` : '';
+    const data = await api('GET', '/berita' + params);
+    if (!data.success) return;
+    // Map API response to DB.berita format for compatibility with existing render functions
+    DB.berita = data.data.map(b => ({
+      id: b.id,
+      pinned: !!b.pinned,
+      kategori: b.kategori,
+      judul: b.judul,
+      isi: b.isi,
+      waktu: new Date(b.created_at),
+      penulis: b.penulis_nama || 'Admin',
+      likes: b.likes || 0,
+      liked: false,
+      komentar: 0,
+    }));
+    renderJemaatBeritaFull();
+    renderJemaatBeranda();
+  } catch (e) { console.error('Load berita error:', e); }
+}
+
+async function loadAdminDashboard() {
+  try {
+    // Load stats
+    const stats = await api('GET', '/jemaat/stats/summary');
+    if (stats.success) {
+      const d = stats.data;
+      const el = (id) => document.getElementById(id);
+      if (el('stat-total-jemaat'))  el('stat-total-jemaat').textContent  = d.total;
+      if (el('stat-follow-up'))     el('stat-follow-up').textContent     = d.didekati + d.nongki;
+      if (el('stat-connect'))       el('stat-connect').textContent       = d.grup_wa + d.nyaman;
+      if (el('stat-belum'))         el('stat-belum').textContent         = d.belum;
+      if (el('stat-minggu-ini'))    el('stat-minggu-ini').textContent    = d.minggu_ini;
+    }
+    // Load berita for admin
+    const beritaData = await api('GET', '/berita');
+    if (beritaData.success) {
+      DB.berita = beritaData.data.map(b => ({
+        id: b.id, pinned: !!b.pinned, kategori: b.kategori, judul: b.judul, isi: b.isi,
+        waktu: new Date(b.created_at), penulis: b.penulis_nama || 'Admin',
+        likes: b.likes || 0, liked: false, komentar: 0,
+      }));
+      renderAdminBeritaList();
+    }
+    // Load jemaat
+    loadAdminJemaat();
+  } catch (e) { console.error('Load admin dashboard error:', e); }
+}
+
+async function loadAdminJemaat(search = '') {
+  try {
+    const params = search ? `?search=${encodeURIComponent(search)}` : '';
+    const data = await api('GET', '/jemaat' + params);
+    if (!data.success) return;
+    const tbody = document.getElementById('admin-jemaat-tbody');
+    if (!tbody) return;
+    tbody.innerHTML = data.data.map(j => `
+      <tr>
+        <td><strong style="color:var(--text-primary)">${j.nama}</strong></td>
+        <td>${j.telepon || '-'}</td>
+        <td>${new Date(j.tanggal_hadir).toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'})}</td>
+        <td>${j.datang_via || '-'}</td>
+        <td>${j.pic_nama || '<span style="color:var(--danger)">Belum Ada</span>'}</td>
+        <td>${renderStatusBadge(j.status)}</td>
+        <td><button class="btn btn-outline btn-sm" onclick="openDetailJemaat(${j.id})">Detail</button></td>
+      </tr>`).join('');
+  } catch (e) { console.error('Load jemaat error:', e); }
+}
+
+async function loadUserJemaat() {
+  try {
+    const data = await api('GET', '/jemaat');
+    if (!data.success) return;
+    const tbody = document.getElementById('user-jemaat-table');
+    if (!tbody) return;
+    tbody.innerHTML = data.data.map(j => `
+      <tr>
+        <td><div style="font-weight:600;color:var(--text-primary)">${j.nama}</div></td>
+        <td>${j.telepon || '-'}</td>
+        <td>${new Date(j.tanggal_hadir).toLocaleDateString('id-ID')}</td>
+        <td>${renderStatusBadge(j.status)}</td>
+        <td style="color:${getKontakColor(j.terakhir_kontak)}">${formatTerakhirKontak(j.terakhir_kontak)}</td>
+        <td><button class="btn btn-outline btn-sm" onclick="openLogModal(${j.id},'${j.nama}')">+ Log</button></td>
+      </tr>`).join('');
+    // update stat cards
+    const el = (id) => document.getElementById(id);
+    if (el('u-stat-total'))  el('u-stat-total').textContent  = data.pagination.total;
+    const nyaman = data.data.filter(j => ['Mulai Nyaman','Masuk Grup WA'].includes(j.status)).length;
+    if (el('u-stat-nyaman')) el('u-stat-nyaman').textContent = nyaman;
+    const perlu  = data.data.filter(j => !j.terakhir_kontak || daysSince(j.terakhir_kontak) >= 3).length;
+    if (el('u-stat-followup')) el('u-stat-followup').textContent = perlu;
+  } catch (e) { console.error('Load user jemaat error:', e); }
+}
+
+function daysSince(dateStr) {
+  if (!dateStr) return 999;
+  return Math.floor((Date.now() - new Date(dateStr)) / 86400000);
+}
+
+function formatTerakhirKontak(dateStr) {
+  if (!dateStr) return 'Belum pernah';
+  const d = daysSince(dateStr);
+  if (d === 0) return 'Hari ini';
+  if (d === 1) return 'Kemarin';
+  return d + ' hari lalu';
+}
+
+function getKontakColor(dateStr) {
+  const d = daysSince(dateStr);
+  if (d >= 5) return 'var(--danger)';
+  if (d >= 3) return 'var(--warning)';
+  return 'var(--text-secondary)';
+}
+
+function renderStatusBadge(status) {
+  const map = {
+    'Baru Datang':    'badge-warning',
+    'Sudah Didekati': 'badge-info',
+    'Sudah Nongki':   'badge-gold',
+    'Mulai Nyaman':   'badge-success',
+    'Masuk Grup WA':  'badge-success',
+    'Belum Connect':  'badge-danger',
+  };
+  return `<span class="badge ${map[status]||'badge-gold'}">${status}</span>`;
+}
+
+// ── ACTIONS ────────────────────────────────────────────────
+async function saveJemaat() {
+  const nama          = document.getElementById('new-name').value.trim();
+  const telepon       = document.getElementById('new-phone').value.trim();
+  const tanggal_hadir = document.getElementById('new-date').value;
+  const datang_via    = document.getElementById('new-datang').value;
+  const catatan       = document.getElementById('new-notes').value;
+  if (!nama || !tanggal_hadir) { showToast('Nama dan tanggal hadir wajib diisi!', 'error'); return; }
+  try {
+    const data = await api('POST', '/jemaat', { nama, telepon, tanggal_hadir, datang_via, catatan });
+    if (!data.success) { showToast(data.message, 'error'); return; }
+    showToast(data.message || `${nama} berhasil ditambahkan! 🎉`, 'success');
+    closeModal('modal-add-jemaat');
+    ['new-name','new-phone','new-notes'].forEach(id => document.getElementById(id).value = '');
+    // Refresh table
+    if (currentUser?.role === 'admin') loadAdminJemaat();
+    else loadUserJemaat();
+  } catch { showToast('Gagal menyimpan. Periksa koneksi.', 'error'); }
+}
+
+let activeLogJemaatId = null;
+function openLogModal(jemaatId, nama) {
+  activeLogJemaatId = jemaatId;
+  const title = document.querySelector('#modal-log .modal-title');
+  if (title) title.innerHTML = `📋 Log <span style="color:var(--gold)">Aktivitas</span> — ${nama}`;
+  openModal('modal-log');
+}
+
+async function saveLog() {
+  const jemaatId  = activeLogJemaatId;
+  const jenis      = document.getElementById('log-jenis')?.value || 'WhatsApp';
+  const status_baru= document.getElementById('log-status')?.value || null;
+  const catatan    = document.getElementById('log-catatan')?.value || '';
+  if (!jemaatId) { showToast('Pilih jemaat terlebih dahulu.', 'error'); return; }
+  try {
+    const data = await api('POST', `/jemaat/${jemaatId}/log`, { jenis, status_baru: status_baru||null, catatan });
+    if (!data.success) { showToast(data.message, 'error'); return; }
+    showToast('Log aktivitas berhasil disimpan! ✅', 'success');
+    closeModal('modal-log');
+    if (currentUser?.role === 'admin') loadAdminJemaat();
+    else loadUserJemaat();
+  } catch { showToast('Gagal menyimpan log.', 'error'); }
+}
+
+async function openDetailJemaat(id) {
+  try {
+    const data = await api('GET', `/jemaat/${id}`);
+    if (!data.success) { showToast('Gagal memuat data.', 'error'); return; }
+    const j = data.data;
+    openLogModal(id, j.nama);
+  } catch { showToast('Gagal memuat detail.', 'error'); }
+}
+
+async function postBerita() {
+  const judul    = document.getElementById('admin-berita-judul').value.trim();
+  const isi      = document.getElementById('admin-berita-isi').value.trim();
+  const kategori = document.getElementById('admin-berita-kategori').value;
+  const pinned   = document.getElementById('admin-berita-pin').checked;
+  if (!judul || !isi) { showToast('Judul dan isi wajib diisi!', 'error'); return; }
+  try {
+    const data = await api('POST', '/berita', { judul, isi, kategori, pinned });
+    if (!data.success) { showToast(data.message, 'error'); return; }
+    showToast('Berita berhasil dipublish! 📤', 'success');
+    clearPostForm();
+    loadAdminDashboard();
+  } catch { showToast('Gagal posting berita.', 'error'); }
+}
+
+async function hapusBerita(id) {
+  if (!confirm('Yakin hapus berita ini?')) return;
+  try {
+    const data = await api('DELETE', `/berita/${id}`);
+    if (!data.success) { showToast(data.message, 'error'); return; }
+    showToast('Berita dihapus.', 'success');
+    loadAdminDashboard();
+  } catch { showToast('Gagal menghapus.', 'error'); }
+}
+
+async function togglePinBerita(id) {
+  try {
+    const data = await api('PATCH', `/berita/${id}/pin`);
+    if (!data.success) { showToast(data.message, 'error'); return; }
+    showToast(data.message, 'success');
+    loadAdminDashboard();
+  } catch { showToast('Gagal toggle pin.', 'error'); }
+}
+
+async function toggleLike(id) {
+  try {
+    const data = await api('PATCH', `/berita/${id}/like`);
+    const b = DB.berita.find(x => x.id === id);
+    if (b && data.success) { b.likes = data.likes; b.liked = !b.liked; }
+    renderJemaatBeritaFull();
+    renderJemaatBeranda();
+  } catch { /* silently ignore */ }
+}
+
+function shareBerita(id) {
+  const b = DB.berita.find(x => x.id === id);
+  if (!b) return;
+  const text = `${b.judul}\n\n${b.isi.slice(0,120)}...\n\n— Adullam Ministry`;
+  if (navigator.share) {
+    navigator.share({ title: b.judul, text }).catch(() => {});
+  } else {
+    navigator.clipboard.writeText(text)
+      .then(() => showToast('Berita disalin ke clipboard! 📋', 'success'))
+      .catch(() => showToast('Gagal menyalin.', 'error'));
+  }
+}
+
+function clearPostForm() {
+  ['admin-berita-judul','admin-berita-isi'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('admin-berita-pin').checked = false;
+  document.getElementById('admin-berita-kategori').value = 'ibadah';
+}
+
+// ── NAVIGATION ─────────────────────────────────────────────
+function userNav(section, el) {
+  document.querySelectorAll('#page-user .nav-item').forEach(i => i.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('#page-user .section').forEach(s => s.classList.remove('active'));
+  document.getElementById(`u-sec-${section}`).classList.add('active');
+  const titles = { overview:'Dashboard', jemaat:'Jemaat Saya', aktivitas:'Log Aktivitas', followup:'Follow Up' };
+  document.getElementById('u-topbar-title').textContent = titles[section] || 'Dashboard';
+  if (section === 'jemaat') loadUserJemaat();
+  closeMobileSidebar();
+}
+
+function adminNav(section, el) {
+  document.querySelectorAll('#page-admin .nav-item').forEach(i => i.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('#page-admin .section').forEach(s => s.classList.remove('active'));
+  document.getElementById(`a-sec-${section}`).classList.add('active');
+  const titles = { overview:'Admin Overview', jemaat:'Semua Jemaat', users:'Kelola User', laporan:'Laporan', pengaturan:'Pengaturan', berita:'Berita Ibadah' };
+  document.getElementById('a-topbar-title').textContent = titles[section] || 'Admin';
+  if (section === 'berita') { loadAdminDashboard(); }
+  if (section === 'jemaat') loadAdminJemaat();
+  closeMobileSidebar();
+}
+
+function jemaatNav(section, el) {
+  document.querySelectorAll('#page-jemaat .nav-item').forEach(i => i.classList.remove('active'));
+  if (el) el.classList.add('active');
+  document.querySelectorAll('#page-jemaat .section').forEach(s => s.classList.remove('active'));
+  const sec = document.getElementById(`j-sec-${section}`);
+  if (sec) sec.classList.add('active');
+  const titles = { beranda:'Beranda', berita:'Berita Ibadah', jadwal:'Jadwal Ibadah', profil:'Profil Saya' };
+  const tb = document.getElementById('j-topbar-title');
+  if (tb) tb.textContent = titles[section] || 'Beranda';
+  if (section === 'berita') { loadBerita(); renderJemaatBeritaFull(); }
+  if (section === 'beranda') renderJemaatBeranda();
+  if (section === 'jadwal') loadJadwal('j-jadwal-full');
+  closeMobileSidebar();
+}
+
+// ── JADWAL FROM API ────────────────────────────────────────
+async function loadJadwal(containerId) {
+  try {
+    const data = await api('GET', '/jadwal');
+    if (!data.success) return;
+    const el = document.getElementById(containerId || 'j-jadwal-preview');
+    if (!el) return;
+    const items = containerId === 'j-jadwal-full' ? data.data : data.data.slice(0,3);
+    el.innerHTML = items.map((j, i, arr) => `
+      <div class="jadwal-item">
+        <div class="jadwal-icon-box" style="background:${j.aktif?'linear-gradient(135deg,var(--gold-dark),var(--gold))':'var(--bg-panel)'};">${j.ikon}</div>
+        <div style="flex:1;">
+          <div class="jadwal-item-name">${j.nama}</div>
+          <div class="jadwal-item-time">${j.hari} · ${j.jam}</div>
+        </div>
+        ${j.aktif ? '<span class="badge badge-gold" style="font-size:10px;">Berikutnya</span>' : ''}
+      </div>
+      ${i < arr.length-1 ? '<div style="height:1px;background:var(--bg-border);margin:0 18px;"></div>':''}`).join('');
+  } catch (e) { console.error('Load jadwal error:', e); }
+}
+
+// ── RENDER BERITA (reuse existing functions) ───────────────
+const KATEGORI_MAP = {
+  ibadah:      { label:'⛪ Ibadah',     cls:'tag-ibadah' },
+  pengumuman:  { label:'📢 Pengumuman', cls:'tag-pengumuman' },
+  renungan:    { label:'📖 Renungan',   cls:'tag-renungan' },
+  acara:       { label:'🎉 Acara',      cls:'tag-acara' },
+  doa:         { label:'🙏 Doa',        cls:'tag-doa' },
+};
+
+function timeAgo(date) {
+  const diff = Math.floor((Date.now() - date) / 1000);
+  if (diff < 60)    return 'Baru saja';
+  if (diff < 3600)  return Math.floor(diff/60) + ' menit lalu';
+  if (diff < 86400) return Math.floor(diff/3600) + ' jam lalu';
+  return Math.floor(diff/86400) + ' hari lalu';
+}
+
+function formatIsi(text) { return text.replace(/\n/g, '<br>'); }
+
+let activeFilter = 'semua';
+
+function setFilter(filter, el) {
+  activeFilter = filter;
+  document.querySelectorAll('.bfilter').forEach(c => c.classList.remove('active'));
+  if (el) el.classList.add('active');
+  // reload from API with category filter
+  loadBerita(filter);
+}
+
+function filterBerita() {
+  const q = (document.getElementById('j-search')?.value || '').toLowerCase();
+  const filtered = DB.berita.filter(b =>
+    b.judul.toLowerCase().includes(q) || b.isi.toLowerCase().includes(q)
+  );
+  renderBeritaList('j-berita-list', filtered);
+}
+
+function renderJemaatBeritaFull() {
+  renderBeritaList('j-berita-list', DB.berita);
+}
+
+function renderBeritaList(containerId, berita) {
+  const list = document.getElementById(containerId);
+  if (!list) return;
+  const sorted = [...berita].sort((a,b) => b.pinned - a.pinned || b.id - a.id);
+  const badge = document.getElementById('j-feed-count');
+  if (badge) badge.textContent = DB.berita.length;
+
+  if (sorted.length === 0) {
+    list.innerHTML = `<div class="feed-empty"><span class="feed-empty-icon">📭</span><div class="feed-empty-text">Belum ada berita dari gereja.</div></div>`;
+    return;
+  }
+  let pinDone = false;
+  list.innerHTML = sorted.map((b, i) => {
+    const kat = KATEGORI_MAP[b.kategori] || KATEGORI_MAP.pengumuman;
+    const needDivider = !b.pinned && !pinDone && sorted[0]?.pinned;
+    if (!b.pinned && needDivider) pinDone = true;
+    return `
+      ${needDivider ? '<div class="feed-divider">Berita Lainnya</div>' : ''}
+      <div class="berita-card ${b.pinned?'berita-pinned':''}">
+        ${b.pinned ? '<div class="pinned-label">📌 Disematkan</div>' : ''}
+        <div class="berita-header">
+          <div class="berita-avatar">A</div>
+          <div class="berita-meta">
+            <div class="berita-author">${b.penulis}</div>
+            <div class="berita-role">Admin Gereja</div>
+            <div class="berita-time">${timeAgo(b.waktu)}</div>
+          </div>
+          <span class="berita-category-tag ${kat.cls}">${kat.label}</span>
+        </div>
+        <div class="berita-body">
+          <div class="berita-judul">${b.judul}</div>
+          <div class="berita-isi collapsed" id="jfull-isi-${b.id}">${formatIsi(b.isi)}</div>
+          <button class="berita-read-more" id="jfull-rm-${b.id}" onclick="toggleIsiJemaat(${b.id})">Baca selengkapnya ▾</button>
+        </div>
+        <div class="berita-footer">
+          <button class="berita-action-btn ${b.liked?'liked':''}" onclick="toggleLike(${b.id})">
+            ${b.liked?'❤️':'🤍'} <span>${b.likes}</span>
+          </button>
+          <button class="berita-action-btn" style="cursor:default;">💬 <span>${b.komentar}</span></button>
+          <div style="flex:1;"></div>
+          <button class="berita-action-btn" onclick="shareBerita(${b.id})">↗ Bagikan</button>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function toggleIsi(id) {
+  const isi = document.getElementById('isi-'+id);
+  const btn = document.getElementById('rm-'+id);
+  if (!isi||!btn) return;
+  const c = isi.classList.contains('collapsed');
+  isi.classList.toggle('collapsed', !c);
+  btn.textContent = c ? 'Sembunyikan ▴' : 'Baca selengkapnya ▾';
+}
+
+function toggleIsiJemaat(id) {
+  const isi = document.getElementById('jfull-isi-'+id);
+  const btn = document.getElementById('jfull-rm-'+id);
+  if (!isi||!btn) return;
+  const c = isi.classList.contains('collapsed');
+  isi.classList.toggle('collapsed', !c);
+  btn.textContent = c ? 'Sembunyikan ▴' : 'Baca selengkapnya ▾';
+}
+
+function renderJemaatBeranda() {
+  // news preview
+  const preview = document.getElementById('j-news-preview');
+  if (preview) {
+    const recent = [...DB.berita].sort((a,b) => b.id - a.id).slice(0,3);
+    if (!recent.length) {
+      preview.innerHTML = `<div class="feed-empty" style="padding:30px 0;grid-column:1/-1;"><span class="feed-empty-icon" style="font-size:32px;">📭</span><div class="feed-empty-text">Belum ada berita.</div></div>`;
+    } else {
+      preview.innerHTML = recent.map(b => {
+        const kat = KATEGORI_MAP[b.kategori] || KATEGORI_MAP.pengumuman;
+        return `<div class="beranda-news-card" onclick="jemaatNav('berita', document.querySelector('#page-jemaat .nav-item:nth-child(2)'))">
+          <div class="beranda-news-card-top">
+            <span class="berita-category-tag ${kat.cls}" style="font-size:9px;">${kat.label}</span>
+            <span style="font-size:11px;color:var(--text-muted);margin-left:auto;">${timeAgo(b.waktu)}</span>
+          </div>
+          <div class="beranda-news-card-title">${b.judul}</div>
+          <div class="beranda-news-card-excerpt">${b.isi.replace(/\n/g,' ')}</div>
+          <div class="beranda-news-card-meta">❤️ ${b.likes}</div>
+        </div>`;
+      }).join('');
+    }
+  }
+  // jadwal preview
+  loadJadwal('j-jadwal-preview');
+}
+
+function renderAdminBeritaList() {
+  const list = document.getElementById('admin-berita-list');
+  if (!list) return;
+  if (!DB.berita.length) {
+    list.innerHTML = `<div class="card"><div class="empty-state"><div class="icon">📭</div><p>Belum ada berita.</p></div></div>`;
+    return;
+  }
+  list.innerHTML = [...DB.berita].sort((a,b)=>b.id-a.id).map(b => {
+    const kat = KATEGORI_MAP[b.kategori] || KATEGORI_MAP.pengumuman;
+    return `<div class="card mb-4" style="${b.pinned?'border-color:rgba(201,152,42,0.4);':''}">
+      <div class="flex justify-between items-center mb-3">
+        <div class="flex items-center gap-3">
+          <span class="berita-category-tag ${kat.cls}">${kat.label}</span>
+          ${b.pinned?'<span style="font-size:12px;color:var(--gold);">📌 Disematkan</span>':''}
+        </div>
+        <div class="flex gap-2">
+          <button class="btn btn-outline btn-sm" onclick="hapusBerita(${b.id})">🗑 Hapus</button>
+          <button class="btn btn-outline btn-sm" onclick="togglePinBerita(${b.id})">${b.pinned?'📌 Lepas Pin':'📌 Pin'}</button>
+        </div>
+      </div>
+      <div style="font-family:'Cinzel',serif;font-size:15px;font-weight:600;margin-bottom:8px;">${b.judul}</div>
+      <div style="font-size:13px;color:var(--text-muted);margin-bottom:10px;">${timeAgo(b.waktu)} · ❤️ ${b.likes}</div>
+      <div style="font-size:13px;color:var(--text-secondary);line-height:1.6;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">${b.isi}</div>
+    </div>`;
+  }).join('');
+}
+
+// ── MODALS ──────────────────────────────────────────────────
+function openModal(id) { document.getElementById(id)?.classList.add('active'); }
+function closeModal(id) { document.getElementById(id)?.classList.remove('active'); }
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.modal-overlay').forEach(o => {
+    o.addEventListener('click', function(e) { if(e.target===this) this.classList.remove('active'); });
+  });
+});
+
+// ── TOAST ───────────────────────────────────────────────────
+function showToast(msg, type = 'success') {
+  document.querySelector('.toast')?.remove();
+  const icons = { success:'✅', error:'❌' };
+  const t = document.createElement('div');
+  t.className = `toast ${type}`;
+  t.innerHTML = `<span class="toast-icon">${icons[type]||'ℹ️'}</span><span class="toast-msg">${msg}</span>`;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 3500);
+}
+
+// ── MOBILE SIDEBAR ──────────────────────────────────────────
+function openMobileSidebar() {
+  const page = document.querySelector('.page.active');
+  if (!page) return;
+  page.querySelector('.sidebar')?.classList.add('open');
+  page.querySelector('.sidebar-overlay')?.classList.add('active');
+}
+function closeMobileSidebar() {
+  document.querySelectorAll('.sidebar.open').forEach(s => s.classList.remove('open'));
+  document.querySelectorAll('.sidebar-overlay.active').forEach(o => o.classList.remove('active'));
+}
+
+// ── THEME ───────────────────────────────────────────────────
+let isDark = true;
+function toggleTheme() {
+  isDark = !isDark;
+  applyTheme();
+  localStorage.setItem('adullam-theme', isDark ? 'dark' : 'light');
+}
+function applyTheme() {
+  document.documentElement.classList.toggle('light', !isDark);
+  const icon = isDark ? '🌙' : '☀️';
+  document.querySelectorAll('#u-theme-btn,#a-theme-btn,#j-theme-btn,#floating-theme-toggle').forEach(btn => {
+    if (!btn) return;
+    btn.textContent = icon;
+    btn.style.transform = 'rotate(360deg)';
+    setTimeout(() => btn.style.transform = 'rotate(0deg)', 400);
+  });
+}
+
+// ── FLOATING TOGGLE ─────────────────────────────────────────
+function updateFloatingToggle() {
+  const floating = document.getElementById('floating-theme-toggle');
+  if (!floating) return;
+  const activePage = document.querySelector('.page.active');
+  const dashPages = ['page-user','page-admin','page-jemaat'];
+  floating.style.display = (activePage && dashPages.includes(activePage.id)) ? 'none' : 'flex';
+}
+
+// ── KEYBOARD ────────────────────────────────────────────────
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') document.querySelectorAll('.modal-overlay.active').forEach(m => m.classList.remove('active'));
+  if (e.key === 'Enter') {
+    if (document.getElementById('page-login')?.classList.contains('active')) doLogin();
+    else if (document.getElementById('page-register')?.classList.contains('active')) doRegister();
+  }
+});
+
+// ── INIT ────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  // Restore theme
+  const saved = localStorage.getItem('adullam-theme');
+  if (saved === 'light') { isDark = false; applyTheme(); }
+
+  // Set today date
+  const d = document.getElementById('new-date');
+  if (d) d.value = new Date().toISOString().split('T')[0];
+
+  // Auto-login if token exists
+  if (authToken && currentUser) {
+    routeByRole(currentUser);
+  }
+});
+</script>
+</body>
+</html>
