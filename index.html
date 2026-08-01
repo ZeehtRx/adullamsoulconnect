@@ -2028,9 +2028,10 @@ html.light .nav-item.active {
 .theme-toggle-btn span,
 .floating-theme-toggle { transition: transform 0.4s ease; }
 
-/* ═══════════════════════════════
-   HAMBURGER + SIDEBAR OVERLAY
-═══════════════════════════════ */
+select.form-input { appearance: none; cursor: pointer; }
+select option { background: var(--bg-card); color: var(--text-primary); }
+
+</style>
 .hamburger-btn {
   display: none;
   font-size: 20px;
@@ -2202,8 +2203,332 @@ html.light .nav-item.active {
 ═══════════════════════════════ */
 html.light .sidebar-overlay { background: rgba(0,0,0,0.3); }
 
-select.form-input { appearance: none; cursor: pointer; }
-select option { background: var(--bg-card); color: var(--text-primary); }
+/* ═══════════════════════════════
+   ADMIN REDESIGN
+═══════════════════════════════ */
+
+/* Admin Hero */
+.admin-hero {
+  background: linear-gradient(135deg, #0A0614 0%, #140A24 50%, #0A0614 100%);
+  border: 1px solid rgba(168,85,247,0.2);
+  border-radius: 20px;
+  padding: 28px 32px;
+  margin-bottom: 24px;
+  position: relative;
+  overflow: hidden;
+}
+.admin-hero-glow {
+  position: absolute;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(168,85,247,0.1) 0%, transparent 65%);
+  top: -100px; right: -100px;
+  pointer-events: none;
+}
+.admin-hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #A855F7;
+  margin-bottom: 10px;
+  background: rgba(168,85,247,0.1);
+  border: 1px solid rgba(168,85,247,0.2);
+  padding: 3px 12px;
+  border-radius: 20px;
+}
+.admin-hero-title {
+  font-family: 'Cinzel', serif;
+  font-size: 24px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #fff 0%, #D8B4FE 50%, #A855F7 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 6px;
+}
+.admin-hero-sub { font-size: 13px; color: var(--text-muted); }
+
+/* Admin Stat Cards */
+.admin-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 24px;
+}
+.admin-stat-card {
+  background: var(--bg-card);
+  border: 1px solid var(--bg-border);
+  border-radius: 16px;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s;
+}
+.admin-stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--accent, var(--gold));
+  border-radius: 16px 16px 0 0;
+}
+.admin-stat-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
+.ascard-icon { font-size: 26px; margin-bottom: 10px; }
+.ascard-value {
+  font-size: 36px;
+  font-weight: 800;
+  font-family: 'Cinzel', serif;
+  color: var(--text-primary);
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.ascard-label { font-size: 13px; font-weight: 600; color: var(--text-secondary); }
+.ascard-sub { font-size: 11px; color: var(--text-muted); margin-top: 3px; }
+
+/* Admin 2-col grid */
+.admin-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+/* Section header */
+.section-page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.section-page-title {
+  font-family: 'Cinzel', serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+.section-page-sub { font-size: 13px; color: var(--text-muted); }
+
+/* Status bar */
+.status-bar-item { margin-bottom: 14px; }
+.status-bar-top {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+}
+
+/* ═══════════════════════════════
+   ACARA / EVENT SYSTEM
+═══════════════════════════════ */
+
+.acara-card {
+  background: var(--bg-card);
+  border: 1px solid var(--bg-border);
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 16px;
+  transition: all 0.3s;
+}
+.acara-card:hover { border-color: rgba(201,152,42,0.35); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,0,0,0.3); }
+
+.acara-card-img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  background: linear-gradient(135deg, #1A1508, #0D0D0F);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
+  color: var(--gold);
+}
+.acara-card-img img { width: 100%; height: 100%; object-fit: cover; }
+
+.acara-card-body { padding: 18px 20px; }
+
+.acara-card-badges { display: flex; gap: 6px; margin-bottom: 10px; flex-wrap: wrap; }
+
+.acara-badge-type {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.acara-sekali { background: rgba(74,144,217,0.15); color: #74b5ff; border: 1px solid rgba(74,144,217,0.3); }
+.acara-mingguan { background: rgba(201,152,42,0.15); color: var(--gold-light); border: 1px solid rgba(201,152,42,0.3); }
+.acara-selesai { background: rgba(76,175,130,0.15); color: var(--success); border: 1px solid rgba(76,175,130,0.3); }
+.acara-aktif { background: rgba(76,175,130,0.15); color: var(--success); border: 1px solid rgba(76,175,130,0.3); }
+
+.acara-card-title {
+  font-family: 'Cinzel', serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.acara-card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 14px;
+}
+.acara-info-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.acara-card-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  padding: 12px 0;
+  border-top: 1px solid var(--bg-border);
+  border-bottom: 1px solid var(--bg-border);
+  margin-bottom: 14px;
+}
+.acara-stat-item { text-align: center; }
+.acara-stat-val { font-size: 20px; font-weight: 700; color: var(--text-primary); font-family: 'Cinzel', serif; }
+.acara-stat-lbl { font-size: 11px; color: var(--text-muted); }
+
+.acara-card-actions { display: flex; gap: 8px; }
+
+/* Acara grid layout */
+.acara-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 16px;
+}
+
+/* Jemaat event card for jemaat page */
+.event-jemaat-card {
+  background: var(--bg-card);
+  border: 1px solid var(--bg-border);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: all 0.3s;
+  margin-bottom: 16px;
+}
+.event-jemaat-card:hover { border-color: rgba(201,152,42,0.35); box-shadow: var(--shadow-gold); }
+
+.event-jemaat-img {
+  height: 140px;
+  background: linear-gradient(135deg, #1A1508, #0D0D0F);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+}
+.event-jemaat-img img { width: 100%; height: 100%; object-fit: cover; }
+
+.event-jemaat-body { padding: 16px; }
+.event-jemaat-title { font-family: 'Cinzel', serif; font-size: 15px; font-weight: 600; margin-bottom: 8px; }
+.event-jemaat-meta { font-size: 12px; color: var(--text-muted); margin-bottom: 14px; display: flex; flex-direction: column; gap: 3px; }
+.event-jemaat-footer { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.event-daftar-count { font-size: 12px; color: var(--text-muted); }
+
+/* Modal acara larger */
+.modal-lg {
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+/* Image upload area */
+.img-upload-area {
+  border: 2px dashed var(--bg-border);
+  border-radius: 12px;
+  padding: 28px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s;
+  position: relative;
+}
+.img-upload-area:hover { border-color: var(--gold); background: rgba(201,152,42,0.04); }
+.img-upload-area input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+.img-upload-icon { font-size: 32px; margin-bottom: 8px; }
+.img-upload-text { font-size: 13px; color: var(--text-muted); }
+.img-upload-preview {
+  width: 100%;
+  max-height: 160px;
+  object-fit: cover;
+  border-radius: 8px;
+  display: none;
+}
+
+/* Toggle pill */
+.toggle-pill-group { display: flex; background: var(--bg-panel); border-radius: 10px; padding: 4px; gap: 4px; }
+.toggle-pill {
+  flex: 1;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  font-family: 'Outfit', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+}
+.toggle-pill.active {
+  background: var(--bg-card);
+  color: var(--gold);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+/* Peserta modal */
+.peserta-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--bg-border);
+}
+.peserta-item:last-child { border-bottom: none; }
+.peserta-num {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: var(--bg-panel);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+/* PDF hidden container */
+#pdf-print-area { display: none; }
+
+/* Light mode admin */
+html.light .admin-hero { background: linear-gradient(135deg, #1A0E2E, #2D1654, #1A0E2E); }
+html.light .admin-hero-sub { color: rgba(255,255,255,0.6); }
+
+/* Responsive admin */
+@media (max-width: 1024px) {
+  .admin-stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .admin-grid-2 { grid-template-columns: 1fr; }
+  .acara-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 768px) {
+  .admin-stats-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .ascard-value { font-size: 28px; }
+  .section-page-header { flex-direction: column; align-items: flex-start; }
+  .modal-lg { max-width: 95vw; }
+}
+@media (max-width: 400px) {
+  .admin-stats-grid { grid-template-columns: 1fr; }
+}
 
 </style>
 </head>
@@ -2706,6 +3031,9 @@ select option { background: var(--bg-card); color: var(--text-primary); }
         <span class="nav-icon">📰</span> Berita Ibadah
         <span class="nav-badge" id="j-notif-badge">3</span>
       </div>
+      <div class="nav-item" onclick="jemaatNav('acara', this)">
+        <span class="nav-icon">🎉</span> Acara & Event
+      </div>
       <div class="nav-item" onclick="jemaatNav('jadwal', this)">
         <span class="nav-icon">📅</span> Jadwal Ibadah
       </div>
@@ -2891,21 +3219,49 @@ select option { background: var(--bg-card); color: var(--text-primary); }
 
       </div>
 
+      <!-- ACARA & EVENT (Jemaat) -->
+      <div id="j-sec-acara" class="section">
+        <div class="section-page-header">
+          <div>
+            <div class="section-page-title">🎉 Acara & Event</div>
+            <div class="section-page-sub">Daftar acara gereja yang sedang atau akan berlangsung</div>
+          </div>
+        </div>
+        <div id="j-acara-list">
+          <div style="text-align:center;padding:60px;color:var(--text-muted);">
+            <div style="font-size:48px;margin-bottom:16px;opacity:0.3;">🎉</div>
+            <div>Memuat acara...</div>
+          </div>
+        </div>
+      </div>
+
       <!-- JADWAL -->
       <div id="j-sec-jadwal" class="section">
-        <div style="font-family:'Cinzel',serif; font-size:20px; font-weight:600; margin-bottom:24px;">Jadwal Ibadah</div>
-        <div class="jadwal-full" id="j-jadwal-full"></div>
+        <div class="section-page-header">
+          <div>
+            <div class="section-page-title">📅 Jadwal Ibadah</div>
+            <div class="section-page-sub">Jadwal rutin kegiatan gereja Adullam</div>
+          </div>
+        </div>
+        <div class="card" style="padding:8px 0 4px;border-radius:16px;">
+          <div id="j-jadwal-full"></div>
+        </div>
       </div>
 
       <!-- PROFIL -->
       <div id="j-sec-profil" class="section">
-        <div style="font-family:'Cinzel',serif; font-size:20px; font-weight:600; margin-bottom:24px;">Profil Saya</div>
-        <div class="grid-2">
+        <div class="section-page-header">
+          <div>
+            <div class="section-page-title">👤 Profil Saya</div>
+            <div class="section-page-sub">Kelola informasi akun Anda</div>
+          </div>
+        </div>
+        <div class="admin-grid-2">
           <div class="card">
-            <div style="text-align:center; padding:20px 0 28px;">
-              <div class="avatar avatar-lg" id="j-avatar-profil" style="margin:0 auto 16px; width:72px; height:72px; font-size:28px;">J</div>
-              <div style="font-size:18px; font-weight:700;" id="j-name-profil">Jemaat</div>
-              <div style="font-size:13px; color:var(--text-muted); margin-top:4px;">Anggota Jemaat · Adullam Ministry</div>
+            <div style="text-align:center;padding:20px 0 28px;">
+              <div class="avatar avatar-lg" id="j-avatar-profil" style="margin:0 auto 16px;width:72px;height:72px;font-size:28px;">J</div>
+              <div style="font-size:18px;font-weight:700;" id="j-name-profil">Jemaat</div>
+              <div style="font-size:13px;color:var(--text-muted);margin-top:4px;">Anggota Jemaat · Adullam Ministry</div>
               <div class="badge badge-gold" style="margin-top:12px;">✦ Jemaat Aktif</div>
             </div>
             <div class="form-group">
@@ -2916,29 +3272,43 @@ select option { background: var(--bg-card); color: var(--text-primary); }
               <label class="form-label">Nomor Telepon</label>
               <input type="tel" class="form-input" id="j-profil-phone" placeholder="08xx xxxx xxxx" readonly style="opacity:0.6;">
             </div>
-            <button class="btn btn-primary btn-sm" onclick="showToast('Profil berhasil disimpan! ✅','success')">Simpan Perubahan</button>
+            <button class="btn btn-primary btn-sm" onclick="showToast('Profil berhasil disimpan! ✅','success')">💾 Simpan Perubahan</button>
           </div>
           <div class="card">
             <div class="card-title">🔒 Keamanan Akun</div>
             <div class="form-group">
               <label class="form-label">Password Lama</label>
-              <input type="password" class="form-input" placeholder="Password lama">
+              <input type="password" class="form-input" id="j-pass-lama" placeholder="Password lama">
             </div>
             <div class="form-group">
               <label class="form-label">Password Baru</label>
-              <input type="password" class="form-input" placeholder="Password baru">
+              <input type="password" class="form-input" id="j-pass-baru" placeholder="Password baru (min. 6 karakter)">
             </div>
             <div class="form-group">
               <label class="form-label">Konfirmasi Password</label>
-              <input type="password" class="form-input" placeholder="Ulangi password baru">
+              <input type="password" class="form-input" id="j-pass-konfirm" placeholder="Ulangi password baru">
             </div>
-            <button class="btn btn-outline btn-sm" onclick="showToast('Password berhasil diubah!','success')">Ganti Password</button>
+            <button class="btn btn-primary btn-sm" onclick="jemaatGantiPassword()">🔒 Ganti Password</button>
+
+            <div style="margin-top:28px;padding-top:20px;border-top:1px solid var(--bg-border);">
+              <div class="card-title" style="margin-bottom:12px;">📊 Statistik Saya</div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+                <div style="background:var(--bg-panel);border-radius:10px;padding:14px;text-align:center;">
+                  <div style="font-size:22px;font-weight:700;color:var(--gold);font-family:'Cinzel',serif;" id="j-stat-acara-daftar">0</div>
+                  <div style="font-size:11px;color:var(--text-muted);margin-top:3px;">Acara Didaftar</div>
+                </div>
+                <div style="background:var(--bg-panel);border-radius:10px;padding:14px;text-align:center;">
+                  <div style="font-size:22px;font-weight:700;color:var(--success);font-family:'Cinzel',serif;" id="j-stat-acara-hadir">0</div>
+                  <div style="font-size:11px;color:var(--text-muted);margin-top:3px;">Pernah Hadir</div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
-    </div>
-  </div>
+    </div><!-- /page-content -->
+  </div><!-- /main-content -->
 </div>
 
 <!-- Modal: Baca Berita -->
@@ -2969,13 +3339,9 @@ select option { background: var(--bg-card); color: var(--text-primary); }
     <div class="sidebar-brand">
       <div class="sidebar-logo">
         <svg viewBox="0 0 60 60" fill="none">
-          <!-- Left arch - shortest -->
           <path d="M12 44V34C12 28.5 15.5 25 20 25C24.5 25 28 28.5 28 34V44" stroke="white" stroke-width="3.5" stroke-linecap="round"/>
-          <!-- Middle arch - medium -->
           <path d="M26 44V26C26 20.5 29.5 17 34 17C38.5 17 42 20.5 42 26V44" stroke="white" stroke-width="3.5" stroke-linecap="round"/>
-          <!-- Right arch - tallest -->
           <path d="M40 44V16C40 10.5 43.5 7 48 7C52.5 7 56 10.5 56 16V44" stroke="white" stroke-width="3.5" stroke-linecap="round"/>
-          <!-- Base line -->
           <line x1="8" y1="46" x2="58" y2="46" stroke="white" stroke-width="3" stroke-linecap="round"/>
         </svg>
       </div>
@@ -2984,35 +3350,37 @@ select option { background: var(--bg-card); color: var(--text-primary); }
         <div class="sidebar-brand-role" style="color:var(--gold);">⚙ Admin Panel</div>
       </div>
     </div>
-
     <nav class="sidebar-nav">
-      <div class="nav-section-label">Admin Menu</div>
-      <div class="nav-item active" onclick="adminNav('overview', this)">
+      <div class="nav-section-label">Dashboard</div>
+      <div class="nav-item active" onclick="adminNav('overview',this)">
         <span class="nav-icon">📊</span> Overview
       </div>
-      <div class="nav-item" onclick="adminNav('jemaat', this)">
-        <span class="nav-icon">👥</span> Semua Jemaat
-        <span class="nav-badge">24</span>
+      <div class="nav-section-label">Manajemen</div>
+      <div class="nav-item" onclick="adminNav('jemaat',this)">
+        <span class="nav-icon">👥</span> Jemaat Baru
       </div>
-      <div class="nav-item" onclick="adminNav('users', this)">
-        <span class="nav-icon">🧑‍💼</span> Kelola User
+      <div class="nav-item" onclick="adminNav('acara',this)">
+        <span class="nav-icon">🎉</span> Manajemen Acara
       </div>
-      <div class="nav-item" onclick="adminNav('laporan', this)">
-        <span class="nav-icon">📈</span> Laporan
-      </div>
-      <div class="nav-item" onclick="adminNav('pengaturan', this)">
-        <span class="nav-icon">⚙️</span> Pengaturan
-      </div>
-      <div class="nav-item" onclick="adminNav('berita', this)">
+      <div class="nav-item" onclick="adminNav('berita',this)">
         <span class="nav-icon">📰</span> Berita Ibadah
       </div>
+      <div class="nav-section-label">Sistem</div>
+      <div class="nav-item" onclick="adminNav('users',this)">
+        <span class="nav-icon">🧑‍💼</span> Kelola User
+      </div>
+      <div class="nav-item" onclick="adminNav('laporan',this)">
+        <span class="nav-icon">📈</span> Laporan & PDF
+      </div>
+      <div class="nav-item" onclick="adminNav('pengaturan',this)">
+        <span class="nav-icon">⚙️</span> Pengaturan
+      </div>
     </nav>
-
     <div class="sidebar-footer">
       <div class="sidebar-user">
-        <div class="avatar" style="background:linear-gradient(135deg,#7B3FE4,#A855F7)">A</div>
+        <div class="avatar" id="a-avatar-sidebar" style="background:linear-gradient(135deg,#7B3FE4,#A855F7)">A</div>
         <div class="user-info">
-          <div class="user-name">Administrator</div>
+          <div class="user-name" id="a-name-sidebar">Administrator</div>
           <div class="user-role" style="color:var(--gold)">Super Admin</div>
         </div>
       </div>
@@ -3020,17 +3388,16 @@ select option { background: var(--bg-card); color: var(--text-primary); }
     </div>
   </div>
 
-  <!-- Mobile sidebar overlay -->
   <div class="sidebar-overlay" onclick="closeMobileSidebar()"></div>
 
   <div class="main-content">
     <div class="top-bar">
       <div style="display:flex;align-items:center;gap:10px;">
         <button class="icon-btn hamburger-btn" onclick="openMobileSidebar()">☰</button>
-        <div class="top-bar-title" id="a-topbar-title">Admin Overview</div>
+        <div class="top-bar-title" id="a-topbar-title">Overview</div>
       </div>
       <div class="top-bar-actions">
-        <button class="icon-btn theme-toggle-btn" onclick="toggleTheme()" title="Toggle Mode" id="a-theme-btn">🌙</button>
+        <button class="icon-btn theme-toggle-btn" onclick="toggleTheme()" id="a-theme-btn" title="Toggle Mode">🌙</button>
         <div class="icon-btn notif-dot">🔔</div>
         <div class="avatar" style="background:linear-gradient(135deg,#7B3FE4,#A855F7)">A</div>
       </div>
@@ -3038,145 +3405,116 @@ select option { background: var(--bg-card); color: var(--text-primary); }
 
     <div class="page-content">
 
-      <!-- ADMIN OVERVIEW -->
+      <!-- ══ OVERVIEW ══ -->
       <div id="a-sec-overview" class="section active">
-        <div class="welcome-banner" style="background:var(--admin-banner-bg);">
+        <div class="admin-hero">
+          <div class="admin-hero-glow"></div>
           <div style="position:relative;z-index:1;">
-            <div class="welcome-title">Dashboard Leader ⚡</div>
-            <div class="welcome-sub">Monitor seluruh aktivitas gereja secara real-time.</div>
+            <div class="admin-hero-eyebrow"><span class="beranda-hero-dot"></span> Real-time Dashboard</div>
+            <div class="admin-hero-title">Dashboard Leader ⚡</div>
+            <div class="admin-hero-sub">Monitor seluruh aktivitas gereja Adullam secara real-time.</div>
           </div>
         </div>
 
-        <div class="stats-grid">
-          <div class="stat-card">
-            <div class="stat-label">Total Jemaat Baru</div>
-            <div class="stat-value" id="stat-total-jemaat">—</div>
-            <div class="stat-change up">Minggu ini</div>
-            <div class="stat-icon">🆕</div>
+        <!-- Stat cards -->
+        <div class="admin-stats-grid">
+          <div class="admin-stat-card" style="--accent:#C9982A;">
+            <div class="ascard-icon">👥</div>
+            <div class="ascard-value" id="stat-total-jemaat">—</div>
+            <div class="ascard-label">Total Jemaat</div>
+            <div class="ascard-sub" id="stat-minggu-label">Semua waktu</div>
           </div>
-          <div class="stat-card">
-            <div class="stat-label">Sudah Follow Up</div>
-            <div class="stat-value" id="stat-follow-up">—</div>
-            <div class="stat-change up">Didekati + Nongki</div>
-            <div class="stat-icon">✅</div>
+          <div class="admin-stat-card" style="--accent:#4A90D9;">
+            <div class="ascard-icon">✅</div>
+            <div class="ascard-value" id="stat-follow-up">—</div>
+            <div class="ascard-label">Sudah Follow Up</div>
+            <div class="ascard-sub">Didekati + Nongki</div>
           </div>
-          <div class="stat-card">
-            <div class="stat-label">Sudah Connect</div>
-            <div class="stat-value" id="stat-connect">—</div>
-            <div class="stat-change up">Nyaman + Grup WA</div>
-            <div class="stat-icon">🔗</div>
+          <div class="admin-stat-card" style="--accent:#4CAF82;">
+            <div class="ascard-icon">❤️</div>
+            <div class="ascard-value" id="stat-connect">—</div>
+            <div class="ascard-label">Sudah Connect</div>
+            <div class="ascard-sub">Nyaman + Grup WA</div>
           </div>
-          <div class="stat-card">
-            <div class="stat-label">Belum Ditangani</div>
-            <div class="stat-value" id="stat-belum" style="color:var(--danger)">—</div>
-            <div class="stat-change down">Perlu tindak lanjut</div>
-            <div class="stat-icon">⚠️</div>
+          <div class="admin-stat-card" style="--accent:#E85A4F;">
+            <div class="ascard-icon">⚠️</div>
+            <div class="ascard-value" id="stat-belum">—</div>
+            <div class="ascard-label">Belum Ditangani</div>
+            <div class="ascard-sub">Perlu tindak lanjut</div>
           </div>
         </div>
 
-        <div class="grid-2">
+        <!-- 2 col grid -->
+        <div class="admin-grid-2">
+          <!-- Status Tracking -->
           <div class="card">
-            <div class="card-title">📊 Status Tracking Global</div>
-            <div style="margin-bottom:12px;">
-              <div class="flex justify-between text-sm" style="margin-bottom:6px;"><span>Baru Datang</span><span class="text-gold">24%</span></div>
-              <div class="progress"><div class="progress-fill" style="width:24%; background:linear-gradient(90deg,#E8913A,#ffb347)"></div></div>
-            </div>
-            <div style="margin-bottom:12px;">
-              <div class="flex justify-between text-sm" style="margin-bottom:6px;"><span>Sudah Didekati</span><span class="text-gold">20%</span></div>
-              <div class="progress"><div class="progress-fill" style="width:20%; background:linear-gradient(90deg,#4A90D9,#74b9ff)"></div></div>
-            </div>
-            <div style="margin-bottom:12px;">
-              <div class="flex justify-between text-sm" style="margin-bottom:6px;"><span>Sudah Nongki</span><span class="text-gold">21%</span></div>
-              <div class="progress"><div class="progress-fill" style="width:21%"></div></div>
-            </div>
-            <div style="margin-bottom:12px;">
-              <div class="flex justify-between text-sm" style="margin-bottom:6px;"><span>Mulai Nyaman</span><span class="text-gold">18%</span></div>
-              <div class="progress"><div class="progress-fill" style="width:18%; background:linear-gradient(90deg,#4CAF82,#00e676)"></div></div>
-            </div>
-            <div style="margin-bottom:12px;">
-              <div class="flex justify-between text-sm" style="margin-bottom:6px;"><span>Masuk Grup WA</span><span class="text-gold">10%</span></div>
-              <div class="progress"><div class="progress-fill" style="width:10%; background:linear-gradient(90deg,#A855F7,#d946ef)"></div></div>
-            </div>
-            <div>
-              <div class="flex justify-between text-sm" style="margin-bottom:6px;"><span>Belum Connect</span><span style="color:var(--danger)">7%</span></div>
-              <div class="progress"><div class="progress-fill" style="width:7%; background:linear-gradient(90deg,var(--danger),#ff8a80)"></div></div>
+            <div class="card-title">📊 Status Tracking</div>
+            <div id="admin-status-bars">
+              <div class="status-bar-item">
+                <div class="status-bar-top"><span>Baru Datang</span><span id="pct-baru" class="text-gold">—</span></div>
+                <div class="progress"><div class="progress-fill" id="bar-baru" style="width:0%;background:linear-gradient(90deg,#E8913A,#ffb347)"></div></div>
+              </div>
+              <div class="status-bar-item">
+                <div class="status-bar-top"><span>Sudah Didekati</span><span id="pct-didekati" class="text-gold">—</span></div>
+                <div class="progress"><div class="progress-fill" id="bar-didekati" style="width:0%;background:linear-gradient(90deg,#4A90D9,#74b9ff)"></div></div>
+              </div>
+              <div class="status-bar-item">
+                <div class="status-bar-top"><span>Sudah Nongki</span><span id="pct-nongki" class="text-gold">—</span></div>
+                <div class="progress"><div class="progress-fill" id="bar-nongki" style="width:0%"></div></div>
+              </div>
+              <div class="status-bar-item">
+                <div class="status-bar-top"><span>Mulai Nyaman</span><span id="pct-nyaman" class="text-gold">—</span></div>
+                <div class="progress"><div class="progress-fill" id="bar-nyaman" style="width:0%;background:linear-gradient(90deg,#4CAF82,#00e676)"></div></div>
+              </div>
+              <div class="status-bar-item">
+                <div class="status-bar-top"><span>Masuk Grup WA</span><span id="pct-grup" class="text-gold">—</span></div>
+                <div class="progress"><div class="progress-fill" id="bar-grup" style="width:0%;background:linear-gradient(90deg,#A855F7,#d946ef)"></div></div>
+              </div>
+              <div class="status-bar-item">
+                <div class="status-bar-top"><span>Belum Connect</span><span id="pct-belum-bar" style="color:var(--danger)">—</span></div>
+                <div class="progress"><div class="progress-fill" id="bar-belum" style="width:0%;background:linear-gradient(90deg,var(--danger),#ff8a80)"></div></div>
+              </div>
             </div>
           </div>
 
+          <!-- Acara Aktif -->
           <div class="card">
-            <div class="card-title">⚠️ Jemaat Terbengkalai</div>
-            <div class="activity-item">
-              <div class="activity-dot" style="background:var(--danger)"></div>
-              <div class="activity-text"><strong>Budi Santoso</strong> — Terakhir kontak 5 hari lalu. PIC: Maria S.</div>
-              <div class="activity-time" style="color:var(--danger)">5 hari</div>
+            <div class="card-title" style="display:flex;justify-content:space-between;align-items:center;">
+              🎉 Acara Aktif
+              <button class="btn btn-primary btn-sm" onclick="adminNav('acara',document.querySelector('#page-admin .nav-item:nth-child(7)'))">+ Buat Acara</button>
             </div>
-            <div class="activity-item">
-              <div class="activity-dot" style="background:var(--warning)"></div>
-              <div class="activity-text"><strong>Sari Dewi</strong> — Terakhir kontak 4 hari lalu. PIC: Yusuf T.</div>
-              <div class="activity-time" style="color:var(--warning)">4 hari</div>
+            <div id="admin-acara-preview">
+              <div style="text-align:center;padding:30px;color:var(--text-muted);">⏳ Memuat...</div>
             </div>
-            <div class="activity-item">
-              <div class="activity-dot" style="background:var(--danger)"></div>
-              <div class="activity-text"><strong>Michael Tan</strong> — Terakhir kontak 6 hari lalu. PIC: Maria S.</div>
-              <div class="activity-time" style="color:var(--danger)">6 hari</div>
-            </div>
-            <div class="activity-item">
-              <div class="activity-dot" style="background:var(--danger)"></div>
-              <div class="activity-text"><strong>Rina Kusuma</strong> — Tidak ada log selama 7 hari. Tidak ada PIC!</div>
-              <div class="activity-time" style="color:var(--danger)">7 hari</div>
-            </div>
-            <div class="activity-item">
-              <div class="activity-dot" style="background:var(--warning)"></div>
-              <div class="activity-text"><strong>Ahmad Fauzi</strong> — Terakhir kontak 4 hari lalu. PIC: Dewi L.</div>
-              <div class="activity-time" style="color:var(--warning)">4 hari</div>
-            </div>
-            <button class="btn btn-outline btn-sm w-full mt-4">Lihat Semua</button>
           </div>
         </div>
 
-        <div class="card mt-4">
-          <div class="card-title">🧑‍💼 Performa Tim Caring (Minggu Ini)</div>
+        <!-- Caring Team Performance -->
+        <div class="card" style="margin-top:20px;">
+          <div class="card-title">🧑‍💼 Performa Tim Caring</div>
           <div class="table-container">
             <table>
               <thead>
-                <tr><th>Nama</th><th>Jemaat Ditangani</th><th>Follow Up Done</th><th>Sudah Nyaman</th><th>Performa</th></tr>
+                <tr><th>Nama</th><th>Jemaat</th><th>Follow Up</th><th>Connect</th><th>Performa</th></tr>
               </thead>
-              <tbody>
-                <tr>
-                  <td><strong style="color:var(--text-primary)">Maria S.</strong></td>
-                  <td>8</td>
-                  <td>7</td>
-                  <td>3</td>
-                  <td><div class="progress" style="width:120px"><div class="progress-fill" style="width:87%"></div></div></td>
-                </tr>
-                <tr>
-                  <td><strong style="color:var(--text-primary)">Yusuf T.</strong></td>
-                  <td>6</td>
-                  <td>5</td>
-                  <td>2</td>
-                  <td><div class="progress" style="width:120px"><div class="progress-fill" style="width:70%"></div></div></td>
-                </tr>
-                <tr>
-                  <td><strong style="color:var(--text-primary)">Dewi L.</strong></td>
-                  <td>5</td>
-                  <td>3</td>
-                  <td>1</td>
-                  <td><div class="progress" style="width:120px"><div class="progress-fill" style="width:55%"></div></div></td>
-                </tr>
+              <tbody id="admin-team-tbody">
+                <tr><td colspan="5" style="text-align:center;color:var(--text-muted);padding:24px;">⏳ Memuat...</td></tr>
               </tbody>
             </table>
           </div>
         </div>
       </div>
 
-      <!-- ADMIN: SEMUA JEMAAT -->
+      <!-- ══ JEMAAT ══ -->
       <div id="a-sec-jemaat" class="section">
-        <div class="flex justify-between items-center mb-6">
-          <h2 style="font-family:'Cinzel',serif; font-size:20px;">Semua Jemaat Baru</h2>
+        <div class="section-page-header">
+          <div>
+            <div class="section-page-title">👥 Semua Jemaat Baru</div>
+            <div class="section-page-sub">Daftar seluruh jemaat yang pernah hadir</div>
+          </div>
           <div class="flex gap-3">
             <div class="search-wrapper">
-              <input type="text" class="search-input" placeholder="Cari jemaat..."
-                oninput="loadAdminJemaat(this.value)">
+              <input type="text" class="search-input" placeholder="Cari nama / telepon..." oninput="loadAdminJemaat(this.value)">
             </div>
             <button class="btn btn-primary btn-sm" onclick="openModal('modal-add-jemaat')">➕ Tambah</button>
           </div>
@@ -3185,72 +3523,90 @@ select option { background: var(--bg-card); color: var(--text-primary); }
           <div class="table-container">
             <table>
               <thead>
-                <tr><th>Nama</th><th>Telepon</th><th>Tgl Hadir</th><th>Datang</th><th>PIC</th><th>Status</th><th>Aksi</th></tr>
+                <tr><th>Nama</th><th>Telepon</th><th>Tgl Hadir</th><th>Datang Via</th><th>PIC</th><th>Status</th><th>Terakhir Kontak</th><th>Aksi</th></tr>
               </thead>
               <tbody id="admin-jemaat-tbody">
-                <tr><td colspan="7" style="text-align:center;color:var(--text-muted);padding:40px;">
-                  ⏳ Memuat data...
-                </td></tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-                <tr>
-                  <td><strong style="color:var(--text-primary)">Andi Saputra</strong></td>
-                  <td>0812 3456 7890</td>
-                  <td>15 Mei</td>
-                  <td>Sendiri</td>
-                  <td>Maria S.</td>
-                  <td><span class="badge badge-warning">Baru Datang</span></td>
-                  <td><button class="btn btn-outline btn-sm">Detail</button></td>
-                </tr>
-                <tr>
-                  <td><strong style="color:var(--text-primary)">Sari Dewi</strong></td>
-                  <td>0813 9876 5432</td>
-                  <td>12 Mei</td>
-                  <td>Diajak teman</td>
-                  <td>Yusuf T.</td>
-                  <td><span class="badge badge-info">Didekati</span></td>
-                  <td><button class="btn btn-outline btn-sm">Detail</button></td>
-                </tr>
-                <tr>
-                  <td><strong style="color:var(--text-primary)">Michael Tan</strong></td>
-                  <td>0811 2233 4455</td>
-                  <td>8 Mei</td>
-                  <td>Sendiri</td>
-                  <td>Maria S.</td>
-                  <td><span class="badge badge-gold">Nongki</span></td>
-                  <td><button class="btn btn-outline btn-sm">Detail</button></td>
-                </tr>
-                <tr>
-                  <td><strong style="color:var(--text-primary)">Budi Santoso</strong></td>
-                  <td>0819 1122 3344</td>
-                  <td>1 Mei</td>
-                  <td>Media sosial</td>
-                  <td>Dewi L.</td>
-                  <td><span class="badge badge-success">Mulai Nyaman</span></td>
-                  <td><button class="btn btn-outline btn-sm">Detail</button></td>
-                </tr>
-                <tr>
-                  <td><strong style="color:var(--text-primary)">Rina Kusuma</strong></td>
-                  <td>0821 7788 9900</td>
-                  <td>28 Apr</td>
-                  <td>Sendiri</td>
-                  <td style="color:var(--danger)">Belum Ada</td>
-                  <td><span class="badge badge-danger">Belum Connect</span></td>
-                  <td><button class="btn btn-outline btn-sm">Assign</button></td>
-                </tr>
+                <tr><td colspan="8" style="text-align:center;color:var(--text-muted);padding:40px;">⏳ Memuat data...</td></tr>
               </tbody>
             </table>
           </div>
         </div>
       </div>
 
-      <!-- ADMIN: KELOLA USER -->
+      <!-- ══ ACARA ══ -->
+      <div id="a-sec-acara" class="section">
+        <div class="section-page-header">
+          <div>
+            <div class="section-page-title">🎉 Manajemen Acara</div>
+            <div class="section-page-sub">Buat dan pantau acara gereja, kehadiran jemaat, dan statistik</div>
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="openModal('modal-buat-acara')">✦ Buat Acara Baru</button>
+        </div>
+
+        <!-- Filter tabs -->
+        <div class="tabs" style="margin-bottom:20px;">
+          <button class="tab active" onclick="switchAcaraTab('semua',this)">Semua</button>
+          <button class="tab" onclick="switchAcaraTab('sekali',this)">Acara Sekali</button>
+          <button class="tab" onclick="switchAcaraTab('mingguan',this)">Mingguan</button>
+          <button class="tab" onclick="switchAcaraTab('selesai',this)">Selesai</button>
+        </div>
+
+        <div id="admin-acara-list">
+          <div style="text-align:center;padding:60px;color:var(--text-muted);">⏳ Memuat acara...</div>
+        </div>
+      </div>
+
+      <!-- ══ BERITA ══ -->
+      <div id="a-sec-berita" class="section">
+        <div class="section-page-header">
+          <div>
+            <div class="section-page-title">📰 Berita Ibadah</div>
+            <div class="section-page-sub">Kelola berita, pengumuman, dan renungan</div>
+          </div>
+        </div>
+        <div class="admin-grid-2">
+          <div class="card" style="border-color:rgba(201,152,42,0.3);">
+            <div class="card-title">✦ Buat Postingan Baru</div>
+            <div class="form-group">
+              <label class="form-label">Kategori</label>
+              <select class="form-input" id="admin-berita-kategori">
+                <option value="ibadah">⛪ Ibadah</option>
+                <option value="pengumuman">📢 Pengumuman</option>
+                <option value="renungan">📖 Renungan</option>
+                <option value="acara">🎉 Acara</option>
+                <option value="doa">🙏 Doa</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Judul</label>
+              <input type="text" class="form-input" id="admin-berita-judul" placeholder="Judul berita...">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Isi Berita</label>
+              <textarea class="form-input" id="admin-berita-isi" rows="5" placeholder="Tulis isi berita di sini..." style="resize:vertical;line-height:1.7;"></textarea>
+            </div>
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:var(--text-secondary);margin-bottom:16px;">
+              <input type="checkbox" id="admin-berita-pin" style="accent-color:var(--gold);"> Sematkan (Pin) berita ini
+            </label>
+            <div class="flex gap-3">
+              <button class="btn btn-primary btn-sm" onclick="postBerita()">📤 Publish</button>
+              <button class="btn btn-outline btn-sm" onclick="clearPostForm()">✕ Bersihkan</button>
+            </div>
+          </div>
+          <div>
+            <div class="card-title" style="margin-bottom:12px;">📋 Riwayat Postingan</div>
+            <div id="admin-berita-list"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ USERS ══ -->
       <div id="a-sec-users" class="section">
-        <div class="flex justify-between items-center mb-6">
-          <h2 style="font-family:'Cinzel',serif; font-size:20px;">Kelola User</h2>
+        <div class="section-page-header">
+          <div>
+            <div class="section-page-title">🧑‍💼 Kelola User</div>
+            <div class="section-page-sub">Manajemen akun tim caring dan admin</div>
+          </div>
           <button class="btn btn-primary btn-sm" onclick="openModal('modal-add-user')">➕ Tambah User</button>
         </div>
         <div class="card">
@@ -3260,109 +3616,86 @@ select option { background: var(--bg-card); color: var(--text-primary); }
                 <tr><th>Nama</th><th>Telepon</th><th>Role</th><th>Jemaat</th><th>Status</th><th>Aksi</th></tr>
               </thead>
               <tbody id="admin-user-table">
-                <tr>
-                  <td>
-                    <div class="flex items-center gap-3">
-                      <div class="avatar" style="width:32px;height:32px;font-size:12px">M</div>
-                      <strong style="color:var(--text-primary)">Maria S.</strong>
-                    </div>
-                  </td>
-                  <td>0813 9876 5432</td>
-                  <td><span class="badge badge-gold">Caring Team</span></td>
-                  <td>8</td>
-                  <td><span class="badge badge-success">Aktif</span></td>
-                  <td>
-                    <div class="flex gap-2">
-                      <button class="btn btn-outline btn-sm">Edit</button>
-                      <button class="btn btn-danger btn-sm">Hapus</button>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <div class="flex items-center gap-3">
-                      <div class="avatar" style="width:32px;height:32px;font-size:12px">Y</div>
-                      <strong style="color:var(--text-primary)">Yusuf T.</strong>
-                    </div>
-                  </td>
-                  <td>0812 5566 7788</td>
-                  <td><span class="badge badge-gold">Caring Team</span></td>
-                  <td>6</td>
-                  <td><span class="badge badge-success">Aktif</span></td>
-                  <td>
-                    <div class="flex gap-2">
-                      <button class="btn btn-outline btn-sm">Edit</button>
-                      <button class="btn btn-danger btn-sm">Hapus</button>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <div class="flex items-center gap-3">
-                      <div class="avatar" style="width:32px;height:32px;font-size:12px">D</div>
-                      <strong style="color:var(--text-primary)">Dewi L.</strong>
-                    </div>
-                  </td>
-                  <td>0821 3344 5566</td>
-                  <td><span class="badge badge-gold">Caring Team</span></td>
-                  <td>5</td>
-                  <td><span class="badge badge-success">Aktif</span></td>
-                  <td>
-                    <div class="flex gap-2">
-                      <button class="btn btn-outline btn-sm">Edit</button>
-                      <button class="btn btn-danger btn-sm">Hapus</button>
-                    </div>
-                  </td>
-                </tr>
+                <tr><td colspan="6" style="text-align:center;color:var(--text-muted);padding:24px;">⏳ Memuat...</td></tr>
               </tbody>
             </table>
           </div>
         </div>
       </div>
 
-      <!-- ADMIN: LAPORAN -->
+      <!-- ══ LAPORAN & PDF ══ -->
       <div id="a-sec-laporan" class="section">
-        <h2 style="font-family:'Cinzel',serif; font-size:20px; margin-bottom:24px;">📈 Laporan Mingguan</h2>
-        <div class="grid-3">
-          <div class="stat-card">
-            <div class="stat-label">Total Jemaat Baru</div>
-            <div class="stat-value">24</div>
-            <div class="stat-change up">↑ 20% vs minggu lalu</div>
+        <div class="section-page-header">
+          <div>
+            <div class="section-page-title">📈 Laporan & Statistik</div>
+            <div class="section-page-sub">Ringkasan data jemaat, acara, dan kinerja tim</div>
           </div>
-          <div class="stat-card">
-            <div class="stat-label">Conversion Rate</div>
-            <div class="stat-value">62%</div>
-            <div class="stat-change up">↑ 5% vs target</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-label">Avg Follow-up Time</div>
-            <div class="stat-value">2.3</div>
-            <div class="stat-change up">Hari (lebih cepat)</div>
-          </div>
+          <button class="btn btn-primary btn-sm" onclick="downloadPDF()">⬇️ Download PDF</button>
         </div>
 
-        <div class="card mt-4">
-          <div class="card-title">📅 Ringkasan Mingguan</div>
-          <div class="table-container">
-            <table>
-              <thead>
-                <tr><th>Minggu</th><th>Jemaat Baru</th><th>Follow Up</th><th>Masuk Komunitas</th><th>Belum Connect</th></tr>
-              </thead>
-              <tbody>
-                <tr><td>Minggu Ini</td><td>24</td><td>15</td><td>8</td><td style="color:var(--danger)">6</td></tr>
-                <tr><td>Minggu Lalu</td><td>20</td><td>13</td><td>7</td><td style="color:var(--danger)">5</td></tr>
-                <tr><td>2 Minggu Lalu</td><td>18</td><td>10</td><td>5</td><td style="color:var(--warning)">8</td></tr>
-                <tr><td>3 Minggu Lalu</td><td>22</td><td>17</td><td>9</td><td style="color:var(--success)">4</td></tr>
-              </tbody>
-            </table>
+        <div id="laporan-content">
+          <!-- Summary Stats -->
+          <div class="admin-stats-grid" style="margin-bottom:20px;">
+            <div class="admin-stat-card" style="--accent:#C9982A;">
+              <div class="ascard-icon">👥</div>
+              <div class="ascard-value" id="lap-total">—</div>
+              <div class="ascard-label">Total Jemaat</div>
+              <div class="ascard-sub">Semua waktu</div>
+            </div>
+            <div class="admin-stat-card" style="--accent:#4CAF82;">
+              <div class="ascard-icon">✅</div>
+              <div class="ascard-value" id="lap-connect">—</div>
+              <div class="ascard-label">Sudah Connect</div>
+              <div class="ascard-sub">Nyaman + Grup WA</div>
+            </div>
+            <div class="admin-stat-card" style="--accent:#4A90D9;">
+              <div class="ascard-icon">🎉</div>
+              <div class="ascard-value" id="lap-total-acara">—</div>
+              <div class="ascard-label">Total Acara</div>
+              <div class="ascard-sub">Aktif & selesai</div>
+            </div>
+            <div class="admin-stat-card" style="--accent:#E8913A;">
+              <div class="ascard-icon">📊</div>
+              <div class="ascard-value" id="lap-conversion">—</div>
+              <div class="ascard-label">Conversion Rate</div>
+              <div class="ascard-sub">Connect / Total</div>
+            </div>
+          </div>
+
+          <div class="admin-grid-2">
+            <div class="card">
+              <div class="card-title">📊 Distribusi Status Jemaat</div>
+              <div id="lap-status-table"></div>
+            </div>
+            <div class="card">
+              <div class="card-title">🎉 Statistik Acara</div>
+              <div id="lap-acara-table"></div>
+            </div>
+          </div>
+
+          <div class="card" style="margin-top:20px;">
+            <div class="card-title">🧑‍💼 Performa Tim Caring</div>
+            <div class="table-container">
+              <table>
+                <thead><tr><th>Nama</th><th>Jemaat</th><th>Follow Up</th><th>Connect</th><th>Rate</th></tr></thead>
+                <tbody id="lap-team-table">
+                  <tr><td colspan="5" style="text-align:center;color:var(--text-muted);padding:24px;">⏳</td></tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- ADMIN: PENGATURAN -->
+      <!-- ══ PENGATURAN ══ -->
       <div id="a-sec-pengaturan" class="section">
-        <h2 style="font-family:'Cinzel',serif; font-size:20px; margin-bottom:24px;">⚙️ Pengaturan Sistem</h2>
-        <div class="grid-2">
+        <div class="section-page-header">
+          <div>
+            <div class="section-page-title">⚙️ Pengaturan</div>
+            <div class="section-page-sub">Konfigurasi sistem dan akun</div>
+          </div>
+        </div>
+        <div class="admin-grid-2">
           <div class="card">
             <div class="card-title">🏛️ Info Gereja</div>
             <div class="form-group">
@@ -3374,82 +3707,24 @@ select option { background: var(--bg-card); color: var(--text-primary); }
               <input type="text" class="form-input" value="Jakarta">
             </div>
             <div class="form-group">
-              <label class="form-label">Nomor WhatsApp Gereja</label>
+              <label class="form-label">WhatsApp Gereja</label>
               <input type="tel" class="form-input" value="0812 0000 0000">
             </div>
-            <button class="btn btn-primary btn-sm">Simpan Perubahan</button>
+            <button class="btn btn-primary btn-sm">💾 Simpan</button>
           </div>
           <div class="card">
-            <div class="card-title">🔔 Pengaturan Notifikasi</div>
-            <div style="margin-bottom:16px;">
-              <div class="flex justify-between items-center" style="margin-bottom:10px;">
-                <span style="font-size:14px; color:var(--text-secondary)">Reminder 3 hari belum kontak</span>
-                <div style="width:44px;height:24px;background:var(--gold);border-radius:12px;cursor:pointer;position:relative;">
-                  <div style="width:18px;height:18px;background:white;border-radius:50%;position:absolute;top:3px;right:3px;transition:0.3s;"></div>
-                </div>
-              </div>
-              <div class="flex justify-between items-center" style="margin-bottom:10px;">
-                <span style="font-size:14px; color:var(--text-secondary)">Reminder 5 hari belum kontak</span>
-                <div style="width:44px;height:24px;background:var(--gold);border-radius:12px;cursor:pointer;position:relative;">
-                  <div style="width:18px;height:18px;background:white;border-radius:50%;position:absolute;top:3px;right:3px;"></div>
-                </div>
-              </div>
-              <div class="flex justify-between items-center">
-                <span style="font-size:14px; color:var(--text-secondary)">Laporan otomatis Senin pagi</span>
-                <div style="width:44px;height:24px;background:var(--bg-panel);border:1px solid var(--bg-border);border-radius:12px;cursor:pointer;position:relative;">
-                  <div style="width:18px;height:18px;background:var(--text-muted);border-radius:50%;position:absolute;top:3px;left:3px;"></div>
-                </div>
-              </div>
+            <div class="card-title">🔑 Ganti Password</div>
+            <div class="form-group">
+              <label class="form-label">Password Lama</label>
+              <input type="password" class="form-input" id="set-pass-lama" placeholder="Password sekarang">
             </div>
-            <div class="card-title" style="margin-top:20px;">🔑 Akun Admin</div>
             <div class="form-group">
               <label class="form-label">Password Baru</label>
-              <input type="password" class="form-input" placeholder="Password baru">
+              <input type="password" class="form-input" id="set-pass-baru" placeholder="Password baru">
             </div>
-            <button class="btn btn-outline btn-sm">Ganti Password</button>
+            <button class="btn btn-primary btn-sm" onclick="gantiPassword()">🔒 Ganti Password</button>
           </div>
         </div>
-      </div>
-
-      <!-- ADMIN: BERITA IBADAH -->
-      <div id="a-sec-berita" class="section">
-        <div class="flex justify-between items-center mb-6">
-          <h2 style="font-family:'Cinzel',serif; font-size:20px;">📰 Berita Ibadah</h2>
-        </div>
-
-        <div class="card mb-6" style="border-color:rgba(201,152,42,0.3);">
-          <div class="card-title">✦ Buat Postingan Baru</div>
-          <div class="form-group">
-            <label class="form-label">Kategori</label>
-            <select class="form-input" id="admin-berita-kategori">
-              <option value="ibadah">⛪ Ibadah</option>
-              <option value="pengumuman">📢 Pengumuman</option>
-              <option value="renungan">📖 Renungan</option>
-              <option value="acara">🎉 Acara</option>
-              <option value="doa">🙏 Doa</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Judul Berita</label>
-            <input type="text" class="form-input" id="admin-berita-judul" placeholder="Judul berita atau pengumuman...">
-          </div>
-          <div class="form-group">
-            <label class="form-label">Isi Berita</label>
-            <textarea class="form-input" id="admin-berita-isi" rows="5" placeholder="Tulis isi berita, renungan, atau pengumuman di sini..." style="resize:vertical; line-height:1.7;"></textarea>
-          </div>
-          <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px;">
-            <label style="display:flex; align-items:center; gap:8px; cursor:pointer; font-size:13px; color:var(--text-secondary);">
-              <input type="checkbox" id="admin-berita-pin" style="accent-color:var(--gold);"> Sematkan (Pin) berita ini
-            </label>
-          </div>
-          <div class="flex gap-3">
-            <button class="btn btn-primary btn-sm" onclick="postBerita()">📤 Publish Sekarang</button>
-            <button class="btn btn-outline btn-sm" onclick="clearPostForm()">✕ Bersihkan</button>
-          </div>
-        </div>
-
-        <div class="card-title" style="margin-bottom:16px;">📋 Riwayat Postingan</div>
-        <div id="admin-berita-list"></div>
       </div>
 
     </div><!-- /page-content -->
@@ -3582,7 +3857,7 @@ select option { background: var(--bg-card); color: var(--text-primary); }
 // Ganti URL ini dengan URL Railway backend kamu setelah deploy
 const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
   ? 'http://localhost:3000/api'
-  : 'https://adullam-backend-production.up.railway.app/api'; // <-- ganti setelah deploy Railway
+  : 'https://YOUR-RAILWAY-BACKEND.up.railway.app/api'; // <-- ganti setelah deploy Railway
 
 // ── STATE ─────────────────────────────────────────────────
 let authToken = localStorage.getItem('adullam_token') || null;
@@ -3683,6 +3958,10 @@ function doLogout() {
 
 function routeByRole(user) {
   if (user.role === 'admin') {
+    const aEl = document.getElementById('a-avatar-sidebar');
+    const nEl = document.getElementById('a-name-sidebar');
+    if (aEl) aEl.textContent = user.nama.charAt(0).toUpperCase();
+    if (nEl) nEl.textContent = user.nama;
     showPage('page-admin');
     loadAdminDashboard();
   } else if (user.role === 'jemaat') {
@@ -3977,15 +4256,591 @@ function userNav(section, el) {
 
 function adminNav(section, el) {
   document.querySelectorAll('#page-admin .nav-item').forEach(i => i.classList.remove('active'));
-  el.classList.add('active');
+  if (el) el.classList.add('active');
+  else {
+    const map = { overview:1,jemaat:3,acara:4,berita:5,users:7,laporan:8,pengaturan:9 };
+    const items = document.querySelectorAll('#page-admin .nav-item');
+    if (items[map[section]-1]) items[map[section]-1].classList.add('active');
+  }
   document.querySelectorAll('#page-admin .section').forEach(s => s.classList.remove('active'));
-  document.getElementById(`a-sec-${section}`).classList.add('active');
-  const titles = { overview:'Admin Overview', jemaat:'Semua Jemaat', users:'Kelola User', laporan:'Laporan', pengaturan:'Pengaturan', berita:'Berita Ibadah' };
+  document.getElementById(`a-sec-${section}`)?.classList.add('active');
+  const titles = { overview:'Overview', jemaat:'Semua Jemaat', acara:'Manajemen Acara',
+    berita:'Berita Ibadah', users:'Kelola User', laporan:'Laporan & PDF', pengaturan:'Pengaturan' };
   document.getElementById('a-topbar-title').textContent = titles[section] || 'Admin';
-  if (section === 'berita') { loadAdminDashboard(); }
-  if (section === 'jemaat') loadAdminJemaat();
+  if (section==='overview')    loadAdminDashboard();
+  if (section==='jemaat')      loadAdminJemaat();
+  if (section==='acara')       loadAdminAcara();
+  if (section==='berita')      loadAdminDashboard();
+  if (section==='users')       loadAdminUsers();
+  if (section==='laporan')     loadLaporan();
   closeMobileSidebar();
 }
+
+// ── ADMIN DASHBOARD LOAD ───────────────────────────────────
+async function loadAdminDashboard() {
+  try {
+    const stats = await api('GET', '/jemaat/stats/summary');
+    if (stats.success) {
+      const d = stats.data;
+      const el = id => document.getElementById(id);
+      const setEl = (id, val) => { const e = el(id); if (e) e.textContent = val; };
+      setEl('stat-total-jemaat', d.total);
+      setEl('stat-follow-up', d.didekati + d.nongki);
+      setEl('stat-connect', d.grup_wa + d.nyaman);
+      setEl('stat-belum', d.belum);
+      // Status bars
+      const total = d.total || 1;
+      const bars = [
+        ['baru', d.baru], ['didekati', d.didekati], ['nongki', d.nongki],
+        ['nyaman', d.nyaman], ['grup', d.grup_wa], ['belum', d.belum]
+      ];
+      bars.forEach(([key, val]) => {
+        const pct = Math.round((val / total) * 100);
+        const pEl = el(`pct-${key}`); if (pEl) pEl.textContent = pct + '%';
+        const bEl = el(`bar-${key}`); if (bEl) bEl.style.width = pct + '%';
+      });
+      // Laporan stats
+      setEl('lap-total', d.total);
+      setEl('lap-connect', d.grup_wa + d.nyaman);
+      const conv = d.total ? Math.round(((d.grup_wa + d.nyaman) / d.total) * 100) : 0;
+      setEl('lap-conversion', conv + '%');
+      // Status table for laporan
+      const lapTable = el('lap-status-table');
+      if (lapTable) {
+        lapTable.innerHTML = `<table style="width:100%;font-size:13px;"><thead><tr><th>Status</th><th>Jumlah</th><th>%</th></tr></thead><tbody>
+          ${[['Baru Datang',d.baru],['Sudah Didekati',d.didekati],['Sudah Nongki',d.nongki],['Mulai Nyaman',d.nyaman],['Masuk Grup WA',d.grup_wa],['Belum Connect',d.belum]].map(([s,v])=>`<tr><td>${s}</td><td style="font-weight:600">${v}</td><td style="color:var(--text-muted)">${Math.round(v/total*100)}%</td></tr>`).join('')}
+        </tbody></table>`;
+      }
+    }
+    // Load berita for admin
+    const beritaData = await api('GET', '/berita');
+    if (beritaData.success) {
+      DB.berita = beritaData.data.map(b => ({
+        id:b.id, pinned:!!b.pinned, kategori:b.kategori, judul:b.judul, isi:b.isi,
+        waktu:new Date(b.created_at), penulis:b.penulis_nama||'Admin', likes:b.likes||0, liked:false, komentar:0,
+      }));
+      renderAdminBeritaList();
+    }
+    // Load acara preview
+    loadAcaraPreview();
+    // Team performance
+    loadAdminTeam();
+  } catch(e) { console.error('loadAdminDashboard error:', e); }
+}
+
+async function loadAdminTeam() {
+  try {
+    const data = await api('GET', '/users/caring-team/list');
+    if (!data.success) return;
+    const tbody = document.getElementById('admin-team-tbody');
+    if (!tbody) return;
+    const rows = data.data;
+    if (!rows.length) { tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--text-muted);padding:20px;">Belum ada tim caring</td></tr>'; return; }
+    tbody.innerHTML = rows.map(u => {
+      const pct = u.beban > 0 ? Math.min(Math.round((u.beban/10)*100), 100) : 0;
+      return `<tr>
+        <td><strong style="color:var(--text-primary)">${u.nama}</strong></td>
+        <td>${u.beban}</td>
+        <td>—</td>
+        <td>—</td>
+        <td><div class="progress" style="width:100px"><div class="progress-fill" style="width:${pct}%"></div></div></td>
+      </tr>`;
+    }).join('');
+    // Laporan team table
+    const lapTeam = document.getElementById('lap-team-table');
+    if (lapTeam) lapTeam.innerHTML = rows.map(u => `<tr>
+      <td><strong style="color:var(--text-primary)">${u.nama}</strong></td>
+      <td>${u.beban}</td><td>—</td><td>—</td>
+      <td>—</td>
+    </tr>`).join('');
+  } catch(e) {}
+}
+
+async function loadAdminUsers() {
+  try {
+    const data = await api('GET', '/users');
+    if (!data.success) return;
+    const tbody = document.getElementById('admin-user-table');
+    if (!tbody) return;
+    tbody.innerHTML = data.data.map(u => `<tr>
+      <td><div class="flex items-center gap-3"><div class="avatar" style="width:32px;height:32px;font-size:12px">${u.nama.charAt(0)}</div><strong style="color:var(--text-primary)">${u.nama}</strong></div></td>
+      <td>${u.telepon}</td>
+      <td><span class="badge badge-gold">${u.role}</span></td>
+      <td>${u.total_jemaat||0}</td>
+      <td><span class="badge ${u.aktif?'badge-success':'badge-danger'}">${u.aktif?'Aktif':'Nonaktif'}</span></td>
+      <td><div class="flex gap-2">
+        <button class="btn btn-danger btn-sm" onclick="nonaktifUser(${u.id})">Hapus</button>
+      </div></td>
+    </tr>`).join('');
+  } catch(e) {}
+}
+
+async function nonaktifUser(id) {
+  if (!confirm('Yakin nonaktifkan user ini?')) return;
+  try {
+    const d = await api('DELETE', `/users/${id}`);
+    showToast(d.message || 'User dinonaktifkan.', d.success ? 'success' : 'error');
+    if (d.success) loadAdminUsers();
+  } catch { showToast('Gagal.', 'error'); }
+}
+
+async function gantiPassword() {
+  const lama = document.getElementById('set-pass-lama')?.value;
+  const baru = document.getElementById('set-pass-baru')?.value;
+  if (!lama || !baru) { showToast('Isi semua field!', 'error'); return; }
+  try {
+    const d = await api('POST', '/auth/change-password', { password_lama: lama, password_baru: baru });
+    showToast(d.message, d.success ? 'success' : 'error');
+  } catch { showToast('Gagal.', 'error'); }
+}
+
+// ── ACARA / EVENT SYSTEM ───────────────────────────────────
+// In-memory store (replace with API when backend supports it)
+let ACARA_DB = [
+  {
+    id: 1, nama: 'Ibadah Raya Minggu', jenis: 'mingguan',
+    tanggal: '2025-06-01', waktu: '09:00', tempat: 'Aula Utama Lantai 1',
+    deskripsi: 'Ibadah raya setiap Minggu pagi. Terbuka untuk seluruh jemaat dan tamu.',
+    kapasitas: null, gambar: null, aktif: true,
+    peserta: [
+      { nama: 'Rina Kusuma', hp: '08222222222', daftar_at: new Date('2025-05-28'), hadir: true },
+      { nama: 'Budi Santoso', hp: '0819 1122 3344', daftar_at: new Date('2025-05-29'), hadir: false },
+      { nama: 'Sari Dewi', hp: '0813 9876 5432', daftar_at: new Date('2025-05-30'), hadir: true },
+    ]
+  },
+  {
+    id: 2, nama: 'Youth Night Special', jenis: 'sekali',
+    tanggal: '2025-06-28', waktu: '18:00', tempat: 'Aula Serbaguna Lantai 2',
+    deskripsi: 'Malam spesial untuk anak muda. Dress code casual. Bawa teman!',
+    kapasitas: 100, gambar: null, aktif: true,
+    peserta: [
+      { nama: 'Michael Tan', hp: '0811 2233 4455', daftar_at: new Date('2025-05-25'), hadir: false },
+    ]
+  }
+];
+let nextAcaraId = 3;
+let activeAcaraTab = 'semua';
+let activeAcaraJenis = 'sekali';
+let selectedAcaraId = null;
+
+function setAcaraJenis(jenis) {
+  activeAcaraJenis = jenis;
+  document.getElementById('pill-sekali').classList.toggle('active', jenis === 'sekali');
+  document.getElementById('pill-mingguan').classList.toggle('active', jenis === 'mingguan');
+  document.getElementById('acara-mingguan-info').style.display = jenis === 'mingguan' ? 'block' : 'none';
+}
+
+function previewAcaraImg(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const preview = document.getElementById('acara-img-preview');
+    const placeholder = document.getElementById('acara-img-placeholder');
+    preview.src = e.target.result;
+    preview.style.display = 'block';
+    placeholder.style.display = 'none';
+  };
+  reader.readAsDataURL(file);
+}
+
+function simpanAcara() {
+  const nama = document.getElementById('acara-nama').value.trim();
+  const tanggal = document.getElementById('acara-tanggal').value;
+  const waktu = document.getElementById('acara-waktu').value;
+  const tempat = document.getElementById('acara-tempat').value.trim();
+  const deskripsi = document.getElementById('acara-deskripsi').value.trim();
+  const kapasitas = document.getElementById('acara-kapasitas').value;
+  const preview = document.getElementById('acara-img-preview');
+
+  if (!nama || !tanggal || !waktu || !tempat) {
+    showToast('Nama, tanggal, waktu, dan tempat wajib diisi!', 'error');
+    return;
+  }
+
+  const acara = {
+    id: nextAcaraId++,
+    nama, jenis: activeAcaraJenis,
+    tanggal, waktu, tempat, deskripsi,
+    kapasitas: kapasitas ? parseInt(kapasitas) : null,
+    gambar: preview.style.display === 'block' ? preview.src : null,
+    aktif: true, peserta: []
+  };
+
+  ACARA_DB.unshift(acara);
+
+  // Reset form
+  ['acara-nama','acara-tanggal','acara-waktu','acara-tempat','acara-deskripsi','acara-kapasitas']
+    .forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+  document.getElementById('acara-img-preview').style.display = 'none';
+  document.getElementById('acara-img-placeholder').style.display = 'block';
+  setAcaraJenis('sekali');
+
+  closeModal('modal-buat-acara');
+  showToast(`Acara "${nama}" berhasil dibuat! 🎉`, 'success');
+  loadAdminAcara();
+  loadAcaraPreview();
+}
+
+function switchAcaraTab(tab, el) {
+  activeAcaraTab = tab;
+  document.querySelectorAll('#a-sec-acara .tab').forEach(t => t.classList.remove('active'));
+  if (el) el.classList.add('active');
+  loadAdminAcara();
+}
+
+function loadAdminAcara() {
+  const container = document.getElementById('admin-acara-list');
+  if (!container) return;
+
+  let filtered = ACARA_DB;
+  if (activeAcaraTab === 'sekali')    filtered = ACARA_DB.filter(a => a.jenis === 'sekali' && a.aktif);
+  if (activeAcaraTab === 'mingguan')  filtered = ACARA_DB.filter(a => a.jenis === 'mingguan');
+  if (activeAcaraTab === 'selesai')   filtered = ACARA_DB.filter(a => !a.aktif);
+
+  if (!filtered.length) {
+    container.innerHTML = `<div style="text-align:center;padding:60px;color:var(--text-muted);">
+      <div style="font-size:48px;margin-bottom:16px;opacity:0.3;">🎉</div>
+      <div>Belum ada acara. Buat acara pertama!</div>
+    </div>`;
+    return;
+  }
+
+  container.innerHTML = `<div class="acara-grid">${filtered.map(a => renderAcaraCard(a, true)).join('')}</div>`;
+
+  // Laporan acara
+  const lapAcara = document.getElementById('lap-acara-table');
+  if (lapAcara) {
+    lapAcara.innerHTML = `<table style="width:100%;font-size:13px;"><thead><tr><th>Nama Acara</th><th>Jenis</th><th>Peserta</th></tr></thead><tbody>
+      ${ACARA_DB.map(a => `<tr><td>${a.nama}</td><td>${a.jenis}</td><td style="font-weight:600">${a.peserta.length}</td></tr>`).join('')}
+    </tbody></table>`;
+    document.getElementById('lap-total-acara').textContent = ACARA_DB.length;
+  }
+}
+
+function loadAcaraPreview() {
+  const container = document.getElementById('admin-acara-preview');
+  if (!container) return;
+  const aktif = ACARA_DB.filter(a => a.aktif).slice(0, 3);
+  if (!aktif.length) {
+    container.innerHTML = '<div style="text-align:center;padding:20px;color:var(--text-muted);font-size:13px;">Belum ada acara aktif</div>';
+    return;
+  }
+  container.innerHTML = aktif.map(a => `
+    <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--bg-border);">
+      <div style="width:40px;height:40px;border-radius:10px;background:${a.gambar ? 'transparent':'var(--bg-panel)'};display:flex;align-items:center;justify-content:center;font-size:18px;overflow:hidden;flex-shrink:0;">
+        ${a.gambar ? `<img src="${a.gambar}" style="width:100%;height:100%;object-fit:cover;">` : '🎉'}
+      </div>
+      <div style="flex:1;min-width:0;">
+        <div style="font-size:13px;font-weight:600;color:var(--text-primary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${a.nama}</div>
+        <div style="font-size:11px;color:var(--text-muted);">${formatDate(a.tanggal)} · ${a.waktu} · ${a.peserta.length} daftar</div>
+      </div>
+      <span class="badge ${a.jenis==='mingguan'?'badge-gold':'badge-info'}" style="font-size:10px;">${a.jenis}</span>
+    </div>
+  `).join('');
+}
+
+function renderAcaraCard(a, isAdmin) {
+  const tgl = formatDate(a.tanggal);
+  const hadir = a.peserta.filter(p => p.hadir).length;
+  return `
+    <div class="acara-card">
+      <div class="acara-card-img">
+        ${a.gambar ? `<img src="${a.gambar}" alt="${a.nama}">` : '🎉'}
+      </div>
+      <div class="acara-card-body">
+        <div class="acara-card-badges">
+          <span class="acara-badge-type ${a.jenis==='mingguan'?'acara-mingguan':'acara-sekali'}">${a.jenis==='mingguan'?'🔁 Mingguan':'📅 Sekali'}</span>
+          <span class="acara-badge-type ${a.aktif?'acara-aktif':'acara-selesai'}">${a.aktif?'✅ Aktif':'☑️ Selesai'}</span>
+        </div>
+        <div class="acara-card-title">${a.nama}</div>
+        <div class="acara-card-info">
+          <div class="acara-info-row">📅 ${tgl} · ⏰ ${a.waktu} WIB</div>
+          <div class="acara-info-row">📍 ${a.tempat}</div>
+          ${a.kapasitas ? `<div class="acara-info-row">👥 Kapasitas: ${a.kapasitas} orang</div>` : ''}
+          ${a.deskripsi ? `<div class="acara-info-row" style="font-style:italic;color:var(--text-muted);margin-top:4px;">${a.deskripsi.slice(0,80)}${a.deskripsi.length>80?'...':''}</div>` : ''}
+        </div>
+        <div class="acara-card-stats">
+          <div class="acara-stat-item"><div class="acara-stat-val">${a.peserta.length}</div><div class="acara-stat-lbl">Daftar</div></div>
+          <div class="acara-stat-item"><div class="acara-stat-val" style="color:var(--success)">${hadir}</div><div class="acara-stat-lbl">Hadir</div></div>
+          <div class="acara-stat-item"><div class="acara-stat-val" style="color:var(--text-muted)">${a.kapasitas||'∞'}</div><div class="acara-stat-lbl">Kapasitas</div></div>
+        </div>
+        ${isAdmin ? `
+        <div class="acara-card-actions">
+          <button class="btn btn-primary btn-sm" style="flex:1;" onclick="lihatPeserta(${a.id})">👥 Lihat Peserta</button>
+          <button class="btn btn-outline btn-sm" onclick="toggleAcaraAktif(${a.id})">${a.aktif?'⏸ Tutup':'▶ Buka'}</button>
+          <button class="btn btn-danger btn-sm" onclick="hapusAcara(${a.id})">🗑</button>
+        </div>` : `
+        <button class="btn btn-primary w-full btn-sm" onclick="bukaModalDaftar(${a.id})">✅ Daftar Sekarang</button>`}
+      </div>
+    </div>`;
+}
+
+function toggleAcaraAktif(id) {
+  const a = ACARA_DB.find(x => x.id === id);
+  if (!a) return;
+  a.aktif = !a.aktif;
+  loadAdminAcara();
+  loadAcaraPreview();
+  showToast(`Acara "${a.nama}" ${a.aktif ? 'dibuka' : 'ditutup'}.`, 'success');
+}
+
+function hapusAcara(id) {
+  if (!confirm('Yakin hapus acara ini? Semua data peserta akan terhapus.')) return;
+  ACARA_DB = ACARA_DB.filter(x => x.id !== id);
+  loadAdminAcara();
+  loadAcaraPreview();
+  showToast('Acara berhasil dihapus.', 'success');
+}
+
+function lihatPeserta(acaraId) {
+  const a = ACARA_DB.find(x => x.id === acaraId);
+  if (!a) return;
+  selectedAcaraId = acaraId;
+
+  document.getElementById('peserta-modal-title').innerHTML = `👥 Peserta <span style="color:var(--gold)">${a.nama}</span>`;
+  document.getElementById('peserta-modal-sub').textContent = `${formatDate(a.tanggal)} · ${a.waktu} · ${a.tempat}`;
+  document.getElementById('p-total').textContent = a.peserta.length;
+  document.getElementById('p-hadir').textContent = a.peserta.filter(p => p.hadir).length;
+  document.getElementById('p-kapasitas').textContent = a.kapasitas || '∞';
+
+  const list = document.getElementById('peserta-list');
+  if (!a.peserta.length) {
+    list.innerHTML = '<div style="text-align:center;padding:32px;color:var(--text-muted);">Belum ada peserta yang daftar.</div>';
+  } else {
+    list.innerHTML = a.peserta.map((p, i) => `
+      <div class="peserta-item">
+        <div class="peserta-num">${i + 1}</div>
+        <div class="avatar" style="width:34px;height:34px;font-size:13px;">${p.nama.charAt(0)}</div>
+        <div style="flex:1;">
+          <div style="font-size:13px;font-weight:600;color:var(--text-primary);">${p.nama}</div>
+          <div style="font-size:12px;color:var(--text-muted);">${p.hp} · ${timeAgo(p.daftar_at)}</div>
+        </div>
+        <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-muted);cursor:pointer;">
+          <input type="checkbox" ${p.hadir?'checked':''} onchange="toggleHadir(${acaraId},${i})" style="accent-color:var(--success);">
+          Hadir
+        </label>
+      </div>`).join('');
+  }
+  openModal('modal-peserta-acara');
+}
+
+function toggleHadir(acaraId, idx) {
+  const a = ACARA_DB.find(x => x.id === acaraId);
+  if (!a) return;
+  a.peserta[idx].hadir = !a.peserta[idx].hadir;
+  document.getElementById('p-hadir').textContent = a.peserta.filter(p => p.hadir).length;
+}
+
+// ── JEMAAT ACARA (from jemaat page) ───────────────────────
+function loadJemaatAcara() {
+  const container = document.getElementById('j-acara-list');
+  if (!container) return;
+  const aktif = ACARA_DB.filter(a => a.aktif);
+  if (!aktif.length) {
+    container.innerHTML = '<div class="feed-empty"><span class="feed-empty-icon">🎉</span><div class="feed-empty-text">Belum ada acara aktif saat ini.</div></div>';
+    return;
+  }
+  container.innerHTML = `<div class="acara-grid">${aktif.map(a => renderAcaraCard(a, false)).join('')}</div>`;
+}
+
+function bukaModalDaftar(acaraId) {
+  const a = ACARA_DB.find(x => x.id === acaraId);
+  if (!a) return;
+  selectedAcaraId = acaraId;
+  document.getElementById('daftar-modal-title').innerHTML = `🎉 Daftar <span style="color:var(--gold)">${a.nama}</span>`;
+  document.getElementById('daftar-modal-sub').textContent = 'Konfirmasi kehadiran Anda di acara ini';
+  document.getElementById('daftar-acara-detail').innerHTML =
+    `📅 ${formatDate(a.tanggal)} &nbsp;·&nbsp; ⏰ ${a.waktu} WIB<br>📍 ${a.tempat}<br>${a.deskripsi ? `<br><i>${a.deskripsi}</i>` : ''}`;
+
+  // Pre-fill jika sudah login
+  if (currentUser) {
+    const nameEl = document.getElementById('daftar-nama');
+    const hpEl = document.getElementById('daftar-hp');
+    if (nameEl) nameEl.value = currentUser.nama || '';
+    if (hpEl) hpEl.value = currentUser.telepon || '';
+  }
+  openModal('modal-daftar-acara');
+}
+
+function konfirmasiDaftar() {
+  const nama = document.getElementById('daftar-nama').value.trim();
+  const hp   = document.getElementById('daftar-hp').value.trim();
+  if (!nama) { showToast('Nama wajib diisi!', 'error'); return; }
+
+  const a = ACARA_DB.find(x => x.id === selectedAcaraId);
+  if (!a) return;
+
+  // Cek kapasitas
+  if (a.kapasitas && a.peserta.length >= a.kapasitas) {
+    showToast('Maaf, kapasitas acara sudah penuh!', 'error');
+    return;
+  }
+  // Cek sudah daftar
+  if (a.peserta.find(p => p.nama === nama || (hp && p.hp === hp))) {
+    showToast('Kamu sudah terdaftar di acara ini!', 'error');
+    return;
+  }
+
+  a.peserta.push({ nama, hp, daftar_at: new Date(), hadir: false });
+  closeModal('modal-daftar-acara');
+  showToast(`✅ Berhasil daftar ke "${a.nama}"! Sampai jumpa!`, 'success');
+  loadJemaatAcara();
+}
+
+// ── LAPORAN ────────────────────────────────────────────────
+async function loadLaporan() {
+  await loadAdminDashboard();
+  loadAdminAcara();
+}
+
+// ── PDF DOWNLOAD ────────────────────────────────────────────
+function downloadPDF() {
+  const stats = {
+    total: document.getElementById('stat-total-jemaat')?.textContent || '—',
+    followUp: document.getElementById('stat-follow-up')?.textContent || '—',
+    connect: document.getElementById('stat-connect')?.textContent || '—',
+    belum: document.getElementById('stat-belum')?.textContent || '—',
+  };
+
+  const acaraRows = ACARA_DB.map((a, i) => `
+    <tr>
+      <td>${i+1}</td><td>${a.nama}</td>
+      <td>${a.jenis==='mingguan'?'Mingguan':'Sekali'}</td>
+      <td>${formatDate(a.tanggal)} ${a.waktu}</td>
+      <td>${a.tempat}</td>
+      <td>${a.peserta.length}</td>
+      <td>${a.peserta.filter(p=>p.hadir).length}</td>
+      <td>${a.aktif?'Aktif':'Selesai'}</td>
+    </tr>`).join('');
+
+  const html = `
+  <!DOCTYPE html><html lang="id"><head>
+  <meta charset="UTF-8">
+  <title>Laporan Adullam Soul Connect</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family: Arial, sans-serif; font-size: 12px; color: #1a1a1a; padding: 20px; }
+    .header { text-align: center; border-bottom: 3px solid #9B7319; padding-bottom: 20px; margin-bottom: 24px; }
+    .header h1 { font-size: 22px; color: #9B7319; margin-bottom: 4px; }
+    .header p { color: #666; font-size: 11px; }
+    .section-title { font-size: 15px; font-weight: bold; color: #9B7319; border-left: 4px solid #9B7319; padding-left: 10px; margin: 24px 0 12px; }
+    .stats-row { display: flex; gap: 12px; margin-bottom: 20px; }
+    .stat-box { flex: 1; border: 1px solid #ddd; border-radius: 8px; padding: 14px; text-align: center; }
+    .stat-box .val { font-size: 28px; font-weight: bold; color: #9B7319; }
+    .stat-box .lbl { font-size: 11px; color: #666; margin-top: 3px; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+    th { background: #9B7319; color: white; padding: 8px 10px; text-align: left; font-size: 11px; }
+    td { padding: 7px 10px; border-bottom: 1px solid #eee; font-size: 11px; }
+    tr:nth-child(even) td { background: #fafafa; }
+    .footer { margin-top: 32px; text-align: center; color: #999; font-size: 10px; border-top: 1px solid #eee; padding-top: 12px; }
+    @media print { body { padding: 0; } }
+  </style>
+  </head><body>
+  <div class="header">
+    <h1>⛪ ADULLAM SOUL CONNECT</h1>
+    <p>Laporan Statistik Jemaat & Acara Gereja</p>
+    <p>Digenerate: ${new Date().toLocaleDateString('id-ID', {weekday:'long',day:'numeric',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'})}</p>
+  </div>
+
+  <div class="section-title">📊 Ringkasan Jemaat</div>
+  <div class="stats-row">
+    <div class="stat-box"><div class="val">${stats.total}</div><div class="lbl">Total Jemaat</div></div>
+    <div class="stat-box"><div class="val">${stats.followUp}</div><div class="lbl">Sudah Follow Up</div></div>
+    <div class="stat-box"><div class="val">${stats.connect}</div><div class="lbl">Sudah Connect</div></div>
+    <div class="stat-box"><div class="val" style="color:#c0362a">${stats.belum}</div><div class="lbl">Belum Ditangani</div></div>
+  </div>
+
+  <div class="section-title">🎉 Daftar Acara</div>
+  <table>
+    <thead><tr><th>No</th><th>Nama Acara</th><th>Jenis</th><th>Tanggal & Waktu</th><th>Tempat</th><th>Daftar</th><th>Hadir</th><th>Status</th></tr></thead>
+    <tbody>${acaraRows || '<tr><td colspan="8" style="text-align:center;padding:20px;color:#999;">Belum ada acara</td></tr>'}</tbody>
+  </table>
+
+  ${ACARA_DB.map(a => {
+    if (!a.peserta.length) return '';
+    return `
+    <div class="section-title">👥 Peserta: ${a.nama}</div>
+    <table>
+      <thead><tr><th>No</th><th>Nama</th><th>Nomor HP</th><th>Waktu Daftar</th><th>Status Hadir</th></tr></thead>
+      <tbody>${a.peserta.map((p,i) => `<tr><td>${i+1}</td><td>${p.nama}</td><td>${p.hp||'-'}</td><td>${p.daftar_at.toLocaleDateString('id-ID')}</td><td>${p.hadir?'✅ Hadir':'⏳ Belum'}</td></tr>`).join('')}</tbody>
+    </table>`;
+  }).join('')}
+
+  <div class="footer">
+    <p>Adullam Soul Connect — Sistem Manajemen Jemaat Gereja</p>
+    <p>Dokumen ini digenerate otomatis. Tidak memerlukan tanda tangan.</p>
+  </div>
+  </body></html>`;
+
+  const win = window.open('', '_blank');
+  win.document.write(html);
+  win.document.close();
+  setTimeout(() => { win.print(); }, 500);
+}
+
+function downloadPesertaPDF() {
+  const a = ACARA_DB.find(x => x.id === selectedAcaraId);
+  if (!a) return;
+
+  const html = `
+  <!DOCTYPE html><html lang="id"><head>
+  <meta charset="UTF-8"><title>Peserta ${a.nama}</title>
+  <style>
+    body { font-family: Arial, sans-serif; font-size: 12px; padding: 20px; }
+    .header { text-align: center; border-bottom: 3px solid #9B7319; padding-bottom: 16px; margin-bottom: 20px; }
+    .header h1 { color: #9B7319; font-size: 18px; }
+    .info { background: #fafaf8; border: 1px solid #e0d8c8; border-radius: 8px; padding: 12px; margin-bottom: 20px; font-size: 11px; }
+    .stats { display: flex; gap: 10px; margin-bottom: 20px; }
+    .stat { flex:1; border: 1px solid #ddd; border-radius:6px; padding:10px; text-align:center; }
+    .stat .v { font-size:22px; font-weight:bold; color:#9B7319; }
+    .stat .l { font-size:10px; color:#666; }
+    table { width:100%; border-collapse:collapse; }
+    th { background:#9B7319; color:white; padding:8px; font-size:11px; text-align:left; }
+    td { padding:7px 8px; border-bottom:1px solid #eee; font-size:11px; }
+    tr:nth-child(even) td { background:#fafafa; }
+    .footer { margin-top:24px; text-align:center; font-size:10px; color:#999; border-top:1px solid #eee; padding-top:10px; }
+  </style></head><body>
+  <div class="header">
+    <h1>⛪ ADULLAM SOUL CONNECT</h1>
+    <h2 style="font-size:14px;margin-top:4px;">Daftar Peserta: ${a.nama}</h2>
+  </div>
+  <div class="info">
+    📅 ${formatDate(a.tanggal)} &nbsp;|&nbsp; ⏰ ${a.waktu} WIB &nbsp;|&nbsp; 📍 ${a.tempat}<br>
+    Jenis: ${a.jenis==='mingguan'?'Mingguan (Berulang)':'Sekali Selesai'} &nbsp;|&nbsp; Kapasitas: ${a.kapasitas||'Tidak terbatas'}
+  </div>
+  <div class="stats">
+    <div class="stat"><div class="v">${a.peserta.length}</div><div class="l">Total Daftar</div></div>
+    <div class="stat"><div class="v" style="color:#2e8a5a">${a.peserta.filter(p=>p.hadir).length}</div><div class="l">Hadir</div></div>
+    <div class="stat"><div class="v" style="color:#c0362a">${a.peserta.filter(p=>!p.hadir).length}</div><div class="l">Belum Hadir</div></div>
+  </div>
+  <table>
+    <thead><tr><th>No</th><th>Nama</th><th>Nomor HP</th><th>Waktu Daftar</th><th>Status</th></tr></thead>
+    <tbody>
+      ${a.peserta.length ? a.peserta.map((p,i) => `
+        <tr><td>${i+1}</td><td>${p.nama}</td><td>${p.hp||'-'}</td>
+        <td>${p.daftar_at.toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'})}</td>
+        <td>${p.hadir?'✅ Hadir':'⏳ Belum Hadir'}</td></tr>`).join('') :
+        '<tr><td colspan="5" style="text-align:center;padding:20px;color:#999;">Belum ada peserta</td></tr>'}
+    </tbody>
+  </table>
+  <div class="footer">
+    Digenerate: ${new Date().toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'})} — Adullam Soul Connect
+  </div>
+  </body></html>`;
+
+  const win = window.open('', '_blank');
+  win.document.write(html);
+  win.document.close();
+  setTimeout(() => win.print(), 500);
+}
+
+// ── FORMAT HELPERS ─────────────────────────────────────────
+function formatDate(str) {
+  if (!str) return '—';
+  return new Date(str + 'T00:00:00').toLocaleDateString('id-ID', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+}
+
 
 function jemaatNav(section, el) {
   document.querySelectorAll('#page-jemaat .nav-item').forEach(i => i.classList.remove('active'));
@@ -3993,13 +4848,47 @@ function jemaatNav(section, el) {
   document.querySelectorAll('#page-jemaat .section').forEach(s => s.classList.remove('active'));
   const sec = document.getElementById(`j-sec-${section}`);
   if (sec) sec.classList.add('active');
-  const titles = { beranda:'Beranda', berita:'Berita Ibadah', jadwal:'Jadwal Ibadah', profil:'Profil Saya' };
+  const titles = { beranda:'Beranda', berita:'Berita Ibadah', acara:'Acara & Event', jadwal:'Jadwal Ibadah', profil:'Profil Saya' };
   const tb = document.getElementById('j-topbar-title');
   if (tb) tb.textContent = titles[section] || 'Beranda';
-  if (section === 'berita') { loadBerita(); renderJemaatBeritaFull(); }
+  if (section === 'berita')  { loadBerita(); renderJemaatBeritaFull(); }
   if (section === 'beranda') renderJemaatBeranda();
-  if (section === 'jadwal') loadJadwal('j-jadwal-full');
+  if (section === 'acara')   loadJemaatAcara();
+  if (section === 'jadwal')  loadJadwal('j-jadwal-full');
+  if (section === 'profil')  setupProfilPage();
   closeMobileSidebar();
+}
+
+function setupProfilPage() {
+  if (!currentUser) return;
+  const el = id => document.getElementById(id);
+  const init = currentUser.nama.charAt(0).toUpperCase();
+  if (el('j-avatar-profil')) el('j-avatar-profil').textContent = init;
+  if (el('j-name-profil'))   el('j-name-profil').textContent   = currentUser.nama;
+  if (el('j-profil-name'))   el('j-profil-name').value         = currentUser.nama;
+  if (el('j-profil-phone'))  el('j-profil-phone').value        = currentUser.telepon;
+  // Hitung statistik acara
+  let daftar = 0, hadir = 0;
+  ACARA_DB.forEach(a => {
+    const p = a.peserta.find(p => p.nama === currentUser.nama || p.hp === currentUser.telepon);
+    if (p) { daftar++; if (p.hadir) hadir++; }
+  });
+  if (el('j-stat-acara-daftar')) el('j-stat-acara-daftar').textContent = daftar;
+  if (el('j-stat-acara-hadir'))  el('j-stat-acara-hadir').textContent  = hadir;
+}
+
+async function jemaatGantiPassword() {
+  const lama    = document.getElementById('j-pass-lama')?.value;
+  const baru    = document.getElementById('j-pass-baru')?.value;
+  const konfirm = document.getElementById('j-pass-konfirm')?.value;
+  if (!lama || !baru) { showToast('Isi semua field password!', 'error'); return; }
+  if (baru !== konfirm) { showToast('Konfirmasi password tidak cocok!', 'error'); return; }
+  if (baru.length < 6)  { showToast('Password baru minimal 6 karakter!', 'error'); return; }
+  try {
+    const d = await api('POST', '/auth/change-password', { password_lama: lama, password_baru: baru });
+    showToast(d.message, d.success ? 'success' : 'error');
+    if (d.success) ['j-pass-lama','j-pass-baru','j-pass-konfirm'].forEach(id => { const e = document.getElementById(id); if(e) e.value=''; });
+  } catch { showToast('Gagal menghubungi server.', 'error'); }
 }
 
 // ── JADWAL FROM API ────────────────────────────────────────
@@ -4265,5 +5154,135 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 </script>
+<!-- Modal: Buat Acara -->
+<div id="modal-buat-acara" class="modal-overlay">
+  <div class="modal modal-lg">
+    <button class="modal-close" onclick="closeModal('modal-buat-acara')">✕</button>
+    <div class="modal-title">🎉 Buat <span style="color:var(--gold)">Acara</span> Baru</div>
+    <div class="modal-sub">Isi detail acara gereja — ibadah, pelayanan, atau kegiatan komunitas</div>
+
+    <!-- Gambar -->
+    <div class="form-group">
+      <label class="form-label">Gambar Acara</label>
+      <div class="img-upload-area" onclick="document.getElementById('acara-img-input').click()">
+        <input type="file" id="acara-img-input" accept="image/*" style="display:none" onchange="previewAcaraImg(this)">
+        <img id="acara-img-preview" class="img-upload-preview">
+        <div id="acara-img-placeholder">
+          <div class="img-upload-icon">🖼️</div>
+          <div class="img-upload-text">Klik atau drag gambar ke sini<br><span style="font-size:11px;color:var(--text-muted)">JPG, PNG, max 2MB</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Nama Acara</label>
+      <input type="text" class="form-input" id="acara-nama" placeholder="Contoh: Ibadah Raya Minggu, Youth Night...">
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <div class="form-group">
+        <label class="form-label">Tanggal</label>
+        <input type="date" class="form-input" id="acara-tanggal">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Waktu</label>
+        <input type="time" class="form-input" id="acara-waktu">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Tempat / Lokasi</label>
+      <input type="text" class="form-input" id="acara-tempat" placeholder="Contoh: Aula Utama Lantai 2, Jl. Adullam No.1">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Deskripsi Acara</label>
+      <textarea class="form-input" id="acara-deskripsi" rows="3" placeholder="Deskripsi singkat acara..." style="resize:vertical;line-height:1.6;"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Jenis Acara</label>
+      <div class="toggle-pill-group">
+        <button class="toggle-pill active" id="pill-sekali" onclick="setAcaraJenis('sekali')">📅 Sekali Selesai</button>
+        <button class="toggle-pill" id="pill-mingguan" onclick="setAcaraJenis('mingguan')">🔁 Mingguan (Berulang)</button>
+      </div>
+    </div>
+
+    <div id="acara-mingguan-info" style="display:none; background:rgba(201,152,42,0.08); border:1px solid rgba(201,152,42,0.2); border-radius:10px; padding:12px; margin-bottom:16px; font-size:13px; color:var(--gold);">
+      🔁 Acara ini akan muncul setiap minggu pada hari yang sama secara otomatis.
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Kapasitas Maksimal (opsional)</label>
+      <input type="number" class="form-input" id="acara-kapasitas" placeholder="Kosongkan jika tidak terbatas" min="1">
+    </div>
+
+    <div class="flex gap-3" style="margin-top:20px;">
+      <button class="btn btn-primary" onclick="simpanAcara()" style="flex:1;">🎉 Buat Acara</button>
+      <button class="btn btn-outline" onclick="closeModal('modal-buat-acara')">Batal</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Detail Peserta Acara -->
+<div id="modal-peserta-acara" class="modal-overlay">
+  <div class="modal modal-lg">
+    <button class="modal-close" onclick="closeModal('modal-peserta-acara')">✕</button>
+    <div class="modal-title" id="peserta-modal-title">👥 Peserta <span style="color:var(--gold)">Acara</span></div>
+    <div class="modal-sub" id="peserta-modal-sub">Daftar jemaat yang mendaftar</div>
+
+    <!-- Summary -->
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px;">
+      <div style="background:var(--bg-panel);border-radius:12px;padding:14px;text-align:center;">
+        <div style="font-size:24px;font-weight:700;font-family:'Cinzel',serif;color:var(--gold);" id="p-total">0</div>
+        <div style="font-size:12px;color:var(--text-muted);">Total Daftar</div>
+      </div>
+      <div style="background:var(--bg-panel);border-radius:12px;padding:14px;text-align:center;">
+        <div style="font-size:24px;font-weight:700;font-family:'Cinzel',serif;color:var(--success);" id="p-hadir">0</div>
+        <div style="font-size:12px;color:var(--text-muted);">Hadir</div>
+      </div>
+      <div style="background:var(--bg-panel);border-radius:12px;padding:14px;text-align:center;">
+        <div style="font-size:24px;font-weight:700;font-family:'Cinzel',serif;color:var(--info);" id="p-kapasitas">∞</div>
+        <div style="font-size:12px;color:var(--text-muted);">Kapasitas</div>
+      </div>
+    </div>
+
+    <!-- Peserta list -->
+    <div id="peserta-list" style="max-height:320px;overflow-y:auto;"></div>
+
+    <div class="flex gap-3" style="margin-top:16px;">
+      <button class="btn btn-primary btn-sm" onclick="downloadPesertaPDF()" style="flex:1;">⬇️ Download PDF Peserta</button>
+      <button class="btn btn-outline btn-sm" onclick="closeModal('modal-peserta-acara')">Tutup</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Daftar Acara (Jemaat) -->
+<div id="modal-daftar-acara" class="modal-overlay">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('modal-daftar-acara')">✕</button>
+    <div class="modal-title" id="daftar-modal-title">🎉 Daftar <span style="color:var(--gold)">Acara</span></div>
+    <div class="modal-sub" id="daftar-modal-sub">Konfirmasi kehadiran Anda</div>
+
+    <div id="daftar-acara-info" style="background:var(--bg-panel);border-radius:12px;padding:16px;margin-bottom:20px;">
+      <div style="font-size:13px;color:var(--text-secondary);line-height:1.7;" id="daftar-acara-detail"></div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Nama Lengkap</label>
+      <input type="text" class="form-input" id="daftar-nama" placeholder="Nama kamu">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Nomor HP</label>
+      <input type="tel" class="form-input" id="daftar-hp" placeholder="08xx xxxx xxxx">
+    </div>
+
+    <div class="flex gap-3 mt-4">
+      <button class="btn btn-primary" onclick="konfirmasiDaftar()" style="flex:1;">✅ Konfirmasi Daftar</button>
+      <button class="btn btn-outline" onclick="closeModal('modal-daftar-acara')">Batal</button>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
